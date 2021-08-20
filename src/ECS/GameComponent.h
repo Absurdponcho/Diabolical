@@ -8,6 +8,8 @@ class GameComponent : public GameBaseObject
 {
 public:
 	virtual void OnSpawn() override;
+	virtual void OnDestroy() override;
+	virtual void Destroy() final override { GameBaseObject::Destroy(); }
 
 	void SetParentEntity(GameEntity* Entity);
 

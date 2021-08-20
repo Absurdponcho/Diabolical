@@ -66,6 +66,7 @@ void GameBaseObject::DestroyPendingObjects()
 	while (!BaseObjectsPendingDestroy.empty())
 	{
 		GameBaseObject* BaseObject = BaseObjectsPendingDestroy.top();
+		if (!BaseObject) continue;
 		BaseObject->OnDestroy();
 		Logging::LogVerbose("GameBaseObject::SpawnPendingObjects()", "Destroyed object with UID " + std::to_string(BaseObject->GetUID()));
 

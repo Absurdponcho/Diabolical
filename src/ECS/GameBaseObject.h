@@ -23,7 +23,7 @@ public:
 
 	void Enable();
 	void Disable();
-	void Destroy();
+	virtual void Destroy();
 	bool IsPendingDestroy();
 	bool IsEnabled();
 	
