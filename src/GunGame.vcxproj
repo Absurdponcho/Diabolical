@@ -139,7 +139,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ECS\Component.cpp" />
+    <ClCompile Include="ECS\Entity.cpp" />
     <ClCompile Include="GunGame.cpp" />
+    <ClCompile Include="Logging\Logging.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ECS\Component.h" />
+    <ClInclude Include="ECS\Entity.h" />
+    <ClInclude Include="GunGame.h" />
+    <ClInclude Include="Logging\Logging.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
