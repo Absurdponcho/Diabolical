@@ -1,15 +1,8 @@
 #pragma once
-#include <vector>
+#include "GameBaseObject.h"
 
-class GameComponent;
-
-class GameEntity
+class GameEntity : public GameBaseObject
 {
 public:
-	template<class T>
-	void AddComponent() { Components.push_back(new T()); }
-	void RemoveComponent(GameComponent* Comp);
-
-private:
-	std::vector<GameComponent*> Components;
+	virtual void OnTick() override;
 };

@@ -139,15 +139,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ECS\GameBaseObject.cpp" />
     <ClCompile Include="ECS\GameComponent.cpp" />
     <ClCompile Include="ECS\GameEntity.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GunGame.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ECS\GameBaseObject.h" />
     <ClInclude Include="ECS\GameComponent.h" />
     <ClInclude Include="ECS\GameEntity.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GunGame.h" />
     <ClInclude Include="Logging\Logging.h" />
     <ClInclude Include="WindowManager.h" />

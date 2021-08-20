@@ -1,18 +1,24 @@
 #include <iostream>
 #include "Logging/Logging.h"
 #include "WindowManager.h"
+#include "ECS/GameEntity.h"
+#include <cassert>
+#include "GameManager.h"
 #undef main
 
 int main(int argc, char** argv)
 {
-    Logging::Log("main", "Main function lel");
-    Logging::LogWarning("main", "Main warning lel");
-    Logging::LogError("main", "Main error lel");
+    Logging::SetLogVerbosity(ELogVerbosity::LV_Verbose);
+
     WindowManager WManager = WindowManager(
         "GunGame",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         800, 600, 0);
 
-    while (1);
+    GameEntity Entity;
+
+    GameManager GManager;
+    GManager.MainGameLoop();
+
     return 0;
-}
+} 

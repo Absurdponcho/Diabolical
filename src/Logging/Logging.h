@@ -8,7 +8,8 @@ enum class ELogVerbosity : uint8_t
 {
 	LV_ErrorOnly = 0,
 	LV_WarningOnly = 1,
-	LV_All = 2,
+	LV_Default = 3,
+	LV_Verbose = 4, // verbose for really verbose logging
 };
 
 class Logging
@@ -17,6 +18,7 @@ public:
 	static void SetLogVerbosity(ELogVerbosity Verbosity);
 	static ELogVerbosity GetLogVerbosity();
 
+	static void LogVerbose(const std::string& DebugScope, const std::string& DebugString);
 	static void Log(const std::string& DebugScope, const std::string& DebugString);
 	static void LogWarning(const std::string& DebugScope, const std::string& DebugString);
 	static void LogError(const std::string& DebugScope, const std::string& DebugString);
