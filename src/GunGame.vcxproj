@@ -143,12 +143,14 @@
     <ClCompile Include="ECS\Entity.cpp" />
     <ClCompile Include="GunGame.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ECS\Component.h" />
     <ClInclude Include="ECS\Entity.h" />
     <ClInclude Include="GunGame.h" />
     <ClInclude Include="Logging\Logging.h" />
+    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
