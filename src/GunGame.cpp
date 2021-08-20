@@ -4,8 +4,8 @@
 #include "ECS/GameEntity.h"
 #include <cassert>
 #include "GameManager.h"
-#include "Rendering/GameRendererComponent.h"
 #include "ECS/GameComponent.h"
+#include "Rendering/TextRendererComponent.h"
 #undef main
 
 int main(int argc, char** argv)
@@ -18,7 +18,7 @@ int main(int argc, char** argv)
         800, 600, 0);
 
     GameEntity* Entity = CreateEntity<GameEntity>();
-    GameRendererComponent* Renderer = CreateComponent<GameRendererComponent>(Entity);
+    TextRendererComponent* Renderer = CreateComponent<TextRendererComponent>(Entity);
 
     GameManager GManager;
     GManager.MainGameLoop();
