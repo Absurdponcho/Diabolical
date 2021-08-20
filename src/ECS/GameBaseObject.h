@@ -3,6 +3,7 @@
 #include <stack>
 #include <vector>
 
+
 class GameBaseObject
 {
 public:
@@ -16,27 +17,21 @@ public:
 	virtual void OnDestroy() {};
 	virtual void OnEnable() {};
 	virtual void OnDisable() {};
-	virtual void OnPreTick() {};
-	virtual void OnTick() {};
-	virtual void OnPostTick() {};
+	virtual void OnPreTick(float DeltaTime) {};
+	virtual void OnTick(float DeltaTime) {};
+	virtual void OnPostTick(float DeltaTime) {};
 
 	void Enable();
 	void Disable();
 	void Destroy();
 
-	template <class T>
-	static T& CreateBaseObject() 
-	{
-		bCreationLock = false;
-		T* Object = new T();
-		bCreationLock = true;
-		return *Object;
-	};
+	
 
-	// these are only for the GameManager to use
+	// Never touch these!!
 	static void SpawnPendingObjects();
 	static void DestroyPendingObjects();
-	static void TickAllObjects();
+	static void TickAllObjects(float DeltaTime);
+	static bool bCreationLock;
 
 private:
 	size_t UID;
@@ -47,8 +42,17 @@ private:
 	static std::stack<GameBaseObject*> BaseObjectsPendingDestroy;
 	static std::vector<GameBaseObject*> AllBaseObjects;
 
-	static bool bCreationLock;
+	
 
 	bool bPendingDestroy = false;
 	bool bEnabled = true;
+};
+
+template <class T>
+T& CreateBaseObject()
+{
+	GameBaseObject::bCreationLock = false;
+	T* Object = new T();
+	GameBaseObject::bCreationLock = true;
+	return *Object;
 };

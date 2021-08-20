@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include "ECS/GameComponent.h"
 #include "Logging/Logging.h"
+#include <chrono>
 
 void GameManager::MainGameLoop()
 {
@@ -11,9 +12,24 @@ void GameManager::MainGameLoop()
 	}
 }
 
+int GameManager::GetGameFPS()
+{
+	return (int)FPS;
+}
+
 void GameManager::ManagerTick()
 {
+	static long long OldTime = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+	long long Time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+	long long TimeDiff = Time - OldTime;
+	OldTime = Time;
+
+	float DeltaTime = (float)TimeDiff / 1000000000.f;
+
+	FPS = 1.f / DeltaTime;
+
 	GameBaseObject::SpawnPendingObjects();
 	GameBaseObject::DestroyPendingObjects();
-	GameBaseObject::TickAllObjects();
+	GameBaseObject::TickAllObjects(DeltaTime);
+
 }

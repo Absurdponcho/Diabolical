@@ -4,5 +4,5 @@
 class GameEntity : public GameBaseObject
 {
 public:
-	virtual void OnTick() override;
+	virtual void OnTick(float DeltaTime) override;
 };

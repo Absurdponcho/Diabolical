@@ -15,14 +15,6 @@ GameBaseObject::GameBaseObject()
 	Check(!bCreationLock); // you HAVE to call GameBaseObject::CreateBaseObject() to ensure it is allocated correctly.
 	BaseObjectsPendingSpawn.push(this);
 }
-//
-//GameBaseObject& GameBaseObject::CreateBaseObject()
-//{
-//	bCreationLock = false;
-//	GameBaseObject* BaseObject = new GameBaseObject();
-//	bCreationLock = true;
-//	return *BaseObject;
-//}
 
 const size_t& GameBaseObject::GetUID()
 {
@@ -91,26 +83,26 @@ void GameBaseObject::DestroyPendingObjects()
 	}
 }
 
-void GameBaseObject::TickAllObjects()
+void GameBaseObject::TickAllObjects(float DeltaTime)
 {
 	for (GameBaseObject* BaseObject : AllBaseObjects)
 	{
 		if (!BaseObject->bEnabled) continue;
 		if (BaseObject->bPendingDestroy) continue;
-		BaseObject->OnPreTick();
+		BaseObject->OnPreTick(DeltaTime);
 	}	
 
 	for (GameBaseObject* BaseObject : AllBaseObjects)
 	{
 		if (!BaseObject->bEnabled) continue;
 		if (BaseObject->bPendingDestroy) continue;
-		BaseObject->OnTick();
+		BaseObject->OnTick(DeltaTime);
 	}	
 
 	for (GameBaseObject* BaseObject : AllBaseObjects)
 	{
 		if (!BaseObject->bEnabled) continue;
 		if (BaseObject->bPendingDestroy) continue;
-		BaseObject->OnPostTick();
+		BaseObject->OnPostTick(DeltaTime);
 	}
 }
