@@ -2,6 +2,7 @@
 #include "ECS/GameComponent.h"
 #include "Logging/Logging.h"
 #include <chrono>
+#include "Rendering/GameRendererComponent.h"
 
 void GameManager::MainGameLoop()
 {
@@ -31,5 +32,5 @@ void GameManager::ManagerTick()
 	GameBaseObject::SpawnPendingObjects();
 	GameBaseObject::DestroyPendingObjects();
 	GameBaseObject::TickAllObjects(DeltaTime);
-
+	GameRendererComponent::RenderAllRenderers();
 }

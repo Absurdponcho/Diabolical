@@ -24,7 +24,8 @@ public:
 	void Enable();
 	void Disable();
 	void Destroy();
-
+	bool IsPendingDestroy();
+	bool IsEnabled();
 	
 
 	// Never touch these!!
@@ -46,13 +47,4 @@ private:
 
 	bool bPendingDestroy = false;
 	bool bEnabled = true;
-};
-
-template <class T>
-T& CreateBaseObject()
-{
-	GameBaseObject::bCreationLock = false;
-	T* Object = new T();
-	GameBaseObject::bCreationLock = true;
-	return *Object;
 };

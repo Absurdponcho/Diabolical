@@ -12,7 +12,7 @@ bool GameBaseObject::bCreationLock = true;
 GameBaseObject::GameBaseObject()
 	: UID(UIDCounter++)
 {
-	Check(!bCreationLock); // you HAVE to call GameBaseObject::CreateBaseObject() to ensure it is allocated correctly.
+	Check(!bCreationLock);
 	BaseObjectsPendingSpawn.push(this);
 }
 
@@ -105,4 +105,14 @@ void GameBaseObject::TickAllObjects(float DeltaTime)
 		if (BaseObject->bPendingDestroy) continue;
 		BaseObject->OnPostTick(DeltaTime);
 	}
+}
+
+bool GameBaseObject::IsPendingDestroy()
+{
+	return bPendingDestroy;
+}
+
+bool GameBaseObject::IsEnabled()
+{
+	return bEnabled;
 }

@@ -4,6 +4,8 @@
 #include "ECS/GameEntity.h"
 #include <cassert>
 #include "GameManager.h"
+#include "Rendering/GameRendererComponent.h"
+#include "ECS/GameComponent.h"
 #undef main
 
 int main(int argc, char** argv)
@@ -15,7 +17,8 @@ int main(int argc, char** argv)
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         800, 600, 0);
 
-    GameEntity Entity = CreateBaseObject<GameEntity>();
+    GameEntity* Entity = CreateEntity<GameEntity>();
+    GameRendererComponent* Renderer = CreateComponent<GameRendererComponent>(Entity);
 
     GameManager GManager;
     GManager.MainGameLoop();

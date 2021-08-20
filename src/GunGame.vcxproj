@@ -145,6 +145,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GunGame.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
+    <ClCompile Include="Rendering\GameRendererComponent.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +155,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GunGame.h" />
     <ClInclude Include="Logging\Logging.h" />
+    <ClInclude Include="Rendering\GameRendererComponent.h" />
     <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
