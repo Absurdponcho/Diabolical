@@ -389,3 +389,5 @@ FodyWeavers.xsd
 src/.vs/GunGame/v16/.suo
 *.db
 src/.vs/GunGame/v16/.suo
+*.db
+src/.vs/GunGame/v16/Browse.VC.db
