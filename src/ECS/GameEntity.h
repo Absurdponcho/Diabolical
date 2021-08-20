@@ -1,14 +1,14 @@
 #pragma once
 #include <vector>
-#include "Component.h"
+#include "GameComponent.h"
 
-class Entity
+class GameEntity
 {
 public:
 	template<class T>
 	void AddComponent() { Components.push_back(new T()); }
-	void RemoveComponent(Component* Comp);
+	void RemoveComponent(GameComponent* Comp);
 
 private:
-	std::vector<Component*> Components;
+	std::vector<GameComponent*> Components;
 };
