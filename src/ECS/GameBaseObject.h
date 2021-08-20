@@ -24,6 +24,15 @@ public:
 	void Disable();
 	void Destroy();
 
+	template <class T>
+	static T& CreateBaseObject() 
+	{
+		bCreationLock = false;
+		T* Object = new T();
+		bCreationLock = true;
+		return *Object;
+	};
+
 	// these are only for the GameManager to use
 	static void SpawnPendingObjects();
 	static void DestroyPendingObjects();
@@ -37,6 +46,8 @@ private:
 	static std::stack<GameBaseObject*> BaseObjectsPendingSpawn;
 	static std::stack<GameBaseObject*> BaseObjectsPendingDestroy;
 	static std::vector<GameBaseObject*> AllBaseObjects;
+
+	static bool bCreationLock;
 
 	bool bPendingDestroy = false;
 	bool bEnabled = true;

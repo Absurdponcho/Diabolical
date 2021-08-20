@@ -7,12 +7,22 @@ size_t GameBaseObject::UIDCounter = 0;
 std::stack<GameBaseObject*> GameBaseObject::BaseObjectsPendingSpawn;
 std::stack<GameBaseObject*> GameBaseObject::BaseObjectsPendingDestroy;
 std::vector<GameBaseObject*> GameBaseObject::AllBaseObjects;
+bool GameBaseObject::bCreationLock = true;
 
 GameBaseObject::GameBaseObject()
 	: UID(UIDCounter++)
 {
+	Check(!bCreationLock); // you HAVE to call GameBaseObject::CreateBaseObject() to ensure it is allocated correctly.
 	BaseObjectsPendingSpawn.push(this);
 }
+//
+//GameBaseObject& GameBaseObject::CreateBaseObject()
+//{
+//	bCreationLock = false;
+//	GameBaseObject* BaseObject = new GameBaseObject();
+//	bCreationLock = true;
+//	return *BaseObject;
+//}
 
 const size_t& GameBaseObject::GetUID()
 {

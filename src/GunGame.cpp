@@ -15,7 +15,7 @@ int main(int argc, char** argv)
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         800, 600, 0);
 
-    GameEntity Entity;
+    GameEntity Entity = GameBaseObject::CreateBaseObject<GameEntity>();
 
     GameManager GManager;
     GManager.MainGameLoop();
