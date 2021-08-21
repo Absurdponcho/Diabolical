@@ -19,7 +19,6 @@ int main(int argc, char** argv)
 
     GameEntity* Entity = CreateEntity<GameEntity>();
     BasicRendererComponent* Component = CreateComponent<BasicRendererComponent>(Entity);
-    GameAssetSoftPointer<GameAsset> GameAsset("");
 
     GManager.MainGameLoop();
 
