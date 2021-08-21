@@ -13,7 +13,7 @@ public:
 
 	// Dont call these or u will die ;)
 	static void CullAllRenderers(Out std::stack<GameRendererComponent*>& VisibleRenderers);
-	static void RenderAllRenderers(const std::stack<GameRendererComponent*>& VisibleRenderers);
+	static void RenderAllRenderers(std::stack<GameRendererComponent*>& VisibleRenderers);
 private:
 	bool bWasCulled = false;
 

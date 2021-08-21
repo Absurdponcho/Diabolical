@@ -22,7 +22,7 @@ void GameRendererComponent::OnDestroy()
 		}
 	}
 }
-void GameRendererComponent::RenderAllRenderers(const std::stack<GameRendererComponent*>& VisibleRenderers)
+void GameRendererComponent::RenderAllRenderers(std::stack<GameRendererComponent*>& VisibleRenderers)
 {
 	while (!VisibleRenderers.empty())
 	{
@@ -32,6 +32,7 @@ void GameRendererComponent::RenderAllRenderers(const std::stack<GameRendererComp
 			continue;
 		}
 		RendererComponent->Render();
+		VisibleRenderers.pop();
 	}
 }
 void GameRendererComponent::CullAllRenderers(Out std::stack<GameRendererComponent*>& VisibleRenderers)
