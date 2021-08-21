@@ -16,11 +16,6 @@ int main(int argc, char** argv)
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         800, 600, 0);
 
-    GameAssetSoftPointer AudioAsset("GameAssetFiles/phaser1.wav");
-
-    GameAudio::PlaySound(AudioAsset);
-
-
     GameManager GManager;
     GManager.MainGameLoop();
 
