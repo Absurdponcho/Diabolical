@@ -116,6 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,6 +140,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Assets\GameAsset.cpp" />
+    <ClCompile Include="Assets\GameAssetSoftPointer.cpp" />
     <ClCompile Include="ECS\GameBaseObject.cpp" />
     <ClCompile Include="ECS\GameComponent.cpp" />
     <ClCompile Include="ECS\GameEntity.cpp" />
@@ -150,6 +153,8 @@
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Assets\GameAsset.h" />
+    <ClInclude Include="Assets\GameAssetSoftPointer.h" />
     <ClInclude Include="ECS\GameBaseObject.h" />
     <ClInclude Include="ECS\GameComponent.h" />
     <ClInclude Include="ECS\GameEntity.h" />
