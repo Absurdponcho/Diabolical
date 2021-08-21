@@ -34,17 +34,6 @@ AudioAsset* GameAssetSoftPointer<AudioAsset>::LoadSynchronous()
 	return LoadedAsset;
 }
 
-GameAssetSoftPointer<GameAsset>::GameAssetSoftPointer(std::filesystem::path AssetPath)
-{
-	Check(std::filesystem::exists(AssetPath));
-	Internal.Path = AssetPath;
-}
-GameAssetSoftPointer<AudioAsset>::GameAssetSoftPointer(std::filesystem::path AssetPath)
-{
-	Check(std::filesystem::exists(AssetPath));
-	Internal.Path = AssetPath;
-}
-
 GameAsset* SoftPointer::Get_Internal()
 {
 	GameAsset* LoadedAsset = GameAsset::GetIfLoaded(Path);

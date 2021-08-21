@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "GameAsset.h"
+#include "../GunGame.h"
 
 class SoftPointer
 {
@@ -16,7 +17,12 @@ template<class AssetType>
 class GameAssetSoftPointer
 {
 public:
-	GameAssetSoftPointer(std::filesystem::path AssetPath);
+	GameAssetSoftPointer(std::filesystem::path AssetPath) 
+	{
+		Check(std::filesystem::exists(AssetPath));
+		Internal.Path = AssetPath;
+	}
+
 
 	AssetType* Get() { return dynamic_cast<AssetType*>(Internal.Get_Internal()); }
 
