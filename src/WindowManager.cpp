@@ -2,7 +2,6 @@
 #include "Logging/Logging.h"
 
 WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint32 flags) :
-	GameWindow(NULL), GameSurface(NULL), GameRenderer(NULL),
 	x(x), y(y), w(y), h(h), WindowFlags(flags), bWindowValid(true)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -11,7 +10,7 @@ WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint
 	}
 	Logging::Log("WindowManager::WindowManager()", "SDL_Init() success");
 
-	GameWindow = SDL_CreateWindow(title, x, y, w, h, flags);
+	GameWindow = SDL_CreateWindow(title, x, y, w, h, flags | SDL_WINDOW_RESIZABLE);
 	GameSurface = SDL_GetWindowSurface(GameWindow);
 	if (GameSurface == NULL) {
 		Logging::LogError("WindowManager::WindowManager()", "SDL_GetWindowSurface() failed");
@@ -22,6 +21,13 @@ WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint
 		Logging::LogError("WindowManager::WindowManager()", "SDL_CreateRenderer() failed");
 		bWindowValid = false;
 	}
+}
+
+WindowManager::~WindowManager()
+{
+	SDL_DestroyRenderer(GameRenderer);
+	SDL_DestroyWindow(GameWindow);
+	SDL_Quit();
 }
 
 SDL_Window* WindowManager::GetSDLWindow()
