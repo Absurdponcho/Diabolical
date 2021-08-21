@@ -6,3 +6,5 @@
 #endif
 
 #define Check(Condition) assert(Condition)
+
+#define Out

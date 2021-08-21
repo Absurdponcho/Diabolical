@@ -32,5 +32,9 @@ void GameManager::ManagerTick()
 	GameBaseObject::SpawnPendingObjects();
 	GameBaseObject::DestroyPendingObjects();
 	GameBaseObject::TickAllObjects(DeltaTime);
-	GameRendererComponent::RenderAllRenderers();
+
+	std::stack<GameRendererComponent*> RendererStack;
+
+	GameRendererComponent::CullAllRenderers(RendererStack);
+	GameRendererComponent::RenderAllRenderers(RendererStack);
 }

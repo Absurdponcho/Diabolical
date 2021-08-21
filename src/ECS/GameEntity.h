@@ -21,7 +21,7 @@ public:
 	EntityTransform& GetTransform();
 
 
-
+	// dont call these manually 
 	void AttachComponent(GameComponent* Component);
 	void DetachComponent(GameComponent* Component);
 

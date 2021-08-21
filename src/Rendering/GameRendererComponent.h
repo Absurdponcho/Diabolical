@@ -7,9 +7,16 @@ public:
 	virtual void OnSpawn() override;
 	virtual void OnDestroy() override;
 
+	// if Cull() returns true, renderer is culled and so Render() is not called
+	virtual bool Cull() { return false; };
 	virtual void Render() {};
 
-	static void RenderAllRenderers();
+	// Dont call these or u will die ;)
+	static void CullAllRenderers(Out std::stack<GameRendererComponent*>& VisibleRenderers);
+	static void RenderAllRenderers(const std::stack<GameRendererComponent*>& VisibleRenderers);
 private:
+	bool bWasCulled = false;
+
 	static std::vector<GameRendererComponent*> AllGameRendererComponents;
+
 };
