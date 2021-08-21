@@ -16,13 +16,14 @@ AudioAsset* AudioAsset::TryLoad(std::filesystem::path Path)
 
 	AudioAsset* LoadedAsset = new AudioAsset();
 
-	LoadedAsset->FileSize = std::filesystem::file_size(Path);
 
 	LoadedAsset->bDataAssigned = true;
-	LoadedAsset->AssetData = new uint8_t[LoadedAsset->FileSize];
 	LoadedAsset->FilePath = Path;
 
 	LoadedAsset->MixChunk = Mix_LoadWAV((char*)Path.u8string().c_str());
+
+	LoadedAsset->AssetData = LoadedAsset->MixChunk->abuf;
+	LoadedAsset->FileSize = LoadedAsset->MixChunk->alen;
 
 	LoadedGameAssets.push_back(LoadedAsset);
 	return LoadedAsset;
