@@ -139,17 +139,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ECS\Component.cpp" />
-    <ClCompile Include="ECS\Entity.cpp" />
+    <ClCompile Include="ECS\GameBaseObject.cpp" />
+    <ClCompile Include="ECS\GameComponent.cpp" />
+    <ClCompile Include="ECS\GameEntity.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GunGame.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
+    <ClCompile Include="Rendering\GameRendererComponent.cpp" />
+    <ClCompile Include="Rendering\TextRendererComponent.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ECS\Component.h" />
-    <ClInclude Include="ECS\Entity.h" />
+    <ClInclude Include="ECS\GameBaseObject.h" />
+    <ClInclude Include="ECS\GameComponent.h" />
+    <ClInclude Include="ECS\GameEntity.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GunGame.h" />
     <ClInclude Include="Logging\Logging.h" />
+    <ClInclude Include="Rendering\GameRendererComponent.h" />
+    <ClInclude Include="Rendering\TextRendererComponent.h" />
     <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

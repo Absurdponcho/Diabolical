@@ -6,15 +6,26 @@
 	#include <windows.h>
 #endif
 
-ELogVerbosity Logging::LogVerbosity = ELogVerbosity::LV_All;
+ELogVerbosity Logging::LogVerbosity = ELogVerbosity::LV_Default;
 uint8_t Logging::LogColor = 15;
 
 void Logging::Log(const std::string& DebugScope, const std::string& DebugString)
 {
-	if (LogVerbosity >= ELogVerbosity::LV_All)
+	if (LogVerbosity >= ELogVerbosity::LV_Default)
 	{
 		uint8_t OldColor = LogColor;
 		SetLogColor(15);
+		std::cout << DebugScope << ": " << DebugString << std::endl;
+		SetLogColor(OldColor);
+	}
+}
+
+void Logging::LogVerbose(const std::string& DebugScope, const std::string& DebugString)
+{
+	if (LogVerbosity >= ELogVerbosity::LV_Verbose)
+	{
+		uint8_t OldColor = LogColor;
+		SetLogColor(10);
 		std::cout << DebugScope << ": " << DebugString << std::endl;
 		SetLogColor(OldColor);
 	}
@@ -60,7 +71,7 @@ void Logging::SetLogColor(uint8_t Color)
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole, Color);
 #else
-	if (LogVerbosity == ELogVerbosity::LV_All)
+	if (LogVerbosity == ELogVerbosity::LV_Default)
 	{
 		std::cout << "Logging::SetLogColor(): Unimplemented platform";
 	}
