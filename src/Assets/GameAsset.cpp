@@ -31,8 +31,18 @@ GameAsset::~GameAsset()
 
 GameAsset* GameAsset::GetIfLoaded(std::filesystem::path Path)
 {
+	if (!std::filesystem::exists(Path)) return nullptr;
 	for (int Index = 0; Index < LoadedGameAssets.size(); Index++)
 	{
+		if (!LoadedGameAssets[Index]) 
+		{ 
+			continue; 
+		}
+		if (!std::filesystem::exists(LoadedGameAssets[Index]->FilePath)) 
+		{
+			continue;
+		}
+
 		if (std::filesystem::equivalent(LoadedGameAssets[Index]->FilePath, Path))
 		{
 			return LoadedGameAssets[Index];
@@ -50,8 +60,6 @@ GameAsset* GameAsset::TryLoad(std::filesystem::path Path)
 		return nullptr;
 	}
 
-	Check(!GetIfLoaded(Path));
-
 	std::ifstream FileStream(Path.string());
 
 	GameAsset* LoadedAsset = new GameAsset();
@@ -60,6 +68,7 @@ GameAsset* GameAsset::TryLoad(std::filesystem::path Path)
 
 	LoadedAsset->bDataAssigned = true;
 	LoadedAsset->AssetData = new uint8_t[LoadedAsset->FileSize];
+	LoadedAsset->FilePath = Path;
 
 	FileStream.read((char*)LoadedAsset->AssetData, LoadedAsset->FileSize);
 

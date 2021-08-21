@@ -24,7 +24,7 @@ GameAssetSoftPointer::GameAssetSoftPointer(std::filesystem::path AssetPath)
 
 GameAsset* GameAssetSoftPointer::Get_Internal()
 {
-	GameAsset* LoadedAsset = nullptr;
+	GameAsset* LoadedAsset = GameAsset::GetIfLoaded(Path);
 
 	if (LoadedAsset)
 	{
