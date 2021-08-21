@@ -1,5 +1,5 @@
 #include "CoreEngine.h"
-
+#include "Rendering/BasicRendererComponent.h"
 #undef main
 
 
@@ -14,9 +14,13 @@ int main(int argc, char** argv)
         "GunGame",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         800, 600, 0);
+
     GameManager GManager;
+
     GameEntity* Entity = CreateEntity<GameEntity>();
     BasicRendererComponent* Component = CreateComponent<BasicRendererComponent>(Entity);
+    GameAssetSoftPointer<GameAsset> GameAsset("");
+
     GManager.MainGameLoop();
 
     return 0;

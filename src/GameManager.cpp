@@ -8,6 +8,7 @@ void GameManager::MainGameLoop()
 	Logging::LogVerbose("GameManager::MainGameLoop()", "Main game loop started");
 	while (bMainLoopRunning)
 	{
+		EventTick();
 		ManagerTick();
 	}
 }
@@ -17,12 +18,16 @@ int GameManager::GetGameFPS()
 	return (int)FPS;
 }
 
+void GameManager::EventTick()
+{
+	SDL_Event Event;
+	int bEvent = SDL_PollEvent(&Event);
+	if (bEvent && Event.type == SDL_QUIT)
+		bMainLoopRunning = false;
+}
+
 void GameManager::ManagerTick()
 {
-
-	SDL_Event Event;
-	if (SDL_PollEvent(&Event) && Event.type == SDL_QUIT)
-		bMainLoopRunning = false;
 
 	static long long OldTime = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 	long long Time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
@@ -48,12 +53,10 @@ void GameManager::ManagerTick()
 
 	SDL_RenderPresent(renderer);
 
-	static float Timer = 0.3f;
-	Timer -= DeltaTime;
-	if (Timer <= 0)
-	{
-		Timer = 0.5f;
-		GameAssetSoftPointer<AudioAsset> AudioAsset("GameAssetFiles/phaser1.wav");
-		GameAudio::PlaySound(AudioAsset, 0.2f);
-	}
+	//static float Timer = 0.3f;
+	//Timer -= DeltaTime;
+	//if (Timer <= 0)
+	//{
+	//	Timer = 0.5f;
+	//}
 }

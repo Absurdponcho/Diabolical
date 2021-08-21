@@ -8,6 +8,7 @@ public:
 	int GetGameFPS();
 
 private:
+	void EventTick();
 	void ManagerTick();
 
 	bool bMainLoopRunning = true;
