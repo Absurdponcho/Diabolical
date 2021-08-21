@@ -1,8 +1,7 @@
 #include "GameManager.h"
-#include "ECS/GameComponent.h"
-#include "Logging/Logging.h"
+#include "CoreEngine.h"
 #include <chrono>
-#include "Rendering/GameRendererComponent.h"
+#include "Audio/AudioAsset.h"
 
 void GameManager::MainGameLoop()
 {
@@ -32,5 +31,18 @@ void GameManager::ManagerTick()
 	GameBaseObject::SpawnPendingObjects();
 	GameBaseObject::DestroyPendingObjects();
 	GameBaseObject::TickAllObjects(DeltaTime);
-	GameRendererComponent::RenderAllRenderers();
+
+	std::stack<GameRendererComponent*> RendererStack;
+
+	GameRendererComponent::CullAllRenderers(RendererStack);
+	GameRendererComponent::RenderAllRenderers(RendererStack);
+
+	static float Timer = 0.3f;
+	Timer -= DeltaTime;
+	if (Timer <= 0)
+	{
+		Timer = 0.5f;
+		GameAssetSoftPointer<AudioAsset> AudioAsset("GameAssetFiles/phaser1.wav");
+		GameAudio::PlaySound(AudioAsset, 0.2f);
+	}
 }

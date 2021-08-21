@@ -22,7 +22,19 @@ void GameRendererComponent::OnDestroy()
 		}
 	}
 }
-void GameRendererComponent::RenderAllRenderers()
+void GameRendererComponent::RenderAllRenderers(const std::stack<GameRendererComponent*>& VisibleRenderers)
+{
+	while (!VisibleRenderers.empty())
+	{
+		GameRendererComponent* RendererComponent = VisibleRenderers.top();
+		if (RendererComponent->IsPendingDestroy() || !RendererComponent->IsEnabled())
+		{
+			continue;
+		}
+		RendererComponent->Render();
+	}
+}
+void GameRendererComponent::CullAllRenderers(Out std::stack<GameRendererComponent*>& VisibleRenderers)
 {
 	for (int Index = 0; Index < AllGameRendererComponents.size(); Index++)
 	{
@@ -31,6 +43,14 @@ void GameRendererComponent::RenderAllRenderers()
 		{
 			continue;
 		}
-		RendererComponent->Render();
+		if (RendererComponent->Cull())
+		{
+			RendererComponent->bWasCulled = true;
+		}
+		else
+		{
+			RendererComponent->bWasCulled = false;
+			VisibleRenderers.push(RendererComponent);
+		}
 	}
 }
