@@ -1,9 +1,4 @@
-#include "Logging/Logging.h"
-#include "WindowManager.h"
-#include "ECS/GameEntity.h"
-#include "GameManager.h"
-#include "Assets/GameAssetSoftPointer.h"
-#include "Audio/GameAudio.h"
+#include "CoreEngine.h"
 #undef main
 
 

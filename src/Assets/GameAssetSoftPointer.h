@@ -13,6 +13,7 @@ public:
 	GameAsset* LoadSynchronous();
 
 	const std::filesystem::path& GetPath();
+	const std::string GetFileExtension();
 
 private:
 	GameAsset* Get_Internal();

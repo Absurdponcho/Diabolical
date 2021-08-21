@@ -157,6 +157,7 @@
     <ClInclude Include="Assets\GameAsset.h" />
     <ClInclude Include="Assets\GameAssetSoftPointer.h" />
     <ClInclude Include="Audio\GameAudio.h" />
+    <ClInclude Include="CoreEngine.h" />
     <ClInclude Include="ECS\GameBaseObject.h" />
     <ClInclude Include="ECS\GameComponent.h" />
     <ClInclude Include="ECS\GameEntity.h" />

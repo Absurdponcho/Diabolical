@@ -44,3 +44,8 @@ const std::filesystem::path& GameAssetSoftPointer::GetPath()
 {
 	return Path;
 }
+
+const std::string GameAssetSoftPointer::GetFileExtension()
+{
+	return Path.extension().string();
+}

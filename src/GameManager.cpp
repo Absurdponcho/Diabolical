@@ -1,10 +1,6 @@
 #include "GameManager.h"
-#include "ECS/GameComponent.h"
-#include "Logging/Logging.h"
+#include "CoreEngine.h"
 #include <chrono>
-#include "Rendering/GameRendererComponent.h"
-#include "Audio/GameAudio.h"
-#include "Assets/GameAssetSoftPointer.h"
 
 void GameManager::MainGameLoop()
 {
