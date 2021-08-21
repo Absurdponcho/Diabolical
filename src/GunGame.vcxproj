@@ -152,6 +152,7 @@
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="Rendering\BasicRendererComponent.cpp" />
     <ClCompile Include="Rendering\GameRendererComponent.cpp" />
+    <ClCompile Include="Rendering\SquareRendererComponent.cpp" />
     <ClCompile Include="Rendering\TextRendererComponent.cpp" />
     <ClCompile Include="Utility\Utility.cpp" />
     <ClCompile Include="WindowManager.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Rendering\BasicRendererComponent.h" />
     <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Rendering\GameRendererComponent.h" />
+    <ClInclude Include="Rendering\SquareRendererComponent.h" />
     <ClInclude Include="Rendering\TextRendererComponent.h" />
     <ClInclude Include="Utility\Utility.h" />
     <ClInclude Include="WindowManager.h" />

@@ -7,9 +7,9 @@ class GameComponent;
 
 struct EntityTransform
 {
-	b2Vec2 Position = b2Vec2();
+	b2Vec2 Position = b2Vec2(0, 0);
 	float Rotation = 0;
-	b2Vec2 Scale = b2Vec2();
+	b2Vec2 Scale = b2Vec2(1, 1);
 };
 
 class GameEntity : public GameBaseObject

@@ -23,3 +23,9 @@ void GameComponent::SetParentEntity(GameEntity* Entity)
 	ParentEntity = Entity;
 	ParentEntity->AttachComponent(this);
 }
+
+GameEntity& GameComponent::GetParentEntity()
+{
+	Check(ParentEntity);
+	return *ParentEntity;
+}

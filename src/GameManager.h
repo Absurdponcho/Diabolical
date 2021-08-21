@@ -7,11 +7,15 @@ public:
 
 	int GetGameFPS();
 
+	static float GetFPS();
+	static float GetTime();
+
 private:
 	void EventTick();
 	void ManagerTick();
 
 	bool bMainLoopRunning = true;
 
-	float FPS = 0;
+	static float FPS;
+	static float GameTime;
 };

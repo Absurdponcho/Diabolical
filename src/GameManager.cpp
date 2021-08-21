@@ -3,6 +3,9 @@
 #include <chrono>
 #include "Audio/AudioAsset.h"
 
+float GameManager::FPS = 0;
+float GameManager::GameTime = 0;
+
 void GameManager::MainGameLoop()
 {
 	Logging::LogVerbose("GameManager::MainGameLoop()", "Main game loop started");
@@ -53,4 +56,15 @@ void GameManager::ManagerTick()
 
 	SDL_RenderPresent(renderer);
 
+	GameTime += DeltaTime;
+}
+
+float GameManager::GetFPS() 
+{
+	return FPS;
+}
+
+float GameManager::GetTime() 
+{
+	return GameTime;
 }

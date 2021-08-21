@@ -12,6 +12,7 @@ public:
 	virtual void Destroy() final override { GameBaseObject::Destroy(); }
 
 	void SetParentEntity(GameEntity* Entity);
+	GameEntity& GetParentEntity();
 
 private:
 	GameEntity* ParentEntity;
