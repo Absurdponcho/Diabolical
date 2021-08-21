@@ -36,7 +36,7 @@ public:
 			return Asset;
 		}
 
-		Logging::Log("GameAssetSoftPointer::LoadSynchronous()", "Loading base asset " + Internal.Path.string());
+		Logging::Log("GameAssetSoftPointer::LoadSynchronous()", "Loading asset " + Internal.Path.string());
 
 
 		AssetType* LoadedAsset = AssetType::TryLoad(Internal.Path);
