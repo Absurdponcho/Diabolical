@@ -12,6 +12,8 @@ public:
 
 	GameAsset* LoadSynchronous();
 
+	const std::filesystem::path& GetPath();
+
 private:
 	GameAsset* Get_Internal();
 	

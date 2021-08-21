@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClCompile Include="Assets\GameAsset.cpp" />
     <ClCompile Include="Assets\GameAssetSoftPointer.cpp" />
+    <ClCompile Include="Audio\GameAudio.cpp" />
     <ClCompile Include="ECS\GameBaseObject.cpp" />
     <ClCompile Include="ECS\GameComponent.cpp" />
     <ClCompile Include="ECS\GameEntity.cpp" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="Assets\GameAsset.h" />
     <ClInclude Include="Assets\GameAssetSoftPointer.h" />
+    <ClInclude Include="Audio\GameAudio.h" />
     <ClInclude Include="ECS\GameBaseObject.h" />
     <ClInclude Include="ECS\GameComponent.h" />
     <ClInclude Include="ECS\GameEntity.h" />

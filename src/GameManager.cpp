@@ -3,6 +3,8 @@
 #include "Logging/Logging.h"
 #include <chrono>
 #include "Rendering/GameRendererComponent.h"
+#include "Audio/GameAudio.h"
+#include "Assets/GameAssetSoftPointer.h"
 
 void GameManager::MainGameLoop()
 {
@@ -37,4 +39,13 @@ void GameManager::ManagerTick()
 
 	GameRendererComponent::CullAllRenderers(RendererStack);
 	GameRendererComponent::RenderAllRenderers(RendererStack);
+
+	static float Timer = 0.3f;
+	Timer -= DeltaTime;
+	if (Timer <= 0)
+	{
+		Timer = 0.1f;
+		GameAssetSoftPointer AudioAsset("GameAssetFiles/phaser1.wav");
+		GameAudio::PlaySound(AudioAsset);
+	}
 }

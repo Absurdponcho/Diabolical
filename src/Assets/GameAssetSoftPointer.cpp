@@ -1,5 +1,6 @@
 #include "GameAssetSoftPointer.h"
 #include "../Logging/Logging.h"
+#include "../GunGame.h"
 
 GameAsset* GameAssetSoftPointer::LoadSynchronous()
 {
@@ -19,6 +20,8 @@ GameAsset* GameAssetSoftPointer::LoadSynchronous()
 
 GameAssetSoftPointer::GameAssetSoftPointer(std::filesystem::path AssetPath)
 {
+	Check(std::filesystem::exists(AssetPath));
+
 	Path = AssetPath;
 }
 
@@ -35,4 +38,9 @@ GameAsset* GameAssetSoftPointer::Get_Internal()
 		Logging::LogVerbose("GameAssetSoftPointer::Get_Internal()", "Getting Asset " + Path.string() + ", not loaded");
 	}
 	return LoadedAsset;
+}
+
+const std::filesystem::path& GameAssetSoftPointer::GetPath()
+{
+	return Path;
 }
