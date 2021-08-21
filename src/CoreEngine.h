@@ -14,4 +14,6 @@
 #include "WindowManager.h"
 #include "GameManager.h"
 #include "GunGame.h"
+#include "Rendering/BasicRendererComponent.h"
+#include "Utility/Utility.h"
 #undef PlaySound

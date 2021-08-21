@@ -153,6 +153,7 @@
     <ClCompile Include="Rendering\BasicRendererComponent.cpp" />
     <ClCompile Include="Rendering\GameRendererComponent.cpp" />
     <ClCompile Include="Rendering\TextRendererComponent.cpp" />
+    <ClCompile Include="Utility\Utility.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -168,8 +169,10 @@
     <ClInclude Include="GunGame.h" />
     <ClInclude Include="Logging\Logging.h" />
     <ClInclude Include="Rendering\BasicRendererComponent.h" />
+    <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Rendering\GameRendererComponent.h" />
     <ClInclude Include="Rendering\TextRendererComponent.h" />
+    <ClInclude Include="Utility\Utility.h" />
     <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

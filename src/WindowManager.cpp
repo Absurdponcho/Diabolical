@@ -2,7 +2,7 @@
 #include "Logging/Logging.h"
 
 WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint32 flags) :
-	x(x), y(y), w(y), h(h), WindowFlags(flags), bWindowValid(true)
+	x(x), y(y), w(w), h(h), WindowFlags(flags), bWindowValid(true)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		Logging::LogError("WindowManager::WindowManager()", "SDL_Init() failed!");
@@ -48,4 +48,20 @@ SDL_Renderer* WindowManager::GetSDLRenderer()
 bool WindowManager::IsValid()
 {
 	return bWindowValid;
+}
+
+b2Vec2 WindowManager::PixelCoordToScreenSpace(const b2Vec2& PixelSpace)
+{
+	b2Vec2 ScreenSpace;
+	ScreenSpace.x = ((PixelSpace.x / w) - .5f) * 2;
+	ScreenSpace.y = ((PixelSpace.y / h) - .5f) * 2;
+	return ScreenSpace;
+}
+
+b2Vec2 WindowManager::ScreenSpaceToPixelCoord(const b2Vec2& ScreenSpace)
+{
+	b2Vec2 PixelSpace;
+	PixelSpace.x = (ScreenSpace.x + 1) * w / 2;
+	PixelSpace.y = (ScreenSpace.y + 1) * h / 2;
+	return PixelSpace;
 }
