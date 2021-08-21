@@ -14,7 +14,9 @@ int main(int argc, char** argv)
     GameManager GManager;
     GameEntity* Entity = CreateEntity<GameEntity>();
     BasicRendererComponent* Component = CreateComponent<BasicRendererComponent>(Entity);
+
     GManager.MainGameLoop();
+
 
     return 0;
 } 
