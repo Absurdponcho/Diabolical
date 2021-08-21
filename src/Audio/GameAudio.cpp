@@ -2,7 +2,7 @@
 #include "../CoreEngine.h"
 #include <SDL2/SDL_mixer.h>
 
-void GameAudio::PlaySound(GameAssetSoftPointer& AudioAssetSoftPointer)
+void GameAudio::PlaySound(GameAssetSoftPointer& AudioAssetSoftPointer, float Volume)
 {
     Check(AudioAssetSoftPointer.GetFileExtension() == ".wav");
     int Frequency = 22050;
@@ -14,6 +14,8 @@ void GameAudio::PlaySound(GameAssetSoftPointer& AudioAssetSoftPointer)
     Mix_Chunk* Sound;
 
     Sound = Mix_LoadWAV((char*)AudioAssetSoftPointer.GetPath().u8string().c_str());
+
+    Sound->volume = (uint8_t)(128.f * Volume);
 
     Mix_PlayChannel(-1, Sound, 0);
 }

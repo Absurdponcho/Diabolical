@@ -40,8 +40,8 @@ void GameManager::ManagerTick()
 	Timer -= DeltaTime;
 	if (Timer <= 0)
 	{
-		Timer = 0.1f;
+		Timer = 0.5f;
 		GameAssetSoftPointer AudioAsset("GameAssetFiles/phaser1.wav");
-		GameAudio::PlaySound(AudioAsset);
+		GameAudio::PlaySound(AudioAsset, 0.2f);
 	}
 }

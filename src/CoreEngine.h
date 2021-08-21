@@ -3,6 +3,7 @@
 // Dont include this in header files unless u want super long 
 // compile time ;)
 // prefer to use forward class declarations
+// I made this header cos im lazy
 
 #include "Logging/Logging.h"
 #include "Assets/GameAssetSoftPointer.h"
