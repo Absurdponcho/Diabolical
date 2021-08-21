@@ -48,12 +48,4 @@ void GameManager::ManagerTick()
 
 	SDL_RenderPresent(renderer);
 
-	static float Timer = 0.3f;
-	Timer -= DeltaTime;
-	if (Timer <= 0)
-	{
-		Timer = 0.5f;
-		GameAssetSoftPointer<AudioAsset> AudioAsset("GameAssetFiles/phaser1.wav");
-		GameAudio::PlaySound(AudioAsset, 0.2f);
-	}
 }
