@@ -1,51 +1,71 @@
 #include "GameAssetSoftPointer.h"
 #include "../Logging/Logging.h"
 #include "../GunGame.h"
+#include "../Audio/AudioAsset.h"
 
-GameAsset* GameAssetSoftPointer::LoadSynchronous()
+GameAsset* GameAssetSoftPointer<GameAsset>::LoadSynchronous()
 {
 	Logging::LogWarning("GameAssetSoftPointer::LoadSynchronous()", "Note: GameAsset memory deallocation needs to be implemented!");
 
-	if (GameAsset* Asset = Get<GameAsset>())
+	if (GameAsset* Asset = Get())
 	{
 		return Asset;
 	}
 
-	Logging::Log("GameAssetSoftPointer::LoadSynchronous()", "Loading asset " + Path.string());
+	Logging::Log("GameAssetSoftPointer::LoadSynchronous()", "Loading base asset " + Internal.Path.string());
 
 
-	GameAsset* LoadedAsset = GameAsset::TryLoad(Path);
+	GameAsset* LoadedAsset = GameAsset::TryLoad(Internal.Path);
 	return LoadedAsset;
 }
 
-GameAssetSoftPointer::GameAssetSoftPointer(std::filesystem::path AssetPath)
+AudioAsset* GameAssetSoftPointer<AudioAsset>::LoadSynchronous()
 {
-	Check(std::filesystem::exists(AssetPath));
+	Logging::LogWarning("GameAssetSoftPointer::LoadSynchronous()", "Note: GameAsset memory deallocation needs to be implemented!");
 
-	Path = AssetPath;
+	if (AudioAsset* Asset = Get())
+	{
+		return Asset;
+	}
+
+	Logging::Log("GameAssetSoftPointer::LoadSynchronous()", "Loading audio asset " + Internal.Path.string());
+
+	AudioAsset* LoadedAsset = AudioAsset::TryLoad(Internal.Path);
+	return LoadedAsset;
 }
 
-GameAsset* GameAssetSoftPointer::Get_Internal()
+GameAssetSoftPointer<GameAsset>::GameAssetSoftPointer(std::filesystem::path AssetPath)
+{
+	Check(std::filesystem::exists(AssetPath));
+	Internal.Path = AssetPath;
+}
+GameAssetSoftPointer<AudioAsset>::GameAssetSoftPointer(std::filesystem::path AssetPath)
+{
+	Check(std::filesystem::exists(AssetPath));
+	Internal.Path = AssetPath;
+}
+
+GameAsset* SoftPointer::Get_Internal()
 {
 	GameAsset* LoadedAsset = GameAsset::GetIfLoaded(Path);
 
-	if (LoadedAsset)
-	{
-		Logging::LogVerbose("GameAssetSoftPointer::Get_Internal()", "Getting Asset " + Path.string() + ", already loaded");
-	}
-	else
-	{
-		Logging::LogVerbose("GameAssetSoftPointer::Get_Internal()", "Getting Asset " + Path.string() + ", not loaded");
-	}
+	//if (LoadedAsset)
+	//{
+	//	Logging::LogVerbose("GameAssetSoftPointer::Get_Internal()", "Getting Asset " + Path.string() + ", already loaded");
+	//}
+	//else
+	//{
+	//	Logging::LogVerbose("GameAssetSoftPointer::Get_Internal()", "Getting Asset " + Path.string() + ", not loaded");
+	//}
 	return LoadedAsset;
 }
 
-const std::filesystem::path& GameAssetSoftPointer::GetPath()
+const std::filesystem::path& SoftPointer::GetPath()
 {
 	return Path;
 }
 
-const std::string GameAssetSoftPointer::GetFileExtension()
+const std::string SoftPointer::GetFileExtension()
 {
 	return Path.extension().string();
 }

@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include "CoreEngine.h"
 #include <chrono>
+#include "Audio/AudioAsset.h"
 
 void GameManager::MainGameLoop()
 {
@@ -41,7 +42,7 @@ void GameManager::ManagerTick()
 	if (Timer <= 0)
 	{
 		Timer = 0.5f;
-		GameAssetSoftPointer AudioAsset("GameAssetFiles/phaser1.wav");
+		GameAssetSoftPointer<AudioAsset> AudioAsset("GameAssetFiles/phaser1.wav");
 		GameAudio::PlaySound(AudioAsset, 0.2f);
 	}
 }

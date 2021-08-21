@@ -4,7 +4,6 @@
 #include <filesystem>
 #include <fstream>
 
-class GameAssetSoftPointer;
 
 class GameAsset
 {
@@ -13,12 +12,12 @@ public:
 	static GameAsset* TryLoad(std::filesystem::path Path);
 
 	GameAsset();
-	~GameAsset();
+	virtual ~GameAsset();
 
 	const uint8_t* GetAssetData();
 	const size_t GetAssetSize();
 
-private:
+protected:
 	std::filesystem::path FilePath;
 
 	bool bDataAssigned = false;

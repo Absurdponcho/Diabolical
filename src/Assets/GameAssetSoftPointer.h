@@ -2,21 +2,33 @@
 #include <string>
 #include "GameAsset.h"
 
+class SoftPointer
+{
+public:
+	const std::filesystem::path& GetPath();
+	const std::string GetFileExtension();
+	std::filesystem::path Path;
+
+	GameAsset* Get_Internal();
+};
+
+template<class AssetType>
 class GameAssetSoftPointer
 {
 public:
 	GameAssetSoftPointer(std::filesystem::path AssetPath);
 
-	template<class T>
-	T* Get() { return dynamic_cast<T*>(Get_Internal()); }
+	AssetType* Get() { return dynamic_cast<AssetType*>(Internal.Get_Internal()); }
 
-	GameAsset* LoadSynchronous();
+	AssetType* LoadSynchronous();
 
-	const std::filesystem::path& GetPath();
-	const std::string GetFileExtension();
+	const std::filesystem::path& GetPath() { return Internal.GetPath(); }
+	const std::string GetFileExtension() { return Internal.GetFileExtension(); };
 
 private:
-	GameAsset* Get_Internal();
-	
-	std::filesystem::path Path;
+
+
+	SoftPointer Internal;
+
+
 };
