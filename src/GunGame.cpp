@@ -26,12 +26,12 @@ int main(int argc, char** argv)
         GameEntity* Square0 = CreateEntity<GameEntity>();
         Square0->GetTransform().Position = glm::vec3(sin(i) * 10, i / 5, 0);
         CreateComponent<SquareRendererComponent>(Square0);
-        //CreateComponent<RigidbodyComponent>(Square0)->SetDynamic(true);
+        CreateComponent<RigidbodyComponent>(Square0)->SetDynamic(true);
     }
 
     GameEntity* Square1 = CreateEntity<GameEntity>();
     Square1->GetTransform().Position = glm::vec3(0, -6, 0);
-    Square1->GetTransform().Scale = glm::vec3(3, 1, 1);
+    Square1->GetTransform().Scale = glm::vec3(1, 1, 1);
     CreateComponent<SquareRendererComponent>(Square1);
     CreateComponent<RigidbodyComponent>(Square1);
 

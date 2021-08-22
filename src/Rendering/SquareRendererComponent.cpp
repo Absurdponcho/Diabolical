@@ -15,8 +15,8 @@ void SquareRendererComponent::Render(CameraComponent& Camera)
 	
 	GameEntity& Parent = GetParentEntity();
 
-	glm::vec4 From = glm::vec4(Parent.GetTransform().Position.x - Parent.GetTransform().Scale.x / 2, Parent.GetTransform().Position.y - Parent.GetTransform().Scale.y / 2, 0, 1);
-	glm::vec4 To = glm::vec4(Parent.GetTransform().Position.x + Parent.GetTransform().Scale.x / 2, Parent.GetTransform().Position.y + Parent.GetTransform().Scale.y / 2, 0, 1);
+	glm::vec4 From = glm::vec4(-.5f, -.5f, 0, 1);
+	glm::vec4 To = glm::vec4(.5f, .5f, 0, 1);
 
 	glm::mat4x4 ModelMatrix = Parent.GetModelMatrix();
 	glm::mat4 ViewMatrix = Camera.GetViewMatrix();

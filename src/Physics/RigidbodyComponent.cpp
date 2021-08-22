@@ -18,7 +18,7 @@ void RigidbodyComponent::OnSpawn()
 
 	Body = PhysicsWorld::Get().GetWorld().CreateBody(&BodyDef);
 
-	Box.SetAsBox(Parent.GetTransform().Scale.x / 4, Parent.GetTransform().Scale.y / 4);
+	Box.SetAsBox(Parent.GetTransform().Scale.x / 2, Parent.GetTransform().Scale.y / 2);
 
 	b2FixtureDef FixtureDef;
 	FixtureDef.shape = &Box;

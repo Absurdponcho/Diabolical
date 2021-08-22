@@ -1,6 +1,8 @@
 #include "GameEntity.h"
 #include "../Logging/Logging.h"
 #include "GameComponent.h"
+#include <glm/gtx/euler_angles.hpp>
+#include "../GameManager.h"
 
 void GameEntity::OnTick(float DeltaTime)
 {
@@ -23,7 +25,7 @@ void GameEntity::Destroy()
 glm::mat4x4 GameEntity::GetModelMatrix()
 {
 	glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), GetTransform().Position);
-	glm::mat4x4 RotateMatrix = glm::mat4_cast(GetTransform().Rotation);
+	glm::mat4x4 RotateMatrix = glm::toMat4(GetTransform().Rotation);
 	glm::mat4x4 ScaleMatrix = glm::scale(glm::mat4x4(1.0f), GetTransform().Scale);
 	return TranslateMatrix * RotateMatrix * ScaleMatrix;
 }
@@ -58,6 +60,7 @@ void GameEntity::DetachComponent(GameComponent* Component)
 
 void EntityTransform::SetEulerRotation(glm::vec3 Euler)
 {
+	Euler *= 0.0174533f; // deg to rad
 	Rotation = glm::quat(Euler);
 }
 
