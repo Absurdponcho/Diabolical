@@ -24,12 +24,8 @@ TextureAsset* TextureAsset::TryLoad(std::filesystem::path Path)
 	LoadedAsset->SDLTexture = IMG_LoadTexture(WindowManager::GetSDLRenderer(), LoadedAsset->FilePath.string().c_str());
 	if (LoadedAsset->SDLTexture == nullptr) {
 		Logging::LogError("TextureASset::TryLoad()", "IMG_LoadTexture failed");
+		return nullptr;
 	}
-	LoadedAsset->AssetData = new uint8_t[LoadedAsset->FileSize];
-	LoadedAsset->FileSize = std::filesystem::file_size(Path);
-
-	FileStream.read((char*)LoadedAsset->AssetData, LoadedAsset->FileSize);
-
 	LoadedGameAssets.push_back(LoadedAsset);
 	return LoadedAsset;
 }

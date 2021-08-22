@@ -3,6 +3,8 @@
 #include <chrono>
 #include "Audio/AudioAsset.h"
 #include "Rendering/Camera.h"
+#include "Textures/TextureAsset.h"
+#include <SDL2/SDL.h>
 
 float GameManager::FPS = 0;
 float GameManager::GameTime = 0;

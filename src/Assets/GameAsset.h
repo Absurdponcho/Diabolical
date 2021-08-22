@@ -14,8 +14,8 @@ public:
 	GameAsset();
 	virtual ~GameAsset();
 
-	const uint8_t* GetAssetData();
-	const size_t GetAssetSize();
+	const virtual uint8_t* GetAssetData();
+	const virtual size_t GetAssetSize();
 
 protected:
 	std::filesystem::path FilePath;

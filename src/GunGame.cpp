@@ -2,6 +2,7 @@
 #include "Rendering/BasicRendererComponent.h"
 #include "Rendering/SquareRendererComponent.h"
 #include "Physics/RigidbodyComponent.h"
+#include "Textures/TextureAsset.h"
 
 #undef main
 
@@ -16,8 +17,9 @@ int main(int argc, char** argv)
 
     PhysicsWorld::Initialize(b2Vec2(0, -9.8f));
 
-    GameManager GManager;
+    
 
+    GameManager GManager;
     for (int i = 10; i < 400; i++)
     {
         GameEntity* Square0 = CreateEntity<GameEntity>();
@@ -29,7 +31,6 @@ int main(int argc, char** argv)
     Square1->GetTransform().Position = glm::vec3(0, -6, 0);
     Square1->GetTransform().Scale = glm::vec3(40, 1, 1);
     CreateComponent<RigidbodyComponent>(Square1);
-
  
     GameEntity* Player = CreateEntity<GameEntity>();
     CreateComponent<CameraComponent>(Player)->SetActiveCamera();
