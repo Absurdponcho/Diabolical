@@ -58,6 +58,4 @@ void CameraComponent::Draw()
 
 	GameRendererComponent::CullAllRenderers(*this, RendererStack);
 	GameRendererComponent::RenderAllRenderers(*this, RendererStack);
-
-	GetParentEntity().GetTransform().SetEulerRotation(glm::vec3(0, 0, GameManager::GetTime()));
 }

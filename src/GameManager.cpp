@@ -44,6 +44,7 @@ void GameManager::ManagerTick()
 
 	GameBaseObject::SpawnPendingObjects();
 	GameBaseObject::DestroyPendingObjects();
+	PhysicsWorld::Get().Step();
 	GameBaseObject::TickAllObjects(DeltaTime);
 
 	SDL_Renderer* renderer = WindowManager::GetSDLRenderer();

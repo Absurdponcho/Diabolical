@@ -23,7 +23,7 @@ public:
 
 private:
 
-	float OrthographicSize = 10;
+	float OrthographicSize = 25;
 
 	static CameraComponent* ActiveCamera;
 };

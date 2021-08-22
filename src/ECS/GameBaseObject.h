@@ -17,6 +17,7 @@ public:
 	virtual void OnDestroy() {};
 	virtual void OnEnable() {};
 	virtual void OnDisable() {};
+	virtual void OnPostPhysics(float DeltaTime) {};
 	virtual void OnPreTick(float DeltaTime) {};
 	virtual void OnTick(float DeltaTime) {};
 	virtual void OnPostTick(float DeltaTime) {};

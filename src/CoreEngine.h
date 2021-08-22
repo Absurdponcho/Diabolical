@@ -16,4 +16,6 @@
 #include "GunGame.h"
 #include "Rendering/BasicRendererComponent.h"
 #include "Utility/Utility.h"
+#include "Physics/PhysicsWorld.h"
+#include "Rendering/Camera.h"
 #undef PlaySound

@@ -9,4 +9,5 @@ class Utility
 public:
 	static std::string ToString(const b2Vec2& Vector);
 	static std::string ToString(const glm::vec4& Vector);
+	static std::string ToString(const glm::vec3& Vector);
 };

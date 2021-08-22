@@ -151,6 +151,8 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GunGame.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
+    <ClCompile Include="Physics\PhysicsWorld.cpp" />
+    <ClCompile Include="Physics\RigidbodyComponent.cpp" />
     <ClCompile Include="Rendering\BasicRendererComponent.cpp" />
     <ClCompile Include="Rendering\Camera.cpp" />
     <ClCompile Include="Rendering\GameRendererComponent.cpp" />
@@ -172,6 +174,8 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GunGame.h" />
     <ClInclude Include="Logging\Logging.h" />
+    <ClInclude Include="Physics\PhysicsWorld.h" />
+    <ClInclude Include="Physics\RigidbodyComponent.h" />
     <ClInclude Include="Rendering\BasicRendererComponent.h" />
     <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Rendering\Camera.h" />

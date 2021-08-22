@@ -71,7 +71,7 @@ glm::vec2 WindowManager::PixelCoordToScreenSpace2D(const glm::vec2& PixelSpace) 
 {
 	glm::vec2 ScreenSpace;
 	ScreenSpace.x = ((PixelSpace.x / w) - .5f) * 2;
-	ScreenSpace.y = ((PixelSpace.y / h) - .5f) * 2;
+	ScreenSpace.y = (((h - PixelSpace.y) / h) - .5f) * 2;
 	return ScreenSpace;
 }
 
@@ -79,7 +79,7 @@ glm::vec2 WindowManager::ScreenSpaceToPixelCoord2D(const glm::vec2& ScreenSpace)
 {
 	glm::vec2 PixelSpace;
 	PixelSpace.x = (ScreenSpace.x + 1) * w / 2;
-	PixelSpace.y = (ScreenSpace.y + 1) * h / 2;
+	PixelSpace.y = h - ((ScreenSpace.y + 1) * h / 2);
 	return PixelSpace;
 }
 

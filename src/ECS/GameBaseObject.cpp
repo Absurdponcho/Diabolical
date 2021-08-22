@@ -90,6 +90,13 @@ void GameBaseObject::TickAllObjects(float DeltaTime)
 	{
 		if (!BaseObject->bEnabled) continue;
 		if (BaseObject->bPendingDestroy) continue;
+		BaseObject->OnPostPhysics(DeltaTime);
+	}
+
+	for (GameBaseObject* BaseObject : AllBaseObjects)
+	{
+		if (!BaseObject->bEnabled) continue;
+		if (BaseObject->bPendingDestroy) continue;
 		BaseObject->OnPreTick(DeltaTime);
 	}	
 
