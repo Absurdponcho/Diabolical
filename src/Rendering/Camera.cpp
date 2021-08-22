@@ -42,9 +42,6 @@ void CameraComponent::SetOrthographicSize(float Size)
 
 glm::mat4x4 CameraComponent::GetProjectionMatrix()
 {
-	GameEntity& Parent = GetParentEntity();
-	EntityTransform& Transform = Parent.GetTransform();
-	
 	float AspectRatio = GetAspectRatio();
 
 	return glm::ortho(-OrthographicSize/2 * AspectRatio, OrthographicSize / 2 * AspectRatio, -OrthographicSize / 2, OrthographicSize / 2);
