@@ -30,6 +30,13 @@ glm::mat4x4 GameEntity::GetModelMatrix()
 	return TranslateMatrix * RotateMatrix * ScaleMatrix;
 }
 
+glm::mat4x4 GameEntity::GetTransRotationMatrix()
+{
+	glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), GetTransform().Position);
+	glm::mat4x4 RotateMatrix = glm::toMat4(GetTransform().Rotation);
+	return TranslateMatrix * RotateMatrix;
+}
+
 
 EntityTransform& GameEntity::GetTransform()
 {

@@ -25,11 +25,9 @@ void RigidbodyComponent::OnSpawn()
 	FixtureDef.density = 1.0f;
 	FixtureDef.friction = 0.3f;
 
-	Body->CreateFixture(&FixtureDef);
+	MainFixture = Body->CreateFixture(&FixtureDef);
 
 	Body->SetType(bIsDynamic ? b2BodyType::b2_dynamicBody : b2BodyType::b2_kinematicBody);
-
-	Body->SetFixedRotation(true);
 }
 
 void RigidbodyComponent::OnPostPhysics(float DeltaTime)
@@ -50,4 +48,33 @@ void RigidbodyComponent::SetDynamic(bool bDynamic)
 	}
 	bIsDynamic = bDynamic;
 	
+}
+
+void RigidbodyComponent::OnPostRender(float DeltaTime)
+{
+	if (!bDrawDebugPolys) return;
+	if (!MainFixture) return;
+	b2Vec2 tmpVector;
+	if (b2PolygonShape* Shape = dynamic_cast<b2PolygonShape*>(MainFixture->GetShape()))
+	{
+		glm::mat4x4 Matrix = GetParentEntity().GetTransRotationMatrix();
+
+		for (int Index = 0; Index < Shape->m_count - 1; Index++)
+		{
+			glm::vec4 From = glm::vec4(Shape->m_vertices[Index].x, Shape->m_vertices[Index].y, 0, 1);
+			glm::vec4 To = glm::vec4(Shape->m_vertices[Index + 1].x, Shape->m_vertices[Index + 1].y, 0, 1);
+
+			From = Matrix * From;
+			To = Matrix * To;
+			Utility::DrawDebugLine(From, To);
+		}
+
+		glm::vec4 From = glm::vec4(Shape->m_vertices[0].x, Shape->m_vertices[0].y, 0, 1);
+		glm::vec4 To = glm::vec4(Shape->m_vertices[Shape->m_count - 1].x, Shape->m_vertices[Shape->m_count - 1].y, 0, 1);
+
+		From = Matrix * From;
+		To = Matrix * To;
+
+		Utility::DrawDebugLine(From, To);
+	}
 }

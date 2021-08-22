@@ -26,6 +26,7 @@ public:
 	EntityTransform& GetTransform();
 
 	glm::mat4x4 GetModelMatrix();
+	glm::mat4x4 GetTransRotationMatrix();
 
 	// dont call these manually 
 	void AttachComponent(GameComponent* Component);

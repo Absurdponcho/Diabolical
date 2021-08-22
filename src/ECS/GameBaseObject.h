@@ -21,6 +21,7 @@ public:
 	virtual void OnPreTick(float DeltaTime) {};
 	virtual void OnTick(float DeltaTime) {};
 	virtual void OnPostTick(float DeltaTime) {};
+	virtual void OnPostRender(float DeltaTime) {};
 
 	void Enable();
 	void Disable();
@@ -33,6 +34,7 @@ public:
 	static void SpawnPendingObjects();
 	static void DestroyPendingObjects();
 	static void TickAllObjects(float DeltaTime);
+	static void PostRenderAllObjects(float DeltaTime);
 	static bool bCreationLock;
 
 private:

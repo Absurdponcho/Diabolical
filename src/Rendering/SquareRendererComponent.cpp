@@ -9,6 +9,8 @@
 
 void SquareRendererComponent::Render(CameraComponent& Camera)
 {
+	SDL_SetRenderDrawColor(WindowManager::GetSDLRenderer(), 255, 0, 0, 255);
+
 	GameRendererComponent::Render(Camera);
 
 	SDL_Renderer* renderer = WindowManager::GetSDLRenderer();

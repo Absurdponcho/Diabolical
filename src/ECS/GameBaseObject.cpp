@@ -115,6 +115,16 @@ void GameBaseObject::TickAllObjects(float DeltaTime)
 	}
 }
 
+void GameBaseObject::PostRenderAllObjects(float DeltaTime)
+{
+	for (GameBaseObject* BaseObject : AllBaseObjects)
+	{
+		if (!BaseObject->bEnabled) continue;
+		if (BaseObject->bPendingDestroy) continue;
+		BaseObject->OnPostRender(DeltaTime);
+	}
+}
+
 bool GameBaseObject::IsPendingDestroy()
 {
 	return bPendingDestroy;

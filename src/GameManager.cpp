@@ -56,7 +56,11 @@ void GameManager::ManagerTick()
 		Camera->Draw();
 	}
 
+	GameBaseObject::PostRenderAllObjects(DeltaTime);
+
 	SDL_RenderPresent(renderer);
+
+
 
 	GameTime += DeltaTime;
 }
