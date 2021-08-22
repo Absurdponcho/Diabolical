@@ -55,3 +55,13 @@ void GameEntity::DetachComponent(GameComponent* Component)
 		}
 	}
 }
+
+void EntityTransform::SetEulerRotation(glm::vec3 Euler)
+{
+	Rotation = glm::quat(Euler);
+}
+
+glm::vec3 EntityTransform::GetEulerRotation()
+{
+	return glm::eulerAngles(Rotation);
+}

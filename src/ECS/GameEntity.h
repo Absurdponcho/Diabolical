@@ -12,6 +12,9 @@ struct EntityTransform
 	glm::vec3 Position = glm::vec3(0, 0, 0);
 	glm::quat Rotation = glm::quat(1.0, 0.0, 0.0, 0.0);;
 	glm::vec3 Scale = glm::vec3(1, 1, 1);
+
+	void SetEulerRotation(glm::vec3 Euler);
+	glm::vec3 GetEulerRotation();
 };
 
 class GameEntity : public GameBaseObject
