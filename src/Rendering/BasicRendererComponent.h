@@ -5,6 +5,6 @@ class BasicRendererComponent : public GameRendererComponent
 {
 public:
 	BasicRendererComponent();
-	virtual void Render() override;
+	virtual void Render(CameraComponent& Camera) override;
 };
 

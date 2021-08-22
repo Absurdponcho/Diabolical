@@ -8,3 +8,10 @@ std::string Utility::ToString(const b2Vec2& Vector)
 	StringStream << "( " << Vector.x << " , " << Vector.y << " )";
 	return StringStream.str();
 }
+
+std::string Utility::ToString(const glm::vec4& Vector)
+{
+	std::ostringstream StringStream;
+	StringStream << "( " << Vector.x << " , " << Vector.y << " , " << Vector.z << " , " << Vector.w << " )";
+	return StringStream.str();
+}

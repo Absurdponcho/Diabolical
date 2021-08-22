@@ -67,20 +67,32 @@ bool WindowManager::IsValid()
 	return bWindowValid;
 }
 
-b2Vec2 WindowManager::PixelCoordToScreenSpace(const b2Vec2& PixelSpace) const
+glm::vec2 WindowManager::PixelCoordToScreenSpace2D(const glm::vec2& PixelSpace) const
 {
-	b2Vec2 ScreenSpace;
+	glm::vec2 ScreenSpace;
 	ScreenSpace.x = ((PixelSpace.x / w) - .5f) * 2;
 	ScreenSpace.y = ((PixelSpace.y / h) - .5f) * 2;
 	return ScreenSpace;
 }
 
-b2Vec2 WindowManager::ScreenSpaceToPixelCoord(const b2Vec2& ScreenSpace) const
+glm::vec2 WindowManager::ScreenSpaceToPixelCoord2D(const glm::vec2& ScreenSpace) const
 {
-	b2Vec2 PixelSpace;
+	glm::vec2 PixelSpace;
 	PixelSpace.x = (ScreenSpace.x + 1) * w / 2;
 	PixelSpace.y = (ScreenSpace.y + 1) * h / 2;
 	return PixelSpace;
+}
+
+glm::vec3 WindowManager::PixelCoordToScreenSpace(const glm::vec2& PixelSpace) const
+{
+	glm::vec2 ret = PixelCoordToScreenSpace2D(glm::vec2(PixelSpace.x, PixelSpace.y));
+	return glm::vec3(ret.x, ret.y, 0);
+}
+
+glm::vec3 WindowManager::ScreenSpaceToPixelCoord(const glm::vec2& ScreenSpace) const
+{
+	glm::vec2 ret = ScreenSpaceToPixelCoord2D(glm::vec2(ScreenSpace.x, ScreenSpace.y));
+	return glm::vec3(ret.x, ret.y, 0);
 }
 
 const WindowManager& WindowManager::Get()

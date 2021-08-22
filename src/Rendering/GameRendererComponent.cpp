@@ -1,5 +1,6 @@
 #include "GameRendererComponent.h"
 #include "../Logging/Logging.h"
+#include "Camera.h"
 
 std::vector<GameRendererComponent*> GameRendererComponent::AllGameRendererComponents;
 
@@ -22,7 +23,7 @@ void GameRendererComponent::OnDestroy()
 		}
 	}
 }
-void GameRendererComponent::RenderAllRenderers(std::stack<GameRendererComponent*>& VisibleRenderers)
+void GameRendererComponent::RenderAllRenderers(CameraComponent& Camera, std::stack<GameRendererComponent*>& VisibleRenderers)
 {
 	while (!VisibleRenderers.empty())
 	{
@@ -31,11 +32,11 @@ void GameRendererComponent::RenderAllRenderers(std::stack<GameRendererComponent*
 		{
 			continue;
 		}
-		RendererComponent->Render();
+		RendererComponent->Render(Camera);
 		VisibleRenderers.pop();
 	}
 }
-void GameRendererComponent::CullAllRenderers(Out std::stack<GameRendererComponent*>& VisibleRenderers)
+void GameRendererComponent::CullAllRenderers(CameraComponent& Camera, Out std::stack<GameRendererComponent*>& VisibleRenderers)
 {
 	for (int Index = 0; Index < AllGameRendererComponents.size(); Index++)
 	{
@@ -44,7 +45,7 @@ void GameRendererComponent::CullAllRenderers(Out std::stack<GameRendererComponen
 		{
 			continue;
 		}
-		if (RendererComponent->Cull())
+		if (RendererComponent->Cull(Camera))
 		{
 			RendererComponent->bWasCulled = true;
 		}

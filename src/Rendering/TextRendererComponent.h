@@ -5,7 +5,5 @@
 class TextRendererComponent : public GameRendererComponent
 {
 public:
-	virtual void Render() override;
-
 	std::string Text;
 };

@@ -1,7 +1,7 @@
 #include "BasicRendererComponent.h"
 BasicRendererComponent::BasicRendererComponent() {}
 
-void BasicRendererComponent::Render()
+void BasicRendererComponent::Render(CameraComponent& Camera)
 {
 	SDL_Renderer* renderer = WindowManager::GetSDLRenderer();
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);

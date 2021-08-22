@@ -5,5 +5,5 @@
 class SquareRendererComponent : public GameRendererComponent
 {
 public:
-	virtual void Render() override;
+	virtual void Render(CameraComponent& Camera) override;
 };

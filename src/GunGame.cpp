@@ -1,7 +1,8 @@
 #include "CoreEngine.h"
 #include "Rendering/BasicRendererComponent.h"
+#include "Rendering/SquareRendererComponent.h"
+#include "Rendering/Camera.h"
 #undef main
-
 
 int main(int argc, char** argv)
 {
@@ -15,9 +16,26 @@ int main(int argc, char** argv)
     GameManager GManager;
 
     GameEntity* Entity = CreateEntity<GameEntity>();
-    BasicRendererComponent* Component = CreateComponent<BasicRendererComponent>(Entity);
-    CreateComponent<SquareRendererComponent>(Entity);
-    Entity->GetTransform().Scale = b2Vec2(.1f, .1f);
+    CreateComponent<BasicRendererComponent>(Entity);
+    
+    GameEntity* Square0 = CreateEntity<GameEntity>();
+    Square0->GetTransform().Position = glm::vec3(0, 0, 0);
+    CreateComponent<SquareRendererComponent>(Entity);  
+
+    GameEntity* Square1 = CreateEntity<GameEntity>();
+    Square1->GetTransform().Position = glm::vec3(-1, 0, 0);
+    CreateComponent<SquareRendererComponent>(Square1);
+
+    GameEntity* Square2 = CreateEntity<GameEntity>();
+    Square2->GetTransform().Position = glm::vec3(-1, -1, 0);
+    CreateComponent<SquareRendererComponent>(Square2);
+
+    GameEntity* Square3 = CreateEntity<GameEntity>();
+    Square3->GetTransform().Position = glm::vec3(1, -1, 0);
+    CreateComponent<SquareRendererComponent>(Square3);
+
+    GameEntity* Player = CreateEntity<GameEntity>();
+    CreateComponent<CameraComponent>(Player)->SetActiveCamera();
 
     GManager.MainGameLoop();
 

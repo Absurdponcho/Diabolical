@@ -117,6 +117,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,9 +152,11 @@
     <ClCompile Include="GunGame.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="Rendering\BasicRendererComponent.cpp" />
+    <ClCompile Include="Rendering\Camera.cpp" />
     <ClCompile Include="Rendering\GameRendererComponent.cpp" />
     <ClCompile Include="Rendering\SquareRendererComponent.cpp" />
     <ClCompile Include="Rendering\TextRendererComponent.cpp" />
+    <ClCompile Include="Utility\GameMath.cpp" />
     <ClCompile Include="Utility\Utility.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
@@ -171,9 +174,11 @@
     <ClInclude Include="Logging\Logging.h" />
     <ClInclude Include="Rendering\BasicRendererComponent.h" />
     <ClInclude Include="Math\Math.h" />
+    <ClInclude Include="Rendering\Camera.h" />
     <ClInclude Include="Rendering\GameRendererComponent.h" />
     <ClInclude Include="Rendering\SquareRendererComponent.h" />
     <ClInclude Include="Rendering\TextRendererComponent.h" />
+    <ClInclude Include="Utility\GameMath.h" />
     <ClInclude Include="Utility\Utility.h" />
     <ClInclude Include="WindowManager.h" />
   </ItemGroup>

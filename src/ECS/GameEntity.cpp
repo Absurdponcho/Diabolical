@@ -20,6 +20,15 @@ void GameEntity::Destroy()
 
 }
 
+glm::mat4x4 GameEntity::GetModelMatrix()
+{
+	glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), GetTransform().Position);
+	glm::mat4x4 RotateMatrix = glm::mat4_cast(GetTransform().Rotation);
+	glm::mat4x4 ScaleMatrix = glm::scale(glm::mat4x4(1.0f), GetTransform().Scale);
+	return TranslateMatrix * RotateMatrix * ScaleMatrix;
+}
+
+
 EntityTransform& GameEntity::GetTransform()
 {
 	return Transform;

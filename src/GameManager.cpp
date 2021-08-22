@@ -2,6 +2,7 @@
 #include "CoreEngine.h"
 #include <chrono>
 #include "Audio/AudioAsset.h"
+#include "Rendering/Camera.h"
 
 float GameManager::FPS = 0;
 float GameManager::GameTime = 0;
@@ -45,14 +46,14 @@ void GameManager::ManagerTick()
 	GameBaseObject::DestroyPendingObjects();
 	GameBaseObject::TickAllObjects(DeltaTime);
 
-	std::stack<GameRendererComponent*> RendererStack;
-
 	SDL_Renderer* renderer = WindowManager::GetSDLRenderer();
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-	GameRendererComponent::CullAllRenderers(RendererStack);
-	GameRendererComponent::RenderAllRenderers(RendererStack);
+	if (CameraComponent* Camera = CameraComponent::GetActiveCamera())
+	{
+		Camera->Draw();
+	}
 
 	SDL_RenderPresent(renderer);
 

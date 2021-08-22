@@ -2,14 +2,16 @@
 #include "GameBaseObject.h"
 #include <box2D/box2D.h>
 #include "../GunGame.h"
+#include <glm/glm.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 class GameComponent;
 
 struct EntityTransform
 {
-	b2Vec2 Position = b2Vec2(0, 0);
-	float Rotation = 0;
-	b2Vec2 Scale = b2Vec2(1, 1);
+	glm::vec3 Position = glm::vec3(0, 0, 0);
+	glm::quat Rotation = glm::quat(1.0, 0.0, 0.0, 0.0);;
+	glm::vec3 Scale = glm::vec3(1, 1, 1);
 };
 
 class GameEntity : public GameBaseObject
@@ -20,6 +22,7 @@ public:
 
 	EntityTransform& GetTransform();
 
+	glm::mat4x4 GetModelMatrix();
 
 	// dont call these manually 
 	void AttachComponent(GameComponent* Component);

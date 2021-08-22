@@ -15,7 +15,7 @@ public:
 	GameEntity& GetParentEntity();
 
 private:
-	GameEntity* ParentEntity;
+	GameEntity* ParentEntity = nullptr;
 };
 
 template <class T>

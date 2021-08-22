@@ -4,20 +4,31 @@
 #include "../Logging/Logging.h"
 #include "../Utility/Utility.h"
 #include "../GameManager.h"
+#include "../Rendering/Camera.h"
+#include <glm/glm.hpp>
 
-void SquareRendererComponent::Render()
+void SquareRendererComponent::Render(CameraComponent& Camera)
 {
-	GameRendererComponent::Render();
+	GameRendererComponent::Render(Camera);
 
 	SDL_Renderer* renderer = WindowManager::GetSDLRenderer();
 	
 	GameEntity& Parent = GetParentEntity();
 
-	b2Vec2 From = b2Vec2(Parent.GetTransform().Position.x - Parent.GetTransform().Scale.x / 2, Parent.GetTransform().Position.y - Parent.GetTransform().Scale.y / 2);
-	b2Vec2 To = b2Vec2(Parent.GetTransform().Position.x + Parent.GetTransform().Scale.x / 2, Parent.GetTransform().Position.y + Parent.GetTransform().Scale.y / 2);
-	
-	From = WindowManager::Get().ScreenSpaceToPixelCoord(From);
-	To = WindowManager::Get().ScreenSpaceToPixelCoord(To);
+	glm::vec4 From = glm::vec4(Parent.GetTransform().Position.x - Parent.GetTransform().Scale.x / 2, Parent.GetTransform().Position.y - Parent.GetTransform().Scale.y / 2, 0, 1);
+	glm::vec4 To = glm::vec4(Parent.GetTransform().Position.x + Parent.GetTransform().Scale.x / 2, Parent.GetTransform().Position.y + Parent.GetTransform().Scale.y / 2, 0, 1);
+
+	glm::mat4x4 ModelMatrix = Parent.GetModelMatrix();
+	glm::mat4 ViewMatrix = Camera.GetViewMatrix();
+	glm::mat4x4 ProjectionMatrix = Camera.GetProjectionMatrix();
+
+	glm::mat4x4 MVPMatrix = ProjectionMatrix * ViewMatrix * ModelMatrix;
+
+	From = MVPMatrix * From;
+	To = MVPMatrix * To;
+
+	From = glm::vec4(WindowManager::Get().ScreenSpaceToPixelCoord(From), 0);
+	To = glm::vec4(WindowManager::Get().ScreenSpaceToPixelCoord(To), 0);
 
 	SDL_Rect Rect;
 	Rect.x = (int)From.x;
@@ -26,6 +37,4 @@ void SquareRendererComponent::Render()
 	Rect.h = (int)(To.y - From.y);
 
 	Check(!SDL_RenderFillRect(renderer, &Rect));
-
-	Parent.GetTransform().Position = b2Vec2((float)sin(GameManager::GetTime() * 5) / 2, (float)cos(GameManager::GetTime() * 5) / 2);
 }
