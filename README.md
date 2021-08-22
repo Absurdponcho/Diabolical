@@ -1,7 +1,7 @@
 # GunGame
 A little 2D project by Absurd and Samson
 
-### Prerequistes
+### Prerequisites
 recommend using vcpkg to download these:
 
 1. box2d
