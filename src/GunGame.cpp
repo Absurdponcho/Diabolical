@@ -24,14 +24,17 @@ int main(int argc, char** argv)
     {
         GameEntity* Square0 = CreateEntity<GameEntity>();
         Square0->GetTransform().Position = glm::vec3(sin(i) * 10, i / 5, 0);
-        CreateComponent<RigidbodyComponent>(Square0)->SetDynamic(true);
+        RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square0);
+        Rigidbody->SetDynamic(true);
+        Rigidbody->bDrawDebugPolys = true;
     }
 
     GameEntity* Square1 = CreateEntity<GameEntity>();
     Square1->GetTransform().Position = glm::vec3(0, -6, 0);
     Square1->GetTransform().Scale = glm::vec3(40, 1, 1);
-    CreateComponent<RigidbodyComponent>(Square1);
- 
+    RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square1);
+    Rigidbody->bDrawDebugPolys = true;
+
     GameEntity* Player = CreateEntity<GameEntity>();
     CreateComponent<CameraComponent>(Player)->SetActiveCamera();
 

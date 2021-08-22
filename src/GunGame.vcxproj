@@ -156,6 +156,7 @@
     <ClCompile Include="Rendering\BasicRendererComponent.cpp" />
     <ClCompile Include="Rendering\Camera.cpp" />
     <ClCompile Include="Rendering\GameRendererComponent.cpp" />
+    <ClCompile Include="Rendering\SpriteRendererComponent.cpp" />
     <ClCompile Include="Rendering\SquareRendererComponent.cpp" />
     <ClCompile Include="Rendering\TextRendererComponent.cpp" />
     <ClCompile Include="Textures\TextureAsset.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Rendering\Camera.h" />
     <ClInclude Include="Rendering\GameRendererComponent.h" />
+    <ClInclude Include="Rendering\SpriteRendererComponent.h" />
     <ClInclude Include="Rendering\SquareRendererComponent.h" />
     <ClInclude Include="Rendering\TextRendererComponent.h" />
     <ClInclude Include="Textures\TextureAsset.h" />

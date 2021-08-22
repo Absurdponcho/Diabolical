@@ -7,7 +7,7 @@
 #include "../Rendering/Camera.h"
 #include <glm/glm.hpp>
 
-void SquareRendererComponent::Render(CameraComponent& Camera)
+void SpriteRendererComponent::Render(CameraComponent& Camera)
 {
 	// todo
 }
