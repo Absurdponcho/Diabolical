@@ -158,6 +158,7 @@
     <ClCompile Include="Rendering\GameRendererComponent.cpp" />
     <ClCompile Include="Rendering\SquareRendererComponent.cpp" />
     <ClCompile Include="Rendering\TextRendererComponent.cpp" />
+    <ClCompile Include="Textures\TextureAsset.cpp" />
     <ClCompile Include="Utility\GameMath.cpp" />
     <ClCompile Include="Utility\Utility.cpp" />
     <ClCompile Include="WindowManager.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Rendering\GameRendererComponent.h" />
     <ClInclude Include="Rendering\SquareRendererComponent.h" />
     <ClInclude Include="Rendering\TextRendererComponent.h" />
+    <ClInclude Include="Textures\TextureAsset.h" />
     <ClInclude Include="Utility\GameMath.h" />
     <ClInclude Include="Utility\Utility.h" />
     <ClInclude Include="WindowManager.h" />
