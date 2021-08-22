@@ -9,3 +9,4 @@ recommend using vcpkg to download these:
 3. sdl2-mixer
 4. sdl2-ttf
 5. sdl2-image
+6. glm
