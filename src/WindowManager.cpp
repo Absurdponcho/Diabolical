@@ -5,7 +5,7 @@
 WindowManager* WindowManager::Singleton;
 
 WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint32 flags) :
-	x(x), y(y), w(w), h(h), WindowFlags(flags), bWindowValid(true)
+	WindowFlags(flags), bWindowValid(true)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		Logging::LogError("WindowManager::WindowManager()", "SDL_Init() failed!");
@@ -58,7 +58,6 @@ SDL_Surface* WindowManager::GetSDLSurface()
 SDL_Renderer* WindowManager::GetSDLRenderer()
 {
 	Check(GameRenderer);
-
 	return GameRenderer;
 }
 
@@ -67,36 +66,46 @@ bool WindowManager::IsValid()
 	return bWindowValid;
 }
 
-glm::vec2 WindowManager::PixelCoordToScreenSpace2D(const glm::vec2& PixelSpace) const
+glm::vec2 WindowManager::PixelCoordToScreenSpace2D(const glm::vec2& PixelSpace)
 {
+	glm::ivec2 ScreenSize = GetScreenSize();
 	glm::vec2 ScreenSpace;
-	ScreenSpace.x = ((PixelSpace.x / w) - .5f) * 2;
-	ScreenSpace.y = (((h - PixelSpace.y) / h) - .5f) * 2;
+	ScreenSpace.x = ((PixelSpace.x / ScreenSize.x) - .5f) * 2;
+	ScreenSpace.y = (((ScreenSize.y - PixelSpace.y) / ScreenSize.y) - .5f) * 2;
 	return ScreenSpace;
 }
 
-glm::vec2 WindowManager::ScreenSpaceToPixelCoord2D(const glm::vec2& ScreenSpace) const
+glm::vec2 WindowManager::ScreenSpaceToPixelCoord2D(const glm::vec2& ScreenSpace)
 {
+	glm::ivec2 ScreenSize = GetScreenSize();
 	glm::vec2 PixelSpace;
-	PixelSpace.x = (ScreenSpace.x + 1) * w / 2;
-	PixelSpace.y = h - ((ScreenSpace.y + 1) * h / 2);
+	PixelSpace.x = (ScreenSpace.x + 1) * ScreenSize.x / 2;
+	PixelSpace.y = ScreenSize.y - ((ScreenSpace.y + 1) * ScreenSize.y / 2);
 	return PixelSpace;
 }
 
-glm::vec3 WindowManager::PixelCoordToScreenSpace(const glm::vec2& PixelSpace) const
+glm::vec3 WindowManager::PixelCoordToScreenSpace(const glm::vec2& PixelSpace)
 {
 	glm::vec2 ret = PixelCoordToScreenSpace2D(glm::vec2(PixelSpace.x, PixelSpace.y));
 	return glm::vec3(ret.x, ret.y, 0);
 }
 
-glm::vec3 WindowManager::ScreenSpaceToPixelCoord(const glm::vec2& ScreenSpace) const
+glm::vec3 WindowManager::ScreenSpaceToPixelCoord(const glm::vec2& ScreenSpace)
 {
 	glm::vec2 ret = ScreenSpaceToPixelCoord2D(glm::vec2(ScreenSpace.x, ScreenSpace.y));
 	return glm::vec3(ret.x, ret.y, 0);
 }
 
-const WindowManager& WindowManager::Get()
+WindowManager& WindowManager::Get()
 {
 	Check(Singleton);
 	return *Singleton;
+}
+
+glm::ivec2 WindowManager::GetScreenSize()
+{
+	int Width;
+	int Height;
+	SDL_GetWindowSize(GetSDLWindow(), &Width, &Height);
+	return glm::ivec2(Width, Height);
 }

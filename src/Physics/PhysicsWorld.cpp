@@ -26,7 +26,7 @@ b2World& PhysicsWorld::GetWorld()
 void PhysicsWorld::Step()
 {
 	static float LastStepTime = GameManager::GetTime();
-	float TimeStep = 1.0f / 60.0f;
+	float TimeStep = 1.0f / 30.0f;
 
 	while (GameManager::GetTime() > LastStepTime + TimeStep) // Make sure the physics simulation is caught up just incase any lag spikes happen
 	{

@@ -7,12 +7,12 @@
 
 int main(int argc, char** argv)
 {
-    Logging::SetLogVerbosity(ELogVerbosity::LV_Verbose);
+    Logging::SetLogVerbosity(ELogVerbosity::LV_Default);
 
     WindowManager::Initialize(
         "GunGame",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        800, 600, 0);
+        1600, 800, 0);
 
     PhysicsWorld::Initialize(b2Vec2(0, -9.8f));
 
@@ -21,12 +21,12 @@ int main(int argc, char** argv)
     GameEntity* Entity = CreateEntity<GameEntity>();
     CreateComponent<BasicRendererComponent>(Entity);
     
-    for (int i = 50; i < 250; i++)
+    for (int i = 0; i < 100; i++)
     {
         GameEntity* Square0 = CreateEntity<GameEntity>();
-        Square0->GetTransform().Position = glm::vec3(sin(i), i / 5, 0);
+        Square0->GetTransform().Position = glm::vec3(sin(i) * 10, i / 5, 0);
         CreateComponent<SquareRendererComponent>(Square0);
-        CreateComponent<RigidbodyComponent>(Square0)->SetDynamic(true);
+        //CreateComponent<RigidbodyComponent>(Square0)->SetDynamic(true);
     }
 
     GameEntity* Square1 = CreateEntity<GameEntity>();

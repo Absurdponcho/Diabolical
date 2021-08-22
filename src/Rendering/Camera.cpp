@@ -5,6 +5,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../GameManager.h"
+#include "../WindowManager.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_video.h>
 
 CameraComponent* CameraComponent::ActiveCamera;
 
@@ -41,8 +44,16 @@ glm::mat4x4 CameraComponent::GetProjectionMatrix()
 {
 	GameEntity& Parent = GetParentEntity();
 	EntityTransform& Transform = Parent.GetTransform();
+	
+	float AspectRatio = GetAspectRatio();
 
-	return glm::ortho(-OrthographicSize/2, OrthographicSize / 2, -OrthographicSize / 2, OrthographicSize / 2);
+	return glm::ortho(-OrthographicSize/2 * AspectRatio, OrthographicSize / 2 * AspectRatio, -OrthographicSize / 2, OrthographicSize / 2);
+}
+
+float CameraComponent::GetAspectRatio()
+{
+	glm::vec2 ScreenSize = WindowManager::Get().GetScreenSize();
+	return ScreenSize.x / ScreenSize.y;
 }
 
 glm::mat4x4 CameraComponent::GetViewMatrix()

@@ -16,6 +16,7 @@ public:
 	// ever want to do 3D stuff. But this is fine for this project :)
 	virtual glm::mat4x4 GetProjectionMatrix();
 	virtual glm::mat4x4 GetViewMatrix();
+	virtual float GetAspectRatio();
 
 	void Draw();
 
