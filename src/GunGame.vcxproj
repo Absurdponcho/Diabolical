@@ -150,7 +150,11 @@
     <ClCompile Include="ECS\GameEntity.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GunGame.cpp" />
+    <ClCompile Include="Input\Interfaces\IGamepadListener.cpp" />
+    <ClCompile Include="Input\Interfaces\IKeyboardListener.cpp" />
+    <ClCompile Include="Input\Interfaces\IMouseListener.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Physics\RigidbodyComponent.cpp" />
     <ClCompile Include="Rendering\BasicRendererComponent.cpp" />
@@ -175,7 +179,11 @@
     <ClInclude Include="ECS\GameEntity.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GunGame.h" />
+    <ClInclude Include="Input\Interfaces\IGamepadListener.h" />
+    <ClInclude Include="Input\Interfaces\IKeyboardListener.h" />
+    <ClInclude Include="Input\Interfaces\IMouseListener.h" />
     <ClInclude Include="Logging\Logging.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="Physics\PhysicsWorld.h" />
     <ClInclude Include="Physics\RigidbodyComponent.h" />
     <ClInclude Include="Rendering\BasicRendererComponent.h" />

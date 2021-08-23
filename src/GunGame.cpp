@@ -37,7 +37,6 @@ int main(int argc, char** argv)
 
     GameEntity* Player = CreateEntity<GameEntity>();
     CreateComponent<CameraComponent>(Player)->SetActiveCamera();
-
     GManager.MainGameLoop();
 
 
