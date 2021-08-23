@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     WindowManager::Initialize(
         "GunGame",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        1600, 800, 0);
+        1600, 800, 0, true);
 
     PhysicsWorld::Initialize(b2Vec2(0, -9.8f));
 

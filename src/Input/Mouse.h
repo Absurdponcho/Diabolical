@@ -1,4 +1,5 @@
 #pragma once
+#include "Interfaces/IMouseListener.h"
 class Mouse
 {
 public:

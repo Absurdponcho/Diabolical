@@ -4,7 +4,7 @@
 
 WindowManager* WindowManager::Singleton;
 
-WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint32 flags) :
+WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint32 flags, bool bUseOpenGL) :
 	WindowFlags(flags), bWindowValid(true)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -13,7 +13,17 @@ WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint
 	}
 	Logging::Log("WindowManager::WindowManager()", "SDL_Init() success");
 
+	if (bUseOpenGL) {
+		Logging::Log("WindowManager::WindowManager()", "Using OpenGL");
+		flags |= SDL_WINDOW_OPENGL;
+		bUsingOpenGL = true;
+	}
+
 	GameWindow = SDL_CreateWindow(title, x, y, w, h, flags | SDL_WINDOW_RESIZABLE);
+
+	if (bUseOpenGL) {
+		GameGLContext = SDL_GL_CreateContext(GameWindow);
+	}
 	GameSurface = SDL_GetWindowSurface(GameWindow);
 	if (GameSurface == NULL) {
 		Logging::LogError("WindowManager::WindowManager()", "SDL_GetWindowSurface() failed");
@@ -26,13 +36,13 @@ WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint
 	}
 }
 
-void WindowManager::Initialize(const char* WindowTitle, int x, int y, int w, int h, Uint32 WindowFlags)
+void WindowManager::Initialize(const char* WindowTitle, int x, int y, int w, int h, Uint32 WindowFlags, bool bUseOpenGL)
 {
 	static bool bInitialized = false;
 
 	Check(!bInitialized);
 	bInitialized = true;
-	Singleton = new WindowManager(WindowTitle, x, y, w, h, WindowFlags);
+	Singleton = new WindowManager(WindowTitle, x, y, w, h, WindowFlags, bUseOpenGL);
 }
 
 WindowManager::~WindowManager()
@@ -59,6 +69,12 @@ SDL_Renderer* WindowManager::GetSDLRenderer()
 {
 	Check(GameRenderer);
 	return GameRenderer;
+}
+
+SDL_GLContext WindowManager::GetGLContext()
+{
+	Check(GameGLContext);
+	return GameGLContext;
 }
 
 bool WindowManager::IsValid()
