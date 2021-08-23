@@ -10,3 +10,4 @@ recommend using vcpkg to download these:
 4. sdl2-ttf
 5. sdl2-image
 6. glm
+7. glew
