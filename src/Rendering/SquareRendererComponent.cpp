@@ -9,11 +9,11 @@
 
 void SquareRendererComponent::Render(CameraComponent& Camera)
 {
-	SDL_SetRenderDrawColor(WindowManager::GetSDLRenderer(), 255, 0, 0, 255);
+	//SDL_SetRenderDrawColor(WindowManager::GetSDLRenderer(), 255, 0, 0, 255);
 
 	GameRendererComponent::Render(Camera);
 
-	SDL_Renderer* renderer = WindowManager::GetSDLRenderer();
+	//SDL_Renderer* renderer = WindowManager::GetSDLRenderer();
 	
 	GameEntity& Parent = GetParentEntity();
 
@@ -38,5 +38,5 @@ void SquareRendererComponent::Render(CameraComponent& Camera)
 	Rect.w = (int)(To.x - From.x);
 	Rect.h = (int)(To.y - From.y);
 
-	Check(!SDL_RenderFillRect(renderer, &Rect));
+	//Check(!SDL_RenderFillRect(renderer, &Rect));
 }

@@ -189,6 +189,7 @@
     <ClInclude Include="Input\Interfaces\IMouseListener.h" />
     <ClInclude Include="Logging\Logging.h" />
     <ClInclude Include="Input\Mouse.h" />
+    <ClInclude Include="opengl.h" />
     <ClInclude Include="Physics\PhysicsWorld.h" />
     <ClInclude Include="Physics\RigidbodyComponent.h" />
     <ClInclude Include="Rendering\BasicRendererComponent.h" />

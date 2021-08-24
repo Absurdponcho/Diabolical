@@ -4,11 +4,9 @@
 
 WindowManager* WindowManager::Singleton;
 SDL_Window* WindowManager::GameWindow;
-SDL_Surface* WindowManager::GameSurface;
-SDL_Renderer* WindowManager::GameRenderer;
 SDL_GLContext WindowManager::GameGLContext;
 
-WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint32 flags, bool bUseOpenGL) :
+WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint32 flags) :
 	WindowFlags(flags), bWindowValid(true)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -17,48 +15,26 @@ WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint
 	}
 	Logging::Log("WindowManager::WindowManager()", "SDL_Init() success");
 
-	if (bUseOpenGL) {
-		Logging::Log("WindowManager::WindowManager()", "Using OpenGL");
-		flags |= SDL_WINDOW_OPENGL;
-		bUsingOpenGL = true;
-	}
-
-	GameWindow = SDL_CreateWindow(title, x, y, w, h, flags | SDL_WINDOW_RESIZABLE);
-
-	if (bUseOpenGL) {
-		GameGLContext = SDL_GL_CreateContext(GameWindow);
-	}
-	GameSurface = SDL_GetWindowSurface(GameWindow);
-	if (GameSurface == NULL) {
-		Logging::LogError("WindowManager::WindowManager()", "SDL_GetWindowSurface() failed");
+	GameWindow = SDL_CreateWindow(title, x, y, w, h, flags | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+	GameGLContext = SDL_GL_CreateContext(GameWindow);
+	if (GameGLContext) {
+		Logging::LogError("WindowManager::WindowManager()", "SDL_Init() failed!");
 		bWindowValid = false;
-	}
-	GameRenderer = SDL_CreateRenderer(GameWindow, -1, SDL_RENDERER_ACCELERATED);
-	if (GameRenderer == NULL) {
-		Logging::LogError("WindowManager::WindowManager()", "SDL_CreateRenderer() failed");
-		bWindowValid = false;
-	}
-	else
-	{
-		// set the screen to black asap cos white screen on boot is icky
-		SDL_SetRenderDrawColor(GameRenderer, 0, 0, 0, 255);
-		SDL_RenderClear(GameRenderer);
-		SDL_RenderPresent(GameRenderer);
 	}
 }
 
-void WindowManager::Initialize(const char* WindowTitle, int x, int y, int w, int h, Uint32 WindowFlags, bool bUseOpenGL)
+void WindowManager::Initialize(const char* WindowTitle, int x, int y, int w, int h, Uint32 WindowFlags)
 {
 	static bool bInitialized = false;
 
 	Check(!bInitialized);
 	bInitialized = true;
-	Singleton = new WindowManager(WindowTitle, x, y, w, h, WindowFlags, bUseOpenGL);
+	Singleton = new WindowManager(WindowTitle, x, y, w, h, WindowFlags);
 }
 
 WindowManager::~WindowManager()
 {
-	SDL_DestroyRenderer(GameRenderer);
+	SDL_GL_DeleteContext(GameGLContext);
 	SDL_DestroyWindow(GameWindow);
 	SDL_Quit();
 }
@@ -67,19 +43,6 @@ SDL_Window* WindowManager::GetSDLWindow()
 {
 	Check(GameWindow);
 	return GameWindow;
-}
-
-SDL_Surface* WindowManager::GetSDLSurface()
-{
-	Check(GameSurface);
-
-	return GameSurface;
-}
-
-SDL_Renderer* WindowManager::GetSDLRenderer()
-{
-	Check(GameRenderer);
-	return GameRenderer;
 }
 
 SDL_GLContext WindowManager::GetGLContext()
