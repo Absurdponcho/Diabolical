@@ -21,7 +21,7 @@ TextureAsset* TextureAsset::TryLoad(std::filesystem::path Path)
 	LoadedAsset->bDataAssigned = true;
 	LoadedAsset->FilePath = Path;
 
-	LoadedAsset->SDLTexture = IMG_LoadTexture(WindowManager::GetSDLRenderer(), LoadedAsset->FilePath.string().c_str());
+	//LoadedAsset->SDLTexture = IMG_LoadTexture(WindowManager::GetSDLRenderer(), LoadedAsset->FilePath.string().c_str());
 	if (LoadedAsset->SDLTexture == nullptr) {
 		Logging::LogError("TextureASset::TryLoad()", "IMG_LoadTexture failed");
 		return nullptr;

@@ -1,15 +1,16 @@
 #include "GameManager.h"
 #include "CoreEngine.h"
+#include "opengl.h"
 #include <chrono>
 #include "Audio/AudioAsset.h"
 #include "Rendering/Camera.h"
 #include "Textures/TextureAsset.h"
 #include <SDL2/SDL.h>
 #include "Input/InputManager.h"
+#include "WindowManager.h"
 
 float GameManager::FPS = 0;
 float GameManager::GameTime = 0;
-
 void GameManager::MainGameLoop()
 {
 	Logging::LogVerbose("GameManager::MainGameLoop()", "Main game loop started");
@@ -18,7 +19,6 @@ void GameManager::MainGameLoop()
 	EventTick();
 	ManagerTick();
 	SDL_ShowWindow(WindowManager::GetSDLWindow());
-
 	while (bMainLoopRunning)
 	{
 		EventTick();
@@ -68,9 +68,6 @@ void GameManager::ManagerTick()
 	PhysicsWorld::Get().Step();
 	GameBaseObject::TickAllObjects(DeltaTime);
 
-	SDL_Renderer* renderer = WindowManager::GetSDLRenderer();
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_RenderClear(renderer);
 
 	if (CameraComponent* Camera = CameraComponent::GetActiveCamera())
 	{
@@ -79,7 +76,9 @@ void GameManager::ManagerTick()
 
 	GameBaseObject::PostRenderAllObjects(DeltaTime);
 
-	SDL_RenderPresent(renderer);
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+	SDL_GL_SwapWindow(WindowManager::GetSDLWindow());
 
 	GameTime += DeltaTime;
 }

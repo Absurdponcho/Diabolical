@@ -37,7 +37,7 @@ std::string Utility::ToString(const glm::vec3& Vector)
 
 void Utility::DrawDebugLine(const glm::vec3& From, const glm::vec3& To)
 {
-	SDL_SetRenderDrawColor(WindowManager::GetSDLRenderer(), 255, 0, 0, 255);
+	//SDL_SetRenderDrawColor(WindowManager::GetSDLRenderer(), 255, 0, 0, 255);
 
 	CameraComponent* Camera = CameraComponent::GetActiveCamera();
 	if (!Camera) return;
@@ -55,7 +55,7 @@ void Utility::DrawDebugLine(const glm::vec3& From, const glm::vec3& To)
 	From4 = glm::vec4(WindowManager::Get().ScreenSpaceToPixelCoord(From4), 0);
 	To4 = glm::vec4(WindowManager::Get().ScreenSpaceToPixelCoord(To4), 0);
 
-	SDL_RenderDrawLineF(WindowManager::GetSDLRenderer(), From4.x, From4.y, To4.x, To4.y);
+	//SDL_RenderDrawLineF(WindowManager::GetSDLRenderer(), From4.x, From4.y, To4.x, To4.y);
 }
 
 std::wstring Utility::StringToWString(const std::string& String)

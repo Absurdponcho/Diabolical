@@ -8,12 +8,10 @@
 class WindowManager
 {
 public:
-	static void Initialize(const char* WindowTitle, int x, int y, int w, int h, Uint32 WindowFlags, bool bUseOpenGL);
+	static void Initialize(const char* WindowTitle, int x, int y, int w, int h, Uint32 WindowFlags);
 	static WindowManager& Get();
 
 	static SDL_Window* GetSDLWindow();
-	static SDL_Surface* GetSDLSurface();
-	static SDL_Renderer* GetSDLRenderer();
 	static SDL_GLContext GetGLContext();
 	bool IsValid();
 
@@ -25,17 +23,14 @@ public:
 	glm::ivec2 GetScreenSize();
 
 private:
-	WindowManager(const char* WindowTitle, int x, int y, int w, int h, Uint32 WindowFlags, bool bUseOpenGL);
+	WindowManager(const char* WindowTitle, int x, int y, int w, int h, Uint32 WindowFlags);
 	~WindowManager();
 
 	Uint32 WindowFlags = 0;
 	bool bWindowValid = false;
-	bool bUsingOpenGL = false;
 
 	static WindowManager* Singleton;
 
 	static SDL_Window* GameWindow;
-	static SDL_Surface* GameSurface;
-	static SDL_Renderer* GameRenderer;
 	static SDL_GLContext GameGLContext;
 };

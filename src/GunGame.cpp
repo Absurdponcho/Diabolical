@@ -3,7 +3,6 @@
 #include "Rendering/SquareRendererComponent.h"
 #include "Physics/RigidbodyComponent.h"
 #include "Textures/TextureAsset.h"
-
 #undef main
 
 
@@ -14,7 +13,7 @@ int main(int argc, char** argv)
     WindowManager::Initialize(
         "GunGame",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        1600, 800, SDL_WINDOW_HIDDEN, true);
+        1600, 800, SDL_WINDOW_HIDDEN);
 
     PhysicsWorld::Initialize(b2Vec2(0, -9.8f));
    
