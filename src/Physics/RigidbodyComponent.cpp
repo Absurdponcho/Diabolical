@@ -28,6 +28,23 @@ void RigidbodyComponent::OnSpawn()
 	MainFixture = Body->CreateFixture(&FixtureDef);
 
 	Body->SetType(bIsDynamic ? b2BodyType::b2_dynamicBody : b2BodyType::b2_kinematicBody);
+
+	InputManager::BindMethod("Jump", this, &RigidbodyComponent::Jump);
+	InputManager::BindMethod("Right", this, &RigidbodyComponent::Right);
+	InputManager::BindMethod("Left", this, &RigidbodyComponent::Left);
+}
+
+void RigidbodyComponent::Jump(ActionInfo& Info)
+{
+	Body->ApplyForceToCenter(b2Vec2(0, 100), true);
+}
+void RigidbodyComponent::Right(ActionInfo& Info)
+{
+	Body->ApplyForceToCenter(b2Vec2(50, 0), true);
+}
+void RigidbodyComponent::Left(ActionInfo& Info)
+{
+	Body->ApplyForceToCenter(b2Vec2(-50, 0), true);
 }
 
 void RigidbodyComponent::OnPostPhysics(float DeltaTime)
@@ -54,7 +71,7 @@ void RigidbodyComponent::OnPostRender(float DeltaTime)
 {
 	if (!bDrawDebugPolys) return;
 	if (!MainFixture) return;
-	b2Vec2 tmpVector;
+
 	if (b2PolygonShape* Shape = dynamic_cast<b2PolygonShape*>(MainFixture->GetShape()))
 	{
 		glm::mat4x4 Matrix = GetParentEntity().GetTransRotationMatrix();

@@ -8,15 +8,42 @@
 #include "../WindowManager.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
+#include "../Logging/Logging.h"
+
 
 CameraComponent* CameraComponent::ActiveCamera;
 
-CameraComponent::~CameraComponent()
+void CameraComponent::OnDestroy()
 {
+	GameComponent::OnDestroy();
 	if (CameraComponent::GetActiveCamera() == this)
 	{
 		ActiveCamera = nullptr;
 	}
+
+}
+
+void CameraComponent::OnSpawn()
+{
+}
+
+void CameraComponent::MoveUp(ActionInfo& Info)
+{
+
+}
+
+void CameraComponent::MoveRight(ActionInfo& Info)
+{
+
+}
+
+void CameraComponent::MoveLeft(ActionInfo& Info)
+{
+
+}
+
+void CameraComponent::MoveDown(ActionInfo& Info)
+{
 
 }
 
@@ -66,4 +93,6 @@ void CameraComponent::Draw()
 
 	GameRendererComponent::CullAllRenderers(*this, RendererStack);
 	GameRendererComponent::RenderAllRenderers(*this, RendererStack);
+
+
 }

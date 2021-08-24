@@ -4,7 +4,6 @@
 // compile time ;)
 // prefer to use forward class declarations
 // I made this header cos im lazy
-
 #include "Logging/Logging.h"
 #include "Assets/GameAssetSoftPointer.h"
 #include "Audio/GameAudio.h"
@@ -18,4 +17,6 @@
 #include "Utility/Utility.h"
 #include "Physics/PhysicsWorld.h"
 #include "Rendering/Camera.h"
+#include "Input/InputManager.h"
+#include <SDL2/SDL.h>
 #undef PlaySound

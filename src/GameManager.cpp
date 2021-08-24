@@ -5,6 +5,7 @@
 #include "Rendering/Camera.h"
 #include "Textures/TextureAsset.h"
 #include <SDL2/SDL.h>
+#include "Input/InputManager.h"
 
 float GameManager::FPS = 0;
 float GameManager::GameTime = 0;
@@ -12,6 +13,12 @@ float GameManager::GameTime = 0;
 void GameManager::MainGameLoop()
 {
 	Logging::LogVerbose("GameManager::MainGameLoop()", "Main game loop started");
+
+	// do the first tick before showing the window to prevent icky sticky white window
+	EventTick();
+	ManagerTick();
+	SDL_ShowWindow(WindowManager::GetSDLWindow());
+
 	while (bMainLoopRunning)
 	{
 		EventTick();
@@ -27,9 +34,21 @@ int GameManager::GetGameFPS()
 void GameManager::EventTick()
 {
 	SDL_Event Event;
-	int bEvent = SDL_PollEvent(&Event);
-	if (bEvent && Event.type == SDL_QUIT)
-		bMainLoopRunning = false;
+	while (SDL_PollEvent(&Event)) {
+		switch (Event.type) {
+		case SDL_KEYDOWN:
+		case SDL_KEYUP:
+			InputManager::HandleKeyboardEvent(Event.key);
+			break;
+
+		case SDL_QUIT:
+			bMainLoopRunning = false;
+			break;
+
+		default:
+			break;
+		}
+	}
 }
 
 void GameManager::ManagerTick()
@@ -61,8 +80,6 @@ void GameManager::ManagerTick()
 	GameBaseObject::PostRenderAllObjects(DeltaTime);
 
 	SDL_RenderPresent(renderer);
-
-
 
 	GameTime += DeltaTime;
 }

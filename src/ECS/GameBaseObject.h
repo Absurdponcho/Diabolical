@@ -3,7 +3,6 @@
 #include <stack>
 #include <vector>
 
-
 class GameBaseObject
 {
 public:
@@ -29,6 +28,7 @@ public:
 	bool IsPendingDestroy();
 	bool IsEnabled();
 	
+	static GameBaseObject* GetFromUID(size_t TargetUID);
 
 	// Never touch these!!
 	static void SpawnPendingObjects();
@@ -45,8 +45,6 @@ private:
 	static std::stack<GameBaseObject*> BaseObjectsPendingSpawn;
 	static std::stack<GameBaseObject*> BaseObjectsPendingDestroy;
 	static std::vector<GameBaseObject*> AllBaseObjects;
-
-	
 
 	bool bPendingDestroy = false;
 	bool bEnabled = true;

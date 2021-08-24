@@ -1,8 +1,9 @@
 #include "GameBaseObject.h"
 #include "../Logging/Logging.h"
 #include "../GunGame.h"
+#include "../Utility/Utility.h"
 
-size_t GameBaseObject::UIDCounter = 0;
+size_t GameBaseObject::UIDCounter = 1;
 
 std::stack<GameBaseObject*> GameBaseObject::BaseObjectsPendingSpawn;
 std::stack<GameBaseObject*> GameBaseObject::BaseObjectsPendingDestroy;
@@ -15,6 +16,7 @@ GameBaseObject::GameBaseObject()
 	Check(!bCreationLock);
 	BaseObjectsPendingSpawn.push(this);
 }
+
 
 const size_t& GameBaseObject::GetUID()
 {
@@ -133,4 +135,9 @@ bool GameBaseObject::IsPendingDestroy()
 bool GameBaseObject::IsEnabled()
 {
 	return bEnabled;
+}
+
+GameBaseObject* GameBaseObject::GetFromUID(size_t TargetUID)
+{
+	return Utility::FindPred(AllBaseObjects, [=](GameBaseObject* RHS) { return RHS->GetUID() == TargetUID; });
 }

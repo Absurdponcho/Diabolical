@@ -23,6 +23,11 @@ public:
 	static void LogWarning(const std::string& DebugScope, const std::string& DebugString);
 	static void LogError(const std::string& DebugScope, const std::string& DebugString);
 
+	static void LogVerbose(const std::wstring& DebugScope, const std::wstring& DebugString);
+	static void Log(const std::wstring& DebugScope, const std::wstring& DebugString);
+	static void LogWarning(const std::wstring& DebugScope, const std::wstring& DebugString);
+	static void LogError(const std::wstring& DebugScope, const std::wstring& DebugString);
+
 protected:
 	static ELogVerbosity LogVerbosity;
 	static void SetLogColor(uint8_t Color);

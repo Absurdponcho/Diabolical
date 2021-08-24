@@ -5,10 +5,6 @@
 #include <box2d/b2_math.h>
 #include <glm/glm.hpp>
 
-static SDL_Window* GameWindow;
-static SDL_Surface* GameSurface;
-static SDL_Renderer* GameRenderer;
-static SDL_GLContext GameGLContext;
 class WindowManager
 {
 public:
@@ -37,4 +33,9 @@ private:
 	bool bUsingOpenGL = false;
 
 	static WindowManager* Singleton;
+
+	static SDL_Window* GameWindow;
+	static SDL_Surface* GameSurface;
+	static SDL_Renderer* GameRenderer;
+	static SDL_GLContext GameGLContext;
 };

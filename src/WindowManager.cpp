@@ -3,6 +3,10 @@
 #include "GunGame.h"
 
 WindowManager* WindowManager::Singleton;
+SDL_Window* WindowManager::GameWindow;
+SDL_Surface* WindowManager::GameSurface;
+SDL_Renderer* WindowManager::GameRenderer;
+SDL_GLContext WindowManager::GameGLContext;
 
 WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint32 flags, bool bUseOpenGL) :
 	WindowFlags(flags), bWindowValid(true)
@@ -33,6 +37,13 @@ WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint
 	if (GameRenderer == NULL) {
 		Logging::LogError("WindowManager::WindowManager()", "SDL_CreateRenderer() failed");
 		bWindowValid = false;
+	}
+	else
+	{
+		// set the screen to black asap cos white screen on boot is icky
+		SDL_SetRenderDrawColor(GameRenderer, 0, 0, 0, 255);
+		SDL_RenderClear(GameRenderer);
+		SDL_RenderPresent(GameRenderer);
 	}
 }
 

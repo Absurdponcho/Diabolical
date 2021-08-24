@@ -1,3 +1,6 @@
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
+
+
 #include "Utility.h"
 #include <box2d/b2_math.h>
 #include <sstream>
@@ -5,6 +8,11 @@
 #include "../WindowManager.h"
 #include "../Rendering/Camera.h"
 #include <glm/glm.hpp>
+#include <locale>
+#include <codecvt>
+#include <string>
+
+
 
 std::string Utility::ToString(const b2Vec2& Vector)
 {
@@ -48,4 +56,15 @@ void Utility::DrawDebugLine(const glm::vec3& From, const glm::vec3& To)
 	To4 = glm::vec4(WindowManager::Get().ScreenSpaceToPixelCoord(To4), 0);
 
 	SDL_RenderDrawLineF(WindowManager::GetSDLRenderer(), From4.x, From4.y, To4.x, To4.y);
+}
+
+std::wstring Utility::StringToWString(const std::string& String)
+{
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+	return (converter.from_bytes(String));
+}
+std::string Utility::WStringToString(const std::wstring& String)
+{
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+	return (converter.to_bytes(String));
 }

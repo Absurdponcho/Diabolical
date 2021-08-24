@@ -6,6 +6,7 @@
 
 #undef main
 
+
 int main(int argc, char** argv)
 {
     Logging::SetLogVerbosity(ELogVerbosity::LV_Default);
@@ -13,17 +14,27 @@ int main(int argc, char** argv)
     WindowManager::Initialize(
         "GunGame",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        1600, 800, 0, true);
+        1600, 800, SDL_WINDOW_HIDDEN, true);
 
     PhysicsWorld::Initialize(b2Vec2(0, -9.8f));
+   
+    InputManager::AddKeyMapping("Jump", SDLK_w);
+    InputManager::AddKeyMapping("Jump", SDLK_UP);
+    InputManager::AddKeyMapping("Jump", SDLK_SPACE);
+    InputManager::AddKeyMapping("Left", SDLK_a);
+    InputManager::AddKeyMapping("Left", SDLK_LEFT);
+    InputManager::AddKeyMapping("Right", SDLK_d);
+    InputManager::AddKeyMapping("Right", SDLK_RIGHT);    
+    InputManager::AddKeyMapping("Down", SDLK_s);
+    InputManager::AddKeyMapping("Down", SDLK_DOWN);
 
-    
+    GameEntity* Test = CreateEntity<GameEntity>();
 
     GameManager GManager;
-    for (int i = 10; i < 400; i++)
+    for (int i = 10; i < 20; i++)
     {
         GameEntity* Square0 = CreateEntity<GameEntity>();
-        Square0->GetTransform().Position = glm::vec3(sin(i) * 10, i / 5, 0);
+        Square0->GetTransform().Position = glm::vec3(sin(i) * 10.f, i / 5.f, 0);
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square0);
         Rigidbody->SetDynamic(true);
         Rigidbody->bDrawDebugPolys = true;

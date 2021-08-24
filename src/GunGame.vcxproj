@@ -150,6 +150,7 @@
     <ClCompile Include="ECS\GameEntity.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GunGame.cpp" />
+    <ClCompile Include="Input\InputManager.cpp" />
     <ClCompile Include="Input\Interfaces\IGamepadListener.cpp" />
     <ClCompile Include="Input\Interfaces\IKeyboardListener.cpp" />
     <ClCompile Include="Input\Interfaces\IMouseListener.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="ECS\GameEntity.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GunGame.h" />
+    <ClInclude Include="Input\InputManager.h" />
     <ClInclude Include="Input\Interfaces\IGamepadListener.h" />
     <ClInclude Include="Input\Interfaces\IKeyboardListener.h" />
     <ClInclude Include="Input\Interfaces\IMouseListener.h" />

@@ -1,11 +1,19 @@
 #pragma once
 #include "../ECS/GameComponent.h"
 #include <glm/glm.hpp>
+#include "../Input/InputManager.h"
 
 class CameraComponent : public GameComponent
 {
 public:
-	~CameraComponent();
+	virtual void OnDestroy() override;
+
+	virtual void OnSpawn() override;
+
+	void MoveUp(ActionInfo& Info);
+	void MoveRight(ActionInfo& Info);
+	void MoveLeft(ActionInfo& Info);
+	void MoveDown(ActionInfo& Info);
 
 	void SetActiveCamera();
 	float GetOrthographicSize();
