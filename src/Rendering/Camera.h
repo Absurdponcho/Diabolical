@@ -15,6 +15,7 @@ public:
 	void MoveLeft(ActionInfo& Info);
 	void MoveDown(ActionInfo& Info);
 
+
 	void SetActiveCamera();
 	float GetOrthographicSize();
 	void SetOrthographicSize(float Size);

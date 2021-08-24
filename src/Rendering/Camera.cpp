@@ -9,6 +9,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
 #include "../Logging/Logging.h"
+#include "../Delegate/GameDelegate.h"
 
 
 CameraComponent* CameraComponent::ActiveCamera;
@@ -25,7 +26,9 @@ void CameraComponent::OnDestroy()
 
 void CameraComponent::OnSpawn()
 {
+
 }
+
 
 void CameraComponent::MoveUp(ActionInfo& Info)
 {

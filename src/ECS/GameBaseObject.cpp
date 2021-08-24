@@ -56,9 +56,9 @@ void GameBaseObject::SpawnPendingObjects()
 	while (!BaseObjectsPendingSpawn.empty())
 	{
 		GameBaseObject* BaseObject = BaseObjectsPendingSpawn.top();
-		BaseObject->OnSpawn();
 		Logging::LogVerbose("GameBaseObject::SpawnPendingObjects()", "Spawned object with UID " + std::to_string(BaseObject->GetUID()));
 		AllBaseObjects.push_back(BaseObject);
+		BaseObject->OnSpawn();
 		BaseObjectsPendingSpawn.pop();
 	}
 }
@@ -69,6 +69,7 @@ void GameBaseObject::DestroyPendingObjects()
 	{
 		GameBaseObject* BaseObject = BaseObjectsPendingDestroy.top();
 		if (!BaseObject) continue;
+		BaseObjectsPendingDestroy.pop();
 		BaseObject->OnDestroy();
 		Logging::LogVerbose("GameBaseObject::SpawnPendingObjects()", "Destroyed object with UID " + std::to_string(BaseObject->GetUID()));
 
@@ -82,7 +83,6 @@ void GameBaseObject::DestroyPendingObjects()
 		}
 
 		delete(BaseObject);
-		BaseObjectsPendingDestroy.pop();
 	}
 }
 
