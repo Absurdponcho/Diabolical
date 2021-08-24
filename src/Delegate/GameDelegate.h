@@ -83,6 +83,10 @@ public:
 			{
 				Binding.Function(Args...);
 			}
+			else
+			{
+				Unbind(Binding.UID);
+			}
 		}
 	}
 
@@ -91,6 +95,17 @@ public:
 		for (int Index = 0; Index < Bindings.size(); Bindings++)
 		{
 			if (Bindings[Index].UID == Object->UID)
+			{
+				Bindings.erase(Bindings.begin() + Index);
+				return;
+			}
+		}
+	}
+	void Unbind(size_t UID)
+	{
+		for (int Index = 0; Index < Bindings.size(); Bindings++)
+		{
+			if (Bindings[Index].UID == UID)
 			{
 				Bindings.erase(Bindings.begin() + Index);
 				return;
