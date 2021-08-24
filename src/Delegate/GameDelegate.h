@@ -92,7 +92,7 @@ public:
 
 	void Unbind(GameBaseObject* Object)
 	{
-		for (int Index = 0; Index < Bindings.size(); Bindings++)
+		for (int Index = 0; Index < Bindings.size(); Index++)
 		{
 			if (Bindings[Index].UID == Object->UID)
 			{
@@ -103,7 +103,7 @@ public:
 	}
 	void Unbind(size_t UID)
 	{
-		for (int Index = 0; Index < Bindings.size(); Bindings++)
+		for (int Index = 0; Index < Bindings.size(); Index++)
 		{
 			if (Bindings[Index].UID == UID)
 			{

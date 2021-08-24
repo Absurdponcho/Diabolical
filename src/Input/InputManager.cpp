@@ -26,7 +26,7 @@ void InputManager::ActionGroup::BindFunction(std::function<void (ActionInfo&)> F
 
 void InputManager::ActionGroup::BindInputDelegate(InputDelegate Delegate)
 {
-	Logging::LogVerbose("ActionGroup::ActionGroup()", "Bound delegate to \"" + GetActionName() + "\" for UID (" + std::to_string(Delegate.UID) + ")");
+	//Logging::LogVerbose("ActionGroup::ActionGroup()", "Bound delegate to \"" + GetActionName() + "\" for UID (" + std::to_string(Delegate) + ")");
 	InputDelegateBindings.push_back(Delegate);
 }
 
@@ -44,11 +44,7 @@ void InputManager::ActionGroup::Execute(ActionInfo& Info)
 
 	for (int Index = (int)InputDelegateBindings.size() - 1; Index >= 0; Index --)
 	{
-		if (!InputDelegateBindings[Index].Execute(Info))
-		{
-			InputDelegateBindings.erase(InputDelegateBindings.begin() + Index);
-			Logging::Log("InputManager::ActionGroup::Execute()", "Disposed delegate for deleted object");
-		}
+		InputDelegateBindings[Index].Execute(Info);
 	}
 }
 
@@ -171,21 +167,3 @@ void InputManager::AddKeyMapping(std::string Action, SDL_Keycode Symbol)
 
 }
 
-void InputManager::BindInputDelegate(std::string Action, GameBaseObject* Object, std::function<void(ActionInfo&)> Meth)
-{
-	InputManager::ActionGroup* Group = nullptr;
-	if (!(Group = Utility::FindPred(ActionGroups, [=](InputManager::ActionGroup* RHS) {return RHS->GetActionName() == Action; })))
-	{
-		Group = new InputManager::ActionGroup(Action);
-		ActionGroups.push_back(Group);
-	}
-
-	InputDelegate Delegate = InputDelegate();
-	Delegate.UID = Object->GetUID();
-	Delegate.Method = Meth;
-	Delegate.Action = Action;
-	InputDelegates.push_back(Delegate);
-
-	Group->BindInputDelegate(Delegate);
-
-}

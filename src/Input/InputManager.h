@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <functional>
 #include "../ECS/GameBaseObject.h"
+#include "../Delegate/GameDelegate.h"
+#include "../Utility/Utility.h"
 
 enum class InputType
 {
@@ -20,45 +22,37 @@ public:
 
 };
 
-class InputDelegate
-{
-public:
-	size_t UID = 0;
-	std::function<void(ActionInfo&)> Method;
-	std::string Action;
-	bool Execute(ActionInfo& Info)
-	{
-		if (GameBaseObject::GetFromUID(UID))
-		{
-			Method(Info);
-			return true;
-		}
-		return false;
-	}
-};
+typedef GameMulticastDelegate<ActionInfo&> InputDelegate;
 
 class InputManager
 {
 public:
 	static void HandleKeyboardEvent(SDL_KeyboardEvent& KeyboardEvent);
 	static void AddKeyMapping(std::string Action, SDL_Keycode Symbol);
-	static void BindFunction(std::string Action, std::function<void(ActionInfo&)> Function);
 
-	static void BindInputDelegate(std::string Action, GameBaseObject* Object, std::function<void(ActionInfo&)> Meth);
-
-	template <class UserClass>
+	template<class UserClass>
 	static void BindMethod(std::string Action, UserClass* Object, void (UserClass::* MethodPtr)(ActionInfo&))
 	{
-		static_cast<GameBaseObject*>(Object);
-		std::function<void(ActionInfo&)> Fn = [=](ActionInfo& Info) 
+		InputManager::ActionGroup* Group = nullptr;
+		if (!(Group = Utility::FindPred(ActionGroups, [=](InputManager::ActionGroup* RHS) {return RHS->GetActionName() == Action; })))
 		{
-			(Object->*MethodPtr)(Info);
-		};
-		BindInputDelegate(Action, Object, Fn);
+			Group = new InputManager::ActionGroup(Action);
+			ActionGroups.push_back(Group);
+		}
+
+		InputDelegate Delegate = InputDelegate();
+		Delegate.Bind(Object, MethodPtr);
+		InputDelegates.push_back(Delegate);
+
+		Group->BindInputDelegate(Delegate);
 	}
 
 	static bool IsKeyHeld(SDL_Keycode Symbol);
 private:
+
+
+	static void BindFunction(std::string Action, std::function<void(ActionInfo&)> Function);
+
 	class ActionGroup;
 	class KeyMapping;
 

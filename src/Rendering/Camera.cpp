@@ -26,13 +26,12 @@ void CameraComponent::OnDestroy()
 
 void CameraComponent::OnSpawn()
 {
-
+	
 }
-
 
 void CameraComponent::MoveUp(ActionInfo& Info)
 {
-
+	
 }
 
 void CameraComponent::MoveRight(ActionInfo& Info)
