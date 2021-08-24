@@ -8,21 +8,21 @@
 #include "../Delegate/GameDelegate.h"
 #include "../Utility/Utility.h"
 
-enum class InputType
+enum class EInputType
 {
 	IT_Pressed,
 	IT_Released,
-	IT_Held,
+	IT_Held
 };
 
 
-class ActionInfo
+struct ActionInfo
 {
 public:
-
+	EInputType InputType;
 };
 
-typedef GameMulticastDelegate<ActionInfo&> InputDelegate;
+typedef GameMulticastDelegate<ActionInfo> InputDelegate;
 
 class InputManager
 {
@@ -31,7 +31,7 @@ public:
 	static void AddKeyMapping(std::string Action, SDL_Keycode Symbol);
 
 	template<class UserClass>
-	static void BindMethod(std::string Action, UserClass* Object, void (UserClass::* MethodPtr)(ActionInfo&))
+	static void BindMethod(std::string Action, UserClass* Object, void (UserClass::* MethodPtr)(ActionInfo))
 	{
 		InputManager::ActionGroup* Group = nullptr;
 		if (!(Group = Utility::FindPred(ActionGroups, [=](InputManager::ActionGroup* RHS) {return RHS->GetActionName() == Action; })))
@@ -50,13 +50,10 @@ public:
 	static bool IsKeyHeld(SDL_Keycode Symbol);
 private:
 
-
-	static void BindFunction(std::string Action, std::function<void(ActionInfo&)> Function);
-
 	class ActionGroup;
 	class KeyMapping;
 
-	static void PushAction(SDL_Keysym Keycode);
+	static void PushAction(SDL_KeyboardEvent KBEvent);
 	static std::unordered_map<SDL_Keycode, bool> InputMap;
 	static std::vector<InputManager::ActionGroup*> ActionGroups;
 	static std::vector<InputManager::KeyMapping*> KeyMappings;

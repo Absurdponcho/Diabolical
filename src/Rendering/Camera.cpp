@@ -10,6 +10,9 @@
 #include <SDL2/SDL_video.h>
 #include "../Logging/Logging.h"
 #include "../Delegate/GameDelegate.h"
+#include "../Assets/GameAssetSoftPointer.h"
+#include "../Audio/AudioAsset.h"
+#include "../Audio/GameAudio.h"
 
 
 CameraComponent* CameraComponent::ActiveCamera;
@@ -26,28 +29,20 @@ void CameraComponent::OnDestroy()
 
 void CameraComponent::OnSpawn()
 {
-	
+	GameAssetSoftPointer<AudioAsset> MusicSoftPtr("GameAssetFiles/Final Boss - Myuu.wav");
+	GameAudio::PlaySound(MusicSoftPtr, 1.f, 5);
+	InputManager::BindMethod("Jump", this, &CameraComponent::MoveUp);
 }
 
-void CameraComponent::MoveUp(ActionInfo& Info)
+void CameraComponent::MoveUp(ActionInfo Info)
 {
-	
+	if (Info.InputType == EInputType::IT_Pressed)
+	{
+		GameAssetSoftPointer<AudioAsset> PhaserSoftPtr("GameAssetFiles/phaser1.wav");
+		GameAudio::PlaySound(PhaserSoftPtr);
+	}
 }
 
-void CameraComponent::MoveRight(ActionInfo& Info)
-{
-
-}
-
-void CameraComponent::MoveLeft(ActionInfo& Info)
-{
-
-}
-
-void CameraComponent::MoveDown(ActionInfo& Info)
-{
-
-}
 
 void CameraComponent::SetActiveCamera()
 {

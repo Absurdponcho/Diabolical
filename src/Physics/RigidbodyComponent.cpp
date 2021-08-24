@@ -29,23 +29,9 @@ void RigidbodyComponent::OnSpawn()
 
 	Body->SetType(bIsDynamic ? b2BodyType::b2_dynamicBody : b2BodyType::b2_kinematicBody);
 
-	InputManager::BindMethod("Jump", this, &RigidbodyComponent::Jump);
-	InputManager::BindMethod("Right", this, &RigidbodyComponent::Right);
-	InputManager::BindMethod("Left", this, &RigidbodyComponent::Left);
+
 }
 
-void RigidbodyComponent::Jump(ActionInfo& Info)
-{
-	Body->ApplyForceToCenter(b2Vec2(0, 100), true);
-}
-void RigidbodyComponent::Right(ActionInfo& Info)
-{
-	Body->ApplyForceToCenter(b2Vec2(50, 0), true);
-}
-void RigidbodyComponent::Left(ActionInfo& Info)
-{
-	Body->ApplyForceToCenter(b2Vec2(-50, 0), true);
-}
 
 void RigidbodyComponent::OnPostPhysics(float DeltaTime)
 {

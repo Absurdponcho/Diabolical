@@ -17,15 +17,7 @@ int main(int argc, char** argv)
 
     PhysicsWorld::Initialize(b2Vec2(0, -9.8f));
    
-    InputManager::AddKeyMapping("Jump", SDLK_w);
-    InputManager::AddKeyMapping("Jump", SDLK_UP);
     InputManager::AddKeyMapping("Jump", SDLK_SPACE);
-    InputManager::AddKeyMapping("Left", SDLK_a);
-    InputManager::AddKeyMapping("Left", SDLK_LEFT);
-    InputManager::AddKeyMapping("Right", SDLK_d);
-    InputManager::AddKeyMapping("Right", SDLK_RIGHT);    
-    InputManager::AddKeyMapping("Down", SDLK_s);
-    InputManager::AddKeyMapping("Down", SDLK_DOWN);
 
     GameEntity* Test = CreateEntity<GameEntity>();
 

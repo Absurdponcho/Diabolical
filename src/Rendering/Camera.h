@@ -10,11 +10,7 @@ public:
 
 	virtual void OnSpawn() override;
 
-	void MoveUp(ActionInfo& Info);
-	void MoveRight(ActionInfo& Info);
-	void MoveLeft(ActionInfo& Info);
-	void MoveDown(ActionInfo& Info);
-
+	void MoveUp(ActionInfo Info);
 
 	void SetActiveCamera();
 	float GetOrthographicSize();

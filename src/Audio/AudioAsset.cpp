@@ -12,10 +12,7 @@ AudioAsset* AudioAsset::TryLoad(std::filesystem::path Path)
 		return nullptr;
 	}
 
-	std::ifstream FileStream(Path.string());
-
 	AudioAsset* LoadedAsset = new AudioAsset();
-
 
 	LoadedAsset->bDataAssigned = true;
 	LoadedAsset->FilePath = Path;
@@ -26,8 +23,8 @@ AudioAsset* AudioAsset::TryLoad(std::filesystem::path Path)
 	LoadedAsset->FileSize = LoadedAsset->MixChunk->alen;
 
 	LoadedGameAssets.push_back(LoadedAsset);
+
 	return LoadedAsset;
-	return nullptr;
 }
 
 Mix_Chunk* AudioAsset::GetMixChunk()

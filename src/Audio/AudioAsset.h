@@ -3,6 +3,7 @@
 
 struct Mix_Chunk;
 
+
 class AudioAsset : public GameAsset
 {
 public:
@@ -10,7 +11,8 @@ public:
 	static AudioAsset* TryLoad(std::filesystem::path Path);
 
 	Mix_Chunk* GetMixChunk();
-
+	
 private:
 	Mix_Chunk* MixChunk;
+	float AudioDuration = 0.f;
 };

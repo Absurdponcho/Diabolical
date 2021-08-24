@@ -78,31 +78,17 @@ const std::vector<std::string>& InputManager::KeyMapping::GetActionMappings()
 	return ActionMappings;
 }
 
-void InputManager::BindFunction(std::string Action, std::function<void(ActionInfo&)> Function)
-{
-	InputManager::ActionGroup* Group = nullptr;
-	if (!(Group = Utility::FindPred(ActionGroups, [=](InputManager::ActionGroup* RHS) {return RHS->GetActionName() == Action; })))
-	{
-		Group = new InputManager::ActionGroup(Action);
-		ActionGroups.push_back(Group);
-	}
-	Group->BindFunction(Function);
-}
-
 void InputManager::HandleKeyboardEvent(SDL_KeyboardEvent& KeyboardEvent)
 {
 	switch (KeyboardEvent.state)
 	{
 	case SDL_PRESSED:
-		if (!InputMap[KeyboardEvent.keysym.sym])
-		{
-			PushAction(KeyboardEvent.keysym);
-		}
+		PushAction(KeyboardEvent);
 		InputMap[KeyboardEvent.keysym.sym] = true;
 
 		break;
 	case SDL_RELEASED:
-		PushAction(KeyboardEvent.keysym);
+		PushAction(KeyboardEvent);
 		InputMap[KeyboardEvent.keysym.sym] = false;
 
 		break;
@@ -112,10 +98,10 @@ void InputManager::HandleKeyboardEvent(SDL_KeyboardEvent& KeyboardEvent)
 	
 }
 
-void InputManager::PushAction(SDL_Keysym Keysym)
+void InputManager::PushAction(SDL_KeyboardEvent KBEvent)
 {
 	KeyMapping* Keymap = nullptr;
-	if (Keymap = Utility::FindPred(KeyMappings, [=](KeyMapping* RHS) { return RHS->GetSymbol() == Keysym.sym; }))
+	if (Keymap = Utility::FindPred(KeyMappings, [=](KeyMapping* RHS) { return RHS->GetSymbol() == KBEvent.keysym.sym; }))
 	{
 		for (const std::string& ActionName : Keymap->GetActionMappings())
 		{
@@ -123,6 +109,24 @@ void InputManager::PushAction(SDL_Keysym Keysym)
 			{
 				Logging::LogVerbose("InputManager::PushAction()", "Action \"" + ActionName + "\" invoked.");
 				ActionInfo Info = ActionInfo();
+				switch (KBEvent.state)
+				{
+				case SDL_PRESSED:
+					if (InputMap[KBEvent.keysym.sym])
+					{
+						Info.InputType = EInputType::IT_Held;
+					}
+					else
+					{
+						Info.InputType = EInputType::IT_Pressed;
+					}
+					break;
+				case SDL_RELEASED:
+					Info.InputType = EInputType::IT_Released;
+					break;
+				default:
+					Check(false);
+				}
 				Group->Execute(Info);
 			}
 		}
