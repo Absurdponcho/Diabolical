@@ -1,6 +1,7 @@
 #include "WindowManager.h"
 #include "Logging/Logging.h"
 #include "GunGame.h"
+#include <gl/glew.h>
 
 WindowManager* WindowManager::Singleton;
 SDL_Window* WindowManager::GameWindow;
@@ -17,10 +18,11 @@ WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint
 
 	GameWindow = SDL_CreateWindow(title, x, y, w, h, flags | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 	GameGLContext = SDL_GL_CreateContext(GameWindow);
-	if (GameGLContext) {
+	if (!GameGLContext) {
 		Logging::LogError("WindowManager::WindowManager()", "SDL_Init() failed!");
 		bWindowValid = false;
 	}
+	glewInit();
 }
 
 void WindowManager::Initialize(const char* WindowTitle, int x, int y, int w, int h, Uint32 WindowFlags)
