@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 #include "../Camera.h"
 
-#define PARTICLE_LIMIT 5000
+#define PARTICLE_LIMIT 500
 
 struct Particle
 {

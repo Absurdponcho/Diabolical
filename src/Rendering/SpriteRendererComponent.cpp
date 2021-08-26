@@ -154,6 +154,7 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     glm::mat4x4 ProjectionMatrix = Camera.GetProjectionMatrix();
 
     glm::mat4x4 MVPMatrix = ProjectionMatrix * ViewMatrix * ModelMatrix;
+    
 
     // Bind shader & VAO so opengl knows what to draw
     glUseProgram(ShaderProgram);
@@ -172,7 +173,7 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     Particle.Color = glm::vec4((float)(rand() % 100) / 100, (float)(rand() % 100) / 100, (float)(rand() % 100) / 100, 1);
     Particle.Position = GetParentEntity().GetTransform().Position;
     Particle.Size = 0.1f;
-    Particle.Speed = 5;
+    Particle.Speed = 0.5f;
     Particle.Rotation = (float)(rand() % 360);
     ParticleManager::RegisterParticle(Particle);
     /*glBindTexture(GL_TEXTURE_2D, 0);

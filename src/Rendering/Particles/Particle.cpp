@@ -109,15 +109,18 @@ void ParticleManager::Initialize()
 
         // Generate and bind VAO, which stores the VBO and EBO
         glGenVertexArrays(1, &VertexArrayObject);
+        Check(VertexArrayObject);
         glBindVertexArray(VertexArrayObject);
 
         // Generate and bind VBO, which stores vertex information
         glGenBuffers(1, &VertexBufferObject);
+        Check(VertexBufferObject);
         glBindBuffer(GL_ARRAY_BUFFER, VertexBufferObject);
         glBufferData(GL_ARRAY_BUFFER, sizeof(ParticleVertices), ParticleVertices, GL_STATIC_DRAW);
 
         // Generate and bind VBO, which stores element information
         glGenBuffers(1, &ElementBufferObject);
+        Check(ElementBufferObject);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ElementBufferObject);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(ParticleIndices), ParticleIndices, GL_STATIC_DRAW);
 
