@@ -68,6 +68,8 @@ void GameManager::ManagerTick()
 	PhysicsWorld::Get().Step();
 	GameBaseObject::TickAllObjects(DeltaTime);
 
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
 
 	if (CameraComponent* Camera = CameraComponent::GetActiveCamera())
 	{
@@ -76,8 +78,7 @@ void GameManager::ManagerTick()
 
 	GameBaseObject::PostRenderAllObjects(DeltaTime);
 
-	glClearColor(0, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT);
+
 	SDL_GL_SwapWindow(WindowManager::GetSDLWindow());
 
 	GameTime += DeltaTime;

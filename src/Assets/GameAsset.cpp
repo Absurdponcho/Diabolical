@@ -73,6 +73,7 @@ GameAsset* GameAsset::TryLoad(std::filesystem::path Path)
 	FileStream.read((char*)LoadedAsset->AssetData, LoadedAsset->FileSize);
 
 	LoadedGameAssets.push_back(LoadedAsset);
+
 	return LoadedAsset;
 }
 

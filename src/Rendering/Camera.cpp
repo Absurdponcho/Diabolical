@@ -29,18 +29,12 @@ void CameraComponent::OnDestroy()
 
 void CameraComponent::OnSpawn()
 {
-	GameAssetSoftPointer<AudioAsset> MusicSoftPtr("GameAssetFiles/Final Boss - Myuu.wav");
-	GameAudio::PlaySound(MusicSoftPtr, 1.f, 5);
-	InputManager::BindMethod("Jump", this, &CameraComponent::MoveUp);
+
 }
 
 void CameraComponent::MoveUp(ActionInfo Info)
 {
-	if (Info.InputType == EInputType::IT_Pressed)
-	{
-		GameAssetSoftPointer<AudioAsset> PhaserSoftPtr("GameAssetFiles/phaser1.wav");
-		GameAudio::PlaySound(PhaserSoftPtr);
-	}
+
 }
 
 
@@ -86,6 +80,7 @@ glm::mat4x4 CameraComponent::GetViewMatrix()
 
 void CameraComponent::Draw()
 {
+	
 	std::stack<GameRendererComponent*> RendererStack;
 
 	GameRendererComponent::CullAllRenderers(*this, RendererStack);

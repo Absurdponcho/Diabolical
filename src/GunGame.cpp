@@ -3,6 +3,7 @@
 #include "Rendering/SquareRendererComponent.h"
 #include "Physics/RigidbodyComponent.h"
 #include "Textures/TextureAsset.h"
+#include "Rendering/SpriteRendererComponent.h"
 #undef main
 
 
@@ -22,11 +23,12 @@ int main(int argc, char** argv)
     GameEntity* Test = CreateEntity<GameEntity>();
 
     GameManager GManager;
-    for (int i = 10; i < 20; i++)
+    for (int i = 10; i < 500; i++)
     {
         GameEntity* Square0 = CreateEntity<GameEntity>();
         Square0->GetTransform().Position = glm::vec3(sin(i) * 10.f, i / 5.f, 0);
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square0);
+        CreateComponent<SpriteRendererComponent>(Square0);
         Rigidbody->SetDynamic(true);
         Rigidbody->bDrawDebugPolys = true;
     }
@@ -35,6 +37,7 @@ int main(int argc, char** argv)
     Square1->GetTransform().Position = glm::vec3(0, -6, 0);
     Square1->GetTransform().Scale = glm::vec3(40, 1, 1);
     RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square1);
+    CreateComponent<SpriteRendererComponent>(Square1);
     Rigidbody->bDrawDebugPolys = true;
 
     GameEntity* Player = CreateEntity<GameEntity>();

@@ -25,8 +25,10 @@ void GameRendererComponent::OnDestroy()
 }
 void GameRendererComponent::RenderAllRenderers(CameraComponent& Camera, std::stack<GameRendererComponent*>& VisibleRenderers)
 {
+
 	while (!VisibleRenderers.empty())
 	{
+
 		GameRendererComponent* RendererComponent = VisibleRenderers.top();
 		if (RendererComponent->IsPendingDestroy() || !RendererComponent->IsEnabled())
 		{
@@ -51,6 +53,8 @@ void GameRendererComponent::CullAllRenderers(CameraComponent& Camera, Out std::s
 		}
 		else
 		{
+		
+			
 			RendererComponent->bWasCulled = false;
 			VisibleRenderers.push(RendererComponent);
 		}

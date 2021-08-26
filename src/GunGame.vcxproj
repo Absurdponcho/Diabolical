@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="Assets\GameAsset.cpp" />
     <ClCompile Include="Assets\GameAssetSoftPointer.cpp" />
+    <ClCompile Include="Assets\TextAsset.cpp" />
     <ClCompile Include="Audio\AudioAsset.cpp" />
     <ClCompile Include="Audio\GameAudio.cpp" />
     <ClCompile Include="Delegate\GameDelegate.cpp" />
@@ -174,6 +175,7 @@
   <ItemGroup>
     <ClInclude Include="Assets\GameAsset.h" />
     <ClInclude Include="Assets\GameAssetSoftPointer.h" />
+    <ClInclude Include="Assets\TextAsset.h" />
     <ClInclude Include="Audio\AudioAsset.h" />
     <ClInclude Include="Audio\GameAudio.h" />
     <ClInclude Include="CoreEngine.h" />
@@ -204,6 +206,10 @@
     <ClInclude Include="Utility\GameMath.h" />
     <ClInclude Include="Utility\Utility.h" />
     <ClInclude Include="WindowManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GameAssetFiles\Shaders\SpriteFragment.glsl" />
+    <None Include="GameAssetFiles\Shaders\SpriteVertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

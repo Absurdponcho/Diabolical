@@ -13,8 +13,6 @@ void SquareRendererComponent::Render(CameraComponent& Camera)
 
 	GameRendererComponent::Render(Camera);
 
-	//SDL_Renderer* renderer = WindowManager::GetSDLRenderer();
-	
 	GameEntity& Parent = GetParentEntity();
 
 	glm::vec4 From = glm::vec4(-.5f, -.5f, 0, 1);
