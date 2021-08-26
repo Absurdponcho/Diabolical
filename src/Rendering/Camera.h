@@ -23,7 +23,7 @@ public:
 	virtual glm::mat4x4 GetViewMatrix();
 	virtual float GetAspectRatio();
 
-	void Draw();
+	void Draw(float DeltaTime);
 
 	static CameraComponent* GetActiveCamera();
 

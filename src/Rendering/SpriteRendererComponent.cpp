@@ -12,6 +12,7 @@
 #include "../Assets/GameAsset.h"
 #include "../Assets/TextAsset.h"
 #include "../Textures/TextureAsset.h"
+#include "Particles/Particle.h"
 
 bool SpriteRendererComponent::bGLInitialized = false;
 unsigned int SpriteRendererComponent::VertexBufferObject = 0;
@@ -119,7 +120,7 @@ void SpriteRendererComponent::OnSpawn()
             glBindBuffer(GL_ARRAY_BUFFER, VertexBufferObject);
             glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
 
-            // Generate and bind VBO, which stores element information
+            // Generate and bind EBO, which stores element information
             glGenBuffers(1, &ElementBufferObject);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ElementBufferObject);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
@@ -147,8 +148,7 @@ void SpriteRendererComponent::SetTexture(GameAssetSoftPointer<TextureAsset>& Tex
 
 void SpriteRendererComponent::Render(CameraComponent& Camera)
 {
-
-
+    
     glm::mat4x4 ModelMatrix = GetParentEntity().GetModelMatrix();
     glm::mat4 ViewMatrix = Camera.GetViewMatrix();
     glm::mat4x4 ProjectionMatrix = Camera.GetProjectionMatrix();
@@ -167,4 +167,16 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     // draw elements, we have 6 elements so specify 6. For meshes we would
     // need a dynamic element count but sprites will always have 6 elements
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    
+    Particle Particle;
+    Particle.Color = glm::vec4((float)(rand() % 100) / 100, (float)(rand() % 100) / 100, (float)(rand() % 100) / 100, 1);
+    Particle.Position = GetParentEntity().GetTransform().Position;
+    Particle.Size = 0.1f;
+    Particle.Speed = 5;
+    Particle.Rotation = (float)(rand() % 360);
+    ParticleManager::RegisterParticle(Particle);
+    /*glBindTexture(GL_TEXTURE_2D, 0);
+    glBindVertexArray(0);
+    glUseProgram(0);*/
+
 }
