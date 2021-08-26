@@ -158,6 +158,8 @@ void InputManager::PushAction(SDL_KeyboardEvent KBEvent)
 				default:
 					Check(false);
 				}
+				Info.EventType = EEventType::KeyboardEvent;
+				Info._event.KeyboardEvent = &KBEvent;
 				Group->Execute(Info);
 			}
 		}
@@ -197,6 +199,8 @@ void InputManager::PushActionMouseButton(SDL_MouseButtonEvent MSBEvent)
 				default:
 					Check(false);
 				}
+				Info.EventType = EEventType::MouseButtonEvent;
+				Info._event.MouseButtonEvent = &MSBEvent;
 				Group->Execute(Info);
 			}
 		}

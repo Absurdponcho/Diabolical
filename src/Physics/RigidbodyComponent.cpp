@@ -62,8 +62,11 @@ void RigidbodyComponent::OnPostRender(float DeltaTime)
 
 void RigidbodyComponent::Jump(ActionInfo Info)
 {
-	b2Vec2 world = Body->GetWorldCenter();
-	Body->ApplyForce({ 0,100 }, world, true);
+	if (Info.EventType == EEventType::MouseButtonEvent) {
+		b2Vec2 world = Body->GetWorldCenter();
+//		Body->ApplyForce({ x,y }, world, true);
+	}
+
 }
 
 void RigidbodyComponent::Right(ActionInfo Info)

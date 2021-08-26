@@ -15,11 +15,26 @@ enum class EInputType
 	IT_Held
 };
 
+enum class EEventType {
+	KeyboardEvent,
+	MouseButtonEvent,
+	MouseWheelEvent,
+	MouseMoveEvent
+};
+
 
 struct ActionInfo
 {
 public:
 	EInputType InputType;
+	EEventType EventType;
+	union
+	{
+		SDL_KeyboardEvent* KeyboardEvent;
+		SDL_MouseButtonEvent* MouseButtonEvent;
+		SDL_MouseWheelEvent* MouseWheelEvent;
+		SDL_MouseMotionEvent* MouseMotionEvent;
+	}_event;
 };
 
 typedef GameMulticastDelegate<ActionInfo> InputDelegate;
