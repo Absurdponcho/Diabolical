@@ -23,12 +23,15 @@ int main(int argc, char** argv)
     GameEntity* Test = CreateEntity<GameEntity>();
 
     GameManager GManager;
+
+    GameAssetSoftPointer<TextureAsset> CrateTexturePointer("GameAssetFiles/Crate.png");
+
     for (int i = 10; i < 500; i++)
     {
         GameEntity* Square0 = CreateEntity<GameEntity>();
         Square0->GetTransform().Position = glm::vec3(sin(i) * 10.f, i / 5.f, 0);
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square0);
-        CreateComponent<SpriteRendererComponent>(Square0);
+        CreateComponent<SpriteRendererComponent>(Square0)->SetTexture(CrateTexturePointer);
         Rigidbody->SetDynamic(true);
         Rigidbody->bDrawDebugPolys = true;
     }
@@ -42,6 +45,9 @@ int main(int argc, char** argv)
 
     GameEntity* Player = CreateEntity<GameEntity>();
     CreateComponent<CameraComponent>(Player)->SetActiveCamera();
+
+
+
     GManager.MainGameLoop();
 
 

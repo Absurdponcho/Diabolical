@@ -6,7 +6,7 @@ class TextureAsset : public GameAsset
 {
 public:
 	static TextureAsset* TryLoad(std::filesystem::path Path);
-	SDL_Texture* GetTexture();
+	unsigned int GetTexture();
 
 	// Since SDL handles the memory here it becomes a bit hard to deal with the 
 	// data directly. Maybe we change this some day. It's possible that
@@ -15,6 +15,6 @@ public:
 	const virtual uint8_t* GetAssetData() { Check(false); return nullptr; };
 	const virtual size_t GetAssetSize() { Check(false); return 0; };
 private:
-	SDL_Texture* SDLTexture;
+	unsigned int OpenGLTexture;
 };
 

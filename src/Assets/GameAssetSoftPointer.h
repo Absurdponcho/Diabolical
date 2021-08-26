@@ -29,13 +29,13 @@ public:
 
 	AssetType* LoadSynchronous()
 	{
-		Logging::LogWarning("GameAssetSoftPointer::LoadSynchronous()", "Note: GameAsset memory deallocation needs to be implemented!");
 
 		if (AssetType* Asset = Get())
 		{
 			return Asset;
 		}
 
+		Logging::LogWarning("GameAssetSoftPointer::LoadSynchronous()", "Note: GameAsset memory deallocation needs to be implemented!");
 		Logging::Log("GameAssetSoftPointer::LoadSynchronous()", "Loading asset " + Internal.Path.string());
 
 

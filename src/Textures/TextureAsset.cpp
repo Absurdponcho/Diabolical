@@ -1,7 +1,9 @@
 #include "TextureAsset.h"
 #include "../Logging/Logging.h"
 #include <SDL2/SDL.h>
-#include "..\WindowManager.h"
+#include "../WindowManager.h"
+#include <SOIL/SOIL.h>
+#include <gl/glew.h>
 
 TextureAsset* TextureAsset::TryLoad(std::filesystem::path Path)
 {
@@ -17,20 +19,27 @@ TextureAsset* TextureAsset::TryLoad(std::filesystem::path Path)
 
 	TextureAsset* LoadedAsset = new TextureAsset();
 
-
 	LoadedAsset->bDataAssigned = true;
 	LoadedAsset->FilePath = Path;
 
-	//LoadedAsset->SDLTexture = IMG_LoadTexture(WindowManager::GetSDLRenderer(), LoadedAsset->FilePath.string().c_str());
-	if (LoadedAsset->SDLTexture == nullptr) {
-		Logging::LogError("TextureASset::TryLoad()", "IMG_LoadTexture failed");
+	LoadedAsset->OpenGLTexture = SOIL_load_OGL_texture(Path.string().c_str(), 4, 0, SOIL_FLAG_MIPMAPS);
+
+	// SOIL loads the texture and sets the filter flags to be filtered (EW!!!).
+	// so we need to bind the texture and set them to have no filtering :)
+	glBindTexture(GL_TEXTURE_2D, LoadedAsset->OpenGLTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	if (LoadedAsset->OpenGLTexture == 0) {
+		Logging::LogError("TextureASset::TryLoad()", "SOIL_load_OGL_texture failed: " + std::string(SOIL_last_result()) + " : " + std::string((char*)Path.c_str()));
 		return nullptr;
 	}
+
 	LoadedGameAssets.push_back(LoadedAsset);
 	return LoadedAsset;
 }
 
-SDL_Texture* TextureAsset::GetTexture()
+unsigned int TextureAsset::GetTexture()
 {
-	return SDLTexture;
+	return OpenGLTexture;
 }

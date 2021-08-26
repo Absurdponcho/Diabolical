@@ -11,6 +11,7 @@
 #include "../Assets/GameAssetSoftPointer.h"
 #include "../Assets/GameAsset.h"
 #include "../Assets/TextAsset.h"
+#include "../Textures/TextureAsset.h"
 
 bool SpriteRendererComponent::bGLInitialized = false;
 unsigned int SpriteRendererComponent::VertexBufferObject = 0;
@@ -19,14 +20,16 @@ unsigned int SpriteRendererComponent::ElementBufferObject = 0;
 unsigned int SpriteRendererComponent::ShaderProgram = 0;
 
 // Verts for a square of size 1x1
+// layout is:
+// vertices (x,y,z) then uv (x,y)
 float Vertices[] = {
-     0.5f,  0.5f, 0.0f,  // top right
-     0.5f, -0.5f, 0.0f,  // bottom right
-    -0.5f, -0.5f, 0.0f,  // bottom left
-    -0.5f,  0.5f, 0.0f   // top left 
+     0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // top right
+     0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   // bottom right
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f,   // bottom left
+    -0.5f,  0.5f, 0.0f,   0.0f, 1.0f    // top left 
 };
 
-unsigned int Indices[] = {  // note that we start from 0!
+unsigned int Indices[] = {  
     0, 1, 3,   // first triangle
     1, 2, 3    // second triangle
 };
@@ -34,6 +37,12 @@ unsigned int Indices[] = {  // note that we start from 0!
 void SpriteRendererComponent::OnSpawn()
 {
     GameRendererComponent::OnSpawn();
+
+    if (OpenGLTexture == 0)
+    {
+        GameAssetSoftPointer<TextureAsset> AssetPointer("GameAssetFiles/InvalidTexture.png");
+        SetTexture(AssetPointer);
+    }
 
     if (!bGLInitialized)
     {
@@ -94,10 +103,10 @@ void SpriteRendererComponent::OnSpawn()
                 Logging::LogError("SpriteRendererComponent::OnSpawn()", "Shader Program: " + std::string(InfoLog));
             }
 
-            glDeleteShader(VertexShader); // delete shaders after shader program is created
-            glDeleteShader(FragmentShader);
         //!Shader Program ========================================
 
+            glDeleteShader(VertexShader); // delete shaders after shader program is created
+            glDeleteShader(FragmentShader);
 
         // Vertex Array Object ===================================
 
@@ -115,16 +124,31 @@ void SpriteRendererComponent::OnSpawn()
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ElementBufferObject);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
 
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+            // vertices attribute pointer. location is 0, size is 3, stride is 5, offset is 0
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
             glEnableVertexAttribArray(0);
+
+            // uvs attribute pointer. location is 1, size is 2, stride is 5, offset is 3
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+            glEnableVertexAttribArray(1);
 
         //!Vertex Array Object ===================================
 
     }
+
+}
+
+void SpriteRendererComponent::SetTexture(GameAssetSoftPointer<TextureAsset>& Texture)
+{
+    TextureAsset* TextureAsset = Texture.LoadSynchronous();
+    Check(TextureAsset);
+    OpenGLTexture = TextureAsset->GetTexture();
 }
 
 void SpriteRendererComponent::Render(CameraComponent& Camera)
 {
+
+
     glm::mat4x4 ModelMatrix = GetParentEntity().GetModelMatrix();
     glm::mat4 ViewMatrix = Camera.GetViewMatrix();
     glm::mat4x4 ProjectionMatrix = Camera.GetProjectionMatrix();
@@ -139,6 +163,7 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     int MVPMatrixLocation = glGetUniformLocation(ShaderProgram, "MVP");
     glUniformMatrix4fv(MVPMatrixLocation, 1, GL_FALSE, glm::value_ptr(MVPMatrix));
 
+    glBindTexture(GL_TEXTURE_2D, OpenGLTexture);
     // draw elements, we have 6 elements so specify 6. For meshes we would
     // need a dynamic element count but sprites will always have 6 elements
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
