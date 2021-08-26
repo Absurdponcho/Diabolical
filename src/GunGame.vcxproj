@@ -163,6 +163,7 @@
     <ClCompile Include="Rendering\BasicRendererComponent.cpp" />
     <ClCompile Include="Rendering\Camera.cpp" />
     <ClCompile Include="Rendering\GameRendererComponent.cpp" />
+    <ClCompile Include="Rendering\Particles\Particle.cpp" />
     <ClCompile Include="Rendering\SpriteRendererComponent.cpp" />
     <ClCompile Include="Rendering\SquareRendererComponent.cpp" />
     <ClCompile Include="Rendering\TextRendererComponent.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Rendering\Camera.h" />
     <ClInclude Include="Rendering\GameRendererComponent.h" />
+    <ClInclude Include="Rendering\Particles\Particle.h" />
     <ClInclude Include="Rendering\SpriteRendererComponent.h" />
     <ClInclude Include="Rendering\SquareRendererComponent.h" />
     <ClInclude Include="Rendering\TextRendererComponent.h" />
@@ -208,6 +210,8 @@
     <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GameAssetFiles\Shaders\ParticleFragment.glsl" />
+    <None Include="GameAssetFiles\Shaders\ParticleVertex.glsl" />
     <None Include="GameAssetFiles\Shaders\SpriteFragment.glsl" />
     <None Include="GameAssetFiles\Shaders\SpriteVertex.glsl" />
   </ItemGroup>

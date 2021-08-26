@@ -73,7 +73,7 @@ void GameManager::ManagerTick()
 
 	if (CameraComponent* Camera = CameraComponent::GetActiveCamera())
 	{
-		Camera->Draw();
+		Camera->Draw(DeltaTime);
 	}
 
 	GameBaseObject::PostRenderAllObjects(DeltaTime);

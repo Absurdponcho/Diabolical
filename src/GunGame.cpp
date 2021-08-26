@@ -4,6 +4,7 @@
 #include "Physics/RigidbodyComponent.h"
 #include "Textures/TextureAsset.h"
 #include "Rendering/SpriteRendererComponent.h"
+#include "Rendering/Particles/Particle.h"
 #undef main
 
 
@@ -18,6 +19,8 @@ int main(int argc, char** argv)
 
     PhysicsWorld::Initialize(b2Vec2(0, -9.8f));
    
+    ParticleManager::Initialize();
+
     InputManager::AddKeyMapping("Jump", SDLK_SPACE);
 
     GameEntity* Test = CreateEntity<GameEntity>();
@@ -26,7 +29,7 @@ int main(int argc, char** argv)
 
     GameAssetSoftPointer<TextureAsset> CrateTexturePointer("GameAssetFiles/Crate.png");
 
-    for (int i = 10; i < 500; i++)
+    for (int i = 10; i < 100; i++)
     {
         GameEntity* Square0 = CreateEntity<GameEntity>();
         Square0->GetTransform().Position = glm::vec3(sin(i) * 10.f, i / 5.f, 0);

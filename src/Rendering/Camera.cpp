@@ -13,6 +13,7 @@
 #include "../Assets/GameAssetSoftPointer.h"
 #include "../Audio/AudioAsset.h"
 #include "../Audio/GameAudio.h"
+#include "Particles/Particle.h"
 
 
 CameraComponent* CameraComponent::ActiveCamera;
@@ -78,13 +79,13 @@ glm::mat4x4 CameraComponent::GetViewMatrix()
 	return glm::lookAt(GetParentEntity().GetTransform().Position, GetParentEntity().GetTransform().Position + ForwardVector, UpVector);
 }
 
-void CameraComponent::Draw()
+void CameraComponent::Draw(float DeltaTime)
 {
 	
 	std::stack<GameRendererComponent*> RendererStack;
 
 	GameRendererComponent::CullAllRenderers(*this, RendererStack);
 	GameRendererComponent::RenderAllRenderers(*this, RendererStack);
-
+	ParticleManager::RenderParticles(*this, DeltaTime);
 
 }
