@@ -6,12 +6,14 @@
 #include "../GunGame.h"
 #include "../Utility/Utility.h"
 
-std::unordered_map<SDL_Keycode, bool> InputManager::InputMap;
-std::vector<InputManager::ActionGroup*> InputManager::ActionGroups;
+std::unordered_map<SDL_Keycode, bool> InputManager::KeyInputMap;
 std::vector<InputManager::KeyMapping*> InputManager::KeyMappings;
-std::vector<InputDelegate> InputManager::InputDelegates;
-std::vector<InputManager::MouseButtonMapping*> InputManager::MouseButtonMappings;
+
 std::unordered_map<Uint8, bool> InputManager::MouseButtonInputMap;
+std::vector<InputManager::MouseButtonMapping*> InputManager::MouseButtonMappings;
+
+std::vector<InputManager::ActionGroup*> InputManager::ActionGroups;
+std::vector<InputDelegate> InputManager::InputDelegates;
 
 InputManager::ActionGroup::ActionGroup(std::string Action)
 	:	ActionName(Action)
@@ -86,12 +88,12 @@ void InputManager::HandleKeyboardEvent(SDL_KeyboardEvent& KeyboardEvent)
 	{
 	case SDL_PRESSED:
 		PushAction(KeyboardEvent);
-		InputMap[KeyboardEvent.keysym.sym] = true;
+		KeyInputMap[KeyboardEvent.keysym.sym] = true;
 
 		break;
 	case SDL_RELEASED:
 		PushAction(KeyboardEvent);
-		InputMap[KeyboardEvent.keysym.sym] = false;
+		KeyInputMap[KeyboardEvent.keysym.sym] = false;
 
 		break;
 	default:
@@ -141,7 +143,7 @@ void InputManager::PushAction(SDL_KeyboardEvent KBEvent)
 				switch (KBEvent.state)
 				{
 				case SDL_PRESSED:
-					if (InputMap[KBEvent.keysym.sym])
+					if (KeyInputMap[KBEvent.keysym.sym])
 					{
 						Info.InputType = EInputType::IT_Held;
 					}
@@ -207,7 +209,7 @@ void InputManager::PushActionMouseButton(SDL_MouseButtonEvent MSBEvent)
 
 bool InputManager::IsKeyHeld(SDL_Keycode Symbol)
 {
-	return InputMap[Symbol];
+	return KeyInputMap[Symbol];
 }
 
 bool InputManager::IsMouseButtonHeld(Uint8 Button)

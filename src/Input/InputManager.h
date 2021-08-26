@@ -62,13 +62,15 @@ private:
 
 	static void PushAction(SDL_KeyboardEvent KBEvent);
 	static void PushActionMouseButton(SDL_MouseButtonEvent MSBEvent);
-	static std::unordered_map<SDL_Keycode, bool> InputMap;
-	static std::vector<InputManager::ActionGroup*> ActionGroups;
-	static std::vector<InputManager::KeyMapping*> KeyMappings;
-	static std::vector<InputDelegate> InputDelegates;
 
-	static std::vector<InputManager::MouseButtonMapping*> MouseButtonMappings;
+	static std::unordered_map<SDL_Keycode, bool> KeyInputMap;
+	static std::vector<InputManager::KeyMapping*> KeyMappings;
+
 	static std::unordered_map<Uint8, bool> MouseButtonInputMap;
+	static std::vector<InputManager::MouseButtonMapping*> MouseButtonMappings;
+
+	static std::vector<InputManager::ActionGroup*> ActionGroups;
+	static std::vector<InputDelegate> InputDelegates;
 
 	class ActionGroup
 	{
