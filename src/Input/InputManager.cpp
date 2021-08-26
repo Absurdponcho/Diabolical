@@ -10,6 +10,8 @@ std::unordered_map<SDL_Keycode, bool> InputManager::InputMap;
 std::vector<InputManager::ActionGroup*> InputManager::ActionGroups;
 std::vector<InputManager::KeyMapping*> InputManager::KeyMappings;
 std::vector<InputDelegate> InputManager::InputDelegates;
+std::vector<InputManager::MouseButtonMapping*> InputManager::MouseButtonMappings;
+std::unordered_map<Uint8, bool> InputManager::MouseButtonInputMap;
 
 InputManager::ActionGroup::ActionGroup(std::string Action)
 	:	ActionName(Action)
@@ -98,6 +100,33 @@ void InputManager::HandleKeyboardEvent(SDL_KeyboardEvent& KeyboardEvent)
 	
 }
 
+void InputManager::HandleMouseMotionEvent(SDL_MouseMotionEvent& MouseMotionEvent)
+{
+
+}
+
+void InputManager::HandleMouseWheelEvent(SDL_MouseWheelEvent& MouseWheelEvent)
+{
+}
+
+void InputManager::HandleMouseButtonEvent(SDL_MouseButtonEvent& MouseEvent)
+{
+	switch (MouseEvent.state)
+	{
+	case SDL_PRESSED:
+		PushActionMouseButton(MouseEvent);
+		MouseButtonInputMap[MouseEvent.button] = true;
+
+		break;
+	case SDL_RELEASED:
+		PushActionMouseButton(MouseEvent);
+		MouseButtonInputMap[MouseEvent.button] = false;
+		break;
+	default:
+		Check(false); // what
+	}
+}
+
 void InputManager::PushAction(SDL_KeyboardEvent KBEvent)
 {
 	KeyMapping* Keymap = nullptr;
@@ -135,13 +164,55 @@ void InputManager::PushAction(SDL_KeyboardEvent KBEvent)
 	{
 		//Logging::LogVerbose("InputManager::PushAction()", "Tried to push actions for key but there was no mapping.");
 	}
+}
 
-
+void InputManager::PushActionMouseButton(SDL_MouseButtonEvent MSBEvent)
+{
+	MouseButtonMapping* MouseMap = nullptr;
+	if (MouseMap = Utility::FindPred(MouseButtonMappings, [=](MouseButtonMapping* RHS) { return RHS->GetButton() == MSBEvent.button; }))
+	{
+		for (const std::string& ActionName : MouseMap->GetActionMappings())
+		{
+			if (ActionGroup* Group = Utility::FindPred(ActionGroups, [=](ActionGroup* RHS) { return RHS->GetActionName() == ActionName; }))
+			{
+				Logging::LogVerbose("InputManager::PushAction()", "Action \"" + ActionName + "\" invoked.");
+				ActionInfo Info = ActionInfo();
+				switch (MSBEvent.state)
+				{
+				case SDL_PRESSED:
+					if (MouseButtonInputMap[MSBEvent.button])
+					{
+						Info.InputType = EInputType::IT_Held;
+					}
+					else
+					{
+						Info.InputType = EInputType::IT_Pressed;
+					}
+					break;
+				case SDL_RELEASED:
+					Info.InputType = EInputType::IT_Released;
+					break;
+				default:
+					Check(false);
+				}
+				Group->Execute(Info);
+			}
+		}
+	}
+	else
+	{
+		//Logging::LogVerbose("InputManager::PushAction()", "Tried to push actions for key but there was no mapping.");
+	}
 }
 
 bool InputManager::IsKeyHeld(SDL_Keycode Symbol)
 {
 	return InputMap[Symbol];
+}
+
+bool InputManager::IsMouseButtonHeld(Uint8 Button)
+{
+	return MouseButtonInputMap[Button];
 }
 
 void InputManager::AddKeyMapping(std::string Action, SDL_Keycode Symbol)
@@ -171,3 +242,54 @@ void InputManager::AddKeyMapping(std::string Action, SDL_Keycode Symbol)
 
 }
 
+void InputManager::AddMouseButtonMapping(std::string Action, Uint8 Button)
+{
+	// Add mouse button mapping ==========================
+	MouseButtonMapping* MBMap = nullptr;
+	if (!(MBMap = Utility::FindPred(MouseButtonMappings, [=](MouseButtonMapping* RHS) {return RHS->GetButton() == Button; }))) {
+		MBMap = new MouseButtonMapping(Button);
+		MouseButtonMappings.push_back(MBMap);
+	}
+	Check(MBMap);
+
+	MBMap->AddMapping(Action);
+	// ==========================================
+	// Add action group =========================
+	ActionGroup* Group = nullptr;
+	if (!(Group = Utility::FindPred(ActionGroups, [=](ActionGroup* RHS) {return RHS->GetActionName() == Action; })))
+	{
+		Group = new ActionGroup(Action);
+		ActionGroups.push_back(Group);
+	}
+	Check(Group);
+	// ==========================================
+}
+
+InputManager::MouseButtonMapping::MouseButtonMapping(Uint8 Button) :
+	Button(Button)
+{
+}
+
+Uint8 InputManager::MouseButtonMapping::GetButton()
+{
+	return Button;
+}
+
+void InputManager::MouseButtonMapping::AddMapping(std::string ActionName)
+{
+	if (!Utility::Find(ActionMappings, ActionName))
+	{
+		Logging::Log("ActionGroup::AddMapping()", "Added ActionName \"" + ActionName + "\" to Mouse");
+
+		ActionMappings.push_back(ActionName);
+	}
+	else
+	{
+		Logging::LogWarning("ActionGroup::AddMapping()", "Attempted to add a mouse button to \"" + ActionName + "\" which already exists!");
+	}
+}
+
+const std::vector<std::string>& InputManager::MouseButtonMapping::GetActionMappings()
+{
+	return ActionMappings;
+}

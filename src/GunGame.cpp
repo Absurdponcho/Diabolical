@@ -33,7 +33,9 @@ int main(int argc, char** argv)
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square0);
         CreateComponent<SpriteRendererComponent>(Square0)->SetTexture(CrateTexturePointer);
         Rigidbody->SetDynamic(true);
+        InputManager::BindMethod("TestAction", Rigidbody, &RigidbodyComponent::Jump);
     }
+    InputManager::AddMouseButtonMapping("TestAction", SDL_BUTTON_LEFT);
 
     GameEntity* Square1 = CreateEntity<GameEntity>();
     Square1->GetTransform().Position = glm::vec3(0, -6, 0);
@@ -43,8 +45,6 @@ int main(int argc, char** argv)
 
     GameEntity* Player = CreateEntity<GameEntity>();
     CreateComponent<CameraComponent>(Player)->SetActiveCamera();
-
-
 
     GManager.MainGameLoop();
 

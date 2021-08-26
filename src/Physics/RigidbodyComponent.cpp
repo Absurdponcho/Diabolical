@@ -1,10 +1,9 @@
-#include "RigidbodyComponent.h"
 #include <box2d/b2_api.h>
 #include "PhysicsWorld.h"
 #include  <box2d/b2_world.h>
 #include "../Utility/Utility.h"
 #include "../Logging/Logging.h"
-
+#include "RigidbodyComponent.h"
 
 void RigidbodyComponent::OnSpawn()
 {
@@ -59,4 +58,18 @@ void RigidbodyComponent::OnPostRender(float DeltaTime)
 	if (!MainFixture) return;
 
 	
+}
+
+void RigidbodyComponent::Jump(ActionInfo Info)
+{
+	b2Vec2 world = Body->GetWorldCenter();
+	Body->ApplyForce({ 0,100 }, world, true);
+}
+
+void RigidbodyComponent::Right(ActionInfo Info)
+{
+}
+
+void RigidbodyComponent::Left(ActionInfo Info)
+{
 }

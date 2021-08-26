@@ -28,7 +28,12 @@ class InputManager
 {
 public:
 	static void HandleKeyboardEvent(SDL_KeyboardEvent& KeyboardEvent);
+	static void HandleMouseMotionEvent(SDL_MouseMotionEvent& MouseMotionEvent);
+	static void HandleMouseWheelEvent(SDL_MouseWheelEvent& MouseWheelEvent);
+	static void HandleMouseButtonEvent(SDL_MouseButtonEvent& MouseEvent);
+
 	static void AddKeyMapping(std::string Action, SDL_Keycode Symbol);
+	static void AddMouseButtonMapping(std::string Action, Uint8 Button);
 
 	template<class UserClass>
 	static void BindMethod(std::string Action, UserClass* Object, void (UserClass::* MethodPtr)(ActionInfo))
@@ -48,16 +53,22 @@ public:
 	}
 
 	static bool IsKeyHeld(SDL_Keycode Symbol);
+	static bool IsMouseButtonHeld(Uint8 Button);
 private:
 
 	class ActionGroup;
 	class KeyMapping;
+	class MouseButtonMapping;
 
 	static void PushAction(SDL_KeyboardEvent KBEvent);
+	static void PushActionMouseButton(SDL_MouseButtonEvent MSBEvent);
 	static std::unordered_map<SDL_Keycode, bool> InputMap;
 	static std::vector<InputManager::ActionGroup*> ActionGroups;
 	static std::vector<InputManager::KeyMapping*> KeyMappings;
 	static std::vector<InputDelegate> InputDelegates;
+
+	static std::vector<InputManager::MouseButtonMapping*> MouseButtonMappings;
+	static std::unordered_map<Uint8, bool> MouseButtonInputMap;
 
 	class ActionGroup
 	{
@@ -82,6 +93,18 @@ private:
 		const std::vector<std::string>& GetActionMappings();
 	private:
 		SDL_Keycode KeySymbol;
+		std::vector<std::string> ActionMappings;
+	};
+
+	class MouseButtonMapping
+	{
+	public:
+		MouseButtonMapping(Uint8 Button);
+		Uint8 GetButton();
+		void AddMapping(std::string ActionName);
+		const std::vector<std::string>& GetActionMappings();
+	private:
+		Uint8 Button;
 		std::vector<std::string> ActionMappings;
 	};
 };
