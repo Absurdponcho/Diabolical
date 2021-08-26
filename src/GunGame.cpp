@@ -33,15 +33,13 @@ int main(int argc, char** argv)
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square0);
         CreateComponent<SpriteRendererComponent>(Square0)->SetTexture(CrateTexturePointer);
         Rigidbody->SetDynamic(true);
-        Rigidbody->bDrawDebugPolys = true;
     }
 
     GameEntity* Square1 = CreateEntity<GameEntity>();
     Square1->GetTransform().Position = glm::vec3(0, -6, 0);
     Square1->GetTransform().Scale = glm::vec3(40, 1, 1);
     RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square1);
-    CreateComponent<SpriteRendererComponent>(Square1);
-    Rigidbody->bDrawDebugPolys = true;
+    CreateComponent<SpriteRendererComponent>(Square1)->SetTexture(CrateTexturePointer);
 
     GameEntity* Player = CreateEntity<GameEntity>();
     CreateComponent<CameraComponent>(Player)->SetActiveCamera();
