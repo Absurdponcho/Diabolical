@@ -4,6 +4,8 @@
 #include "../Utility/Utility.h"
 #include "../Logging/Logging.h"
 #include "RigidbodyComponent.h"
+#include "..\WindowManager.h"
+#include "..\Rendering\Camera.h"
 
 void RigidbodyComponent::OnSpawn()
 {
@@ -64,7 +66,18 @@ void RigidbodyComponent::Jump(ActionInfo Info)
 {
 	if (Info.EventType == EEventType::MouseButtonEvent) {
 		b2Vec2 world = Body->GetWorldCenter();
-//		Body->ApplyForce({ x,y }, world, true);
+		glm::vec2 PixelSpace = { Info._event.MouseButtonEvent->x, Info._event.MouseButtonEvent->y };
+		glm::vec4 ScreenSpace = glm::vec4(WindowManager::Get().PixelCoordToScreenSpace(PixelSpace), 1.0f);
+		glm::mat4 ViewMatrix = CameraComponent::GetActiveCamera()->GetViewMatrix();
+		glm::mat4 ProjMatrix = CameraComponent::GetActiveCamera()->GetProjectionMatrix();
+		glm::mat4 ViewProjectionMatrix = ProjMatrix * ViewMatrix;
+		ViewProjectionMatrix = glm::inverse(ViewProjectionMatrix);
+		glm::vec4 WorldSpace = ViewProjectionMatrix * ScreenSpace;
+		WorldSpace.z = 0;
+		glm::vec3 ws = WorldSpace;
+		if (glm::distance(ws, GetParentEntity().GetTransform().Position) < 1.0f) {
+			Body->ApplyForce({ 0,100 }, world, true);
+		}
 	}
 
 }
