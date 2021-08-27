@@ -24,10 +24,10 @@ unsigned int SpriteRendererComponent::ShaderProgram = 0;
 // layout is:
 // vertices (x,y,z) then uv (x,y)
 float Vertices[] = {
-     0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // top right
-     0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   // bottom right
-    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f,   // bottom left
-    -0.5f,  0.5f, 0.0f,   0.0f, 1.0f    // top left 
+     0.5f,  0.5f, 0.0f,   1.0f, 0.0f,   // bottom right
+     0.5f, -0.5f, 0.0f,   1.0f, 1.0f,   // top right
+    -0.5f, -0.5f, 0.0f,   0.0f, 1.0f,   // top left
+    -0.5f,  0.5f, 0.0f,   0.0f, 0.0f    // bottom left 
 };
 
 unsigned int Indices[] = {  
@@ -146,6 +146,34 @@ void SpriteRendererComponent::SetTexture(GameAssetSoftPointer<TextureAsset>& Tex
     OpenGLTexture = TextureAsset->GetTexture();
 }
 
+void SpriteRendererComponent::OnTick(float DeltaTime)
+{
+    GameComponent::OnTick(DeltaTime);
+
+    if (SpriteSheetProgressionSpeed != 0)
+    {
+        SelectSpriteSheetIndex(DeltaTime);
+    }
+
+}
+
+void SpriteRendererComponent::SelectSpriteSheetIndex(float DeltaTime)
+{
+    SpriteSheetProgress += DeltaTime * SpriteSheetProgressionSpeed;
+    int SpriteSheetIndexer = (int)SpriteSheetProgress;// % (SpriteSheetSize.x * SpriteSheetSize.y);
+
+    SpriteSheetIndex.x = SpriteSheetIndexer % SpriteSheetSize.x;
+    SpriteSheetIndex.y = SpriteSheetIndexer / SpriteSheetSize.x;
+    if (SpriteSheetIndex.y >= SpriteSheetSize.y)
+    {
+        SpriteSheetProgress -= (SpriteSheetIndex.y * SpriteSheetSize.x);
+
+        SpriteSheetIndexer = (int)SpriteSheetProgress;
+        SpriteSheetIndex.x = SpriteSheetIndexer % SpriteSheetSize.x;
+        SpriteSheetIndex.y = SpriteSheetIndexer / SpriteSheetSize.x;
+    }
+}
+
 void SpriteRendererComponent::Render(CameraComponent& Camera)
 {
     
@@ -164,6 +192,9 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     int MVPMatrixLocation = glGetUniformLocation(ShaderProgram, "MVP");
     glUniformMatrix4fv(MVPMatrixLocation, 1, GL_FALSE, glm::value_ptr(MVPMatrix));
 
+    int SpriteDimensionsLocation = glGetUniformLocation(ShaderProgram, "SpriteDimensions");
+    glUniform4i(SpriteDimensionsLocation, SpriteSheetIndex.x, SpriteSheetIndex.y, SpriteSheetSize.x, SpriteSheetSize.y);
+
     glBindTexture(GL_TEXTURE_2D, OpenGLTexture);
     // draw elements, we have 6 elements so specify 6. For meshes we would
     // need a dynamic element count but sprites will always have 6 elements
@@ -176,5 +207,7 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     //Particle.Speed = 5.5f;
     //Particle.Rotation = (float)(rand() % 360);
     //ParticleManager::RegisterParticle(Particle);
+
+    
 
 }

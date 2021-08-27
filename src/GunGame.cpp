@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 
     GameAssetSoftPointer<TextureAsset> CrateTexturePointer("GameAssetFiles/Crate.png");
 
-    for (int i = 5; i < 100; i++)
+    for (int i = 0; i < 3; i++)
     {
         GameEntity* Square0 = CreateEntity<GameEntity>();
         Square0->GetTransform().Position = glm::vec3(sin(i) * 10.f, i / 10.f, 0);
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 
     GameEntity* Square1 = CreateEntity<GameEntity>();
     {
-        Square1->GetTransform().Position = glm::vec3(0, -6, 1);
+        Square1->GetTransform().Position = glm::vec3(0, -1, 1);
         Square1->GetTransform().Scale = glm::vec3(40, 1, 1);
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square1);
         CreateComponent<SpriteRendererComponent>(Square1)->SetTexture(CrateTexturePointer);
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
 
     PlayerCharacterEntity* PlayerCharacter = CreateEntity<PlayerCharacterEntity>();
     {
-        PlayerCharacter->GetTransform().Position = glm::vec3(0, 10, 0);
+        PlayerCharacter->GetTransform().Position = glm::vec3(0, 0, 0);
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(PlayerCharacter);
         Rigidbody->SetDynamic(true);
         Rigidbody->SetRotates(false);
@@ -64,7 +64,17 @@ int main(int argc, char** argv)
         PlayerTracker->SetTrackTarget(PlayerCharacter);
         CreateComponent<CameraComponent>(PlayerTracker)->SetActiveCamera();
     }
+
+    GameAssetSoftPointer<TextureAsset> ArcaneBulletTexturePointer("GameAssetFiles/ArcaneBullet.png");
     
+    GameEntity* ArcaneBullet = CreateEntity<GameEntity>();
+    {
+        ArcaneBullet->GetTransform().Position = glm::vec3(0, 2, -0.1f);
+        SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(ArcaneBullet);
+        Sprite->SetTexture(ArcaneBulletTexturePointer);
+        Sprite->SpriteSheetSize = glm::ivec2(4, 1);
+        Sprite->SpriteSheetProgressionSpeed = 8;
+    }
 
     GManager.MainGameLoop();
 
