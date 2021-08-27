@@ -14,12 +14,12 @@ void RigidbodyComponent::OnSpawn()
 	GameEntity& Parent = GetParentEntity();
 	b2BodyDef BodyDef;
 	BodyDef.type = b2BodyType::b2_dynamicBody;
-	BodyDef.position.Set(Parent.GetTransform().Position.x, Parent.GetTransform().Position.y);
+	BodyDef.position.Set(Parent.GetTransform().GetPosition().x, Parent.GetTransform().GetPosition().y);
 	BodyDef.angle = Parent.GetTransform().GetEulerRotation().z * 0.0174533f; // deg to rad
 
 	Body = PhysicsWorld::Get().GetWorld().CreateBody(&BodyDef);
 
-	Box.SetAsBox(Parent.GetTransform().Scale.x / 2, Parent.GetTransform().Scale.y / 2);
+	Box.SetAsBox(Parent.GetTransform().GetScale().x / 2, Parent.GetTransform().GetScale().y / 2);
 
 	b2FixtureDef FixtureDef;
 	FixtureDef.shape = &Box;
@@ -34,23 +34,23 @@ void RigidbodyComponent::OnSpawn()
 
 
 }
-void RigidbodyComponent::OnPostPhysics(float DeltaTime)
+void RigidbodyComponent::OnPostPhysics(float FixedDeltaTime)
 {
-	GameComponent::OnPostPhysics(DeltaTime);
+	GameComponent::OnPostPhysics(FixedDeltaTime);
 
 	// perform horizontal damping
 	b2Vec2 Velocity = GetVelocity();
-	Velocity = b2Vec2(Velocity.x - (Velocity.x * DeltaTime * HorizontalDamping), Velocity.y);
+	Velocity = b2Vec2(Velocity.x - (Velocity.x * FixedDeltaTime * HorizontalDamping), Velocity.y);
 	SetVelocity(Velocity);
 	//!perform horizontal damping
-	//! 
+	
 	GameEntity& Parent = GetParentEntity();
 	b2Vec2 BodyPos = Body->GetPosition();
-	Parent.GetTransform().Position = glm::vec3(BodyPos.x, BodyPos.y, Parent.GetTransform().Position.z);
+	Parent.GetTransform().SetPosition(glm::vec3(BodyPos.x, BodyPos.y, Parent.GetTransform().GetPosition().z));
 	glm::vec3 Euler = Parent.GetTransform().GetEulerRotation();
 	Parent.GetTransform().SetEulerRotation(glm::vec3(Euler.x, Euler.y, Body->GetAngle() / 0.0174533f));
 
-	int x, y;
+	/*int x, y;
 	SDL_GetMouseState(&x, &y);
 	glm::vec2 PixelSpace = { x, y };
 	glm::vec4 ScreenSpace = glm::vec4(WindowManager::Get().PixelCoordToScreenSpace(PixelSpace), 1.0f);
@@ -62,8 +62,8 @@ void RigidbodyComponent::OnPostPhysics(float DeltaTime)
 	WorldSpace.z = 0;
 	glm::vec3 mouse_pos = WorldSpace;
 	glm::vec3 position = GetParentEntity().GetTransform().Position;
-	glm::vec2 force = mouse_pos - position;
-	Body->ApplyForceToCenter({ force[0], force[1] }, true);
+	glm::vec2 force = mouse_pos - position;*/
+	//Body->ApplyForceToCenter({ force[0], force[1] }, true);
 }
 
 void RigidbodyComponent::SetDynamic(bool bDynamic)

@@ -11,9 +11,9 @@ void PlayerTrackerEntity::OnTick(float DeltaTime)
 
 	if (GameEntity* Entity = TrackTargetWeakPtr.Get())
 	{
-		glm::vec3 Position = GetTransform().Position;
-		glm::vec3 Difference = Entity->GetTransform().Position - Position;
+		glm::vec3 Position = GetTransform().GetPosition();
+		glm::vec3 Difference = Entity->GetTransform().GetPosition() - Position;
 		
-		GetTransform().Position += Difference * DeltaTime * TrackSpeed;
+		GetTransform().SetPosition(GetTransform().GetPosition() + (Difference * DeltaTime * TrackSpeed));
 	}
 }

@@ -18,6 +18,7 @@ public:
 
 	glm::ivec2 SpriteSheetSize = glm::ivec2(1,1);
 	float SpriteSheetProgressionSpeed = 0;
+	bool bMirrored = false;
 private:
 	glm::ivec2 SpriteSheetIndex = glm::ivec2(0, 0);
 	float SpriteSheetProgress = 0.f;

@@ -2,6 +2,7 @@
 #include "../GunGame.h"
 #include  <box2d/b2_world.h>
 #include "../GameManager.h"
+#include "../ECS/GameBaseObject.h"
 PhysicsWorld* PhysicsWorld::Singleton;
 
 PhysicsWorld& PhysicsWorld::Get()
@@ -26,15 +27,17 @@ b2World& PhysicsWorld::GetWorld()
 void PhysicsWorld::Step()
 {
 	static float LastStepTime = GameManager::GetTime();
-	float TimeStep = 1.0f / 30.0f;
+	float TimeStep = 1.0f / 60.0f;
 
-	while (GameManager::GetTime() > LastStepTime + TimeStep) // Make sure the physics simulation is caught up just incase any lag spikes happen
-	{
-		int32 VelocityIterations = 6;
-		int32 PositionIterations = 2;
 
-		GetWorld().Step(TimeStep, VelocityIterations, PositionIterations);
+	int32 VelocityIterations = 6;
+	int32 PositionIterations = 2;
 
-		LastStepTime += TimeStep;
-	}
+	GetWorld().Step(TimeStep, VelocityIterations, PositionIterations);
+
+	LastStepTime += TimeStep;
+
+	GameBaseObject::TickPhysics(TimeStep);
+
+	
 }

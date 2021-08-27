@@ -22,19 +22,40 @@ void GameEntity::Destroy()
 
 }
 
-glm::mat4x4 GameEntity::GetModelMatrix()
+glm::mat4x4 EntityTransform::GetModelMatrix()
 {
-	glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), GetTransform().Position);
-	glm::mat4x4 RotateMatrix = glm::toMat4(GetTransform().Rotation);
-	glm::mat4x4 ScaleMatrix = glm::scale(glm::mat4x4(1.0f), GetTransform().Scale);
-	return TranslateMatrix * RotateMatrix * ScaleMatrix;
+	if (bModelMatrixDirty)
+	{
+		glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), Position);
+		glm::mat4x4 RotateMatrix = glm::toMat4(Rotation);
+		glm::mat4x4 ScaleMatrix = glm::scale(glm::mat4x4(1.0f), Scale);
+		CachedModelMatrix = TranslateMatrix * RotateMatrix * ScaleMatrix;
+		bModelMatrixDirty = false;
+	}
+	return CachedModelMatrix;
 }
 
-glm::mat4x4 GameEntity::GetTransRotationMatrix()
+glm::mat4x4 EntityTransform::GetXMirroredModelMatrix()
 {
-	glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), GetTransform().Position);
-	glm::mat4x4 RotateMatrix = glm::toMat4(GetTransform().Rotation);
-	return TranslateMatrix * RotateMatrix;
+	if (bXMirroredModelMatrixDirty)
+	{
+		glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), Position);
+		glm::mat4x4 RotateMatrix = glm::toMat4(Rotation);
+		glm::mat4x4 ScaleMatrix = glm::scale(glm::mat4x4(1.0f), Scale * glm::vec3(-1, 1, 1));
+		CachedXMirroredModelMatrix = TranslateMatrix * RotateMatrix * ScaleMatrix;
+	}
+	return CachedXMirroredModelMatrix;
+}
+
+glm::mat4x4 EntityTransform::GetTransRotationMatrix()
+{
+	if (bTransRotationMatrixDirty)
+	{
+		glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), Position);
+		glm::mat4x4 RotateMatrix = glm::toMat4(Rotation);
+		CachedTransRotationMatrix = TranslateMatrix * RotateMatrix;
+	}
+	return CachedTransRotationMatrix;
 }
 
 
@@ -69,9 +90,42 @@ void EntityTransform::SetEulerRotation(glm::vec3 Euler)
 {
 	Euler *= 0.0174533f; // deg to rad
 	Rotation = glm::quat(Euler);
+
+	bModelMatrixDirty = true;
+	bXMirroredModelMatrixDirty = true;
+	bTransRotationMatrixDirty = true;
 }
 
 glm::vec3 EntityTransform::GetEulerRotation()
 {
 	return glm::eulerAngles(Rotation);
+}
+
+void EntityTransform::SetPosition(glm::vec3 NewPosition)
+{
+	Position = NewPosition;
+
+	bModelMatrixDirty = true;
+	bXMirroredModelMatrixDirty = true;
+	bTransRotationMatrixDirty = true;
+}
+glm::vec3 EntityTransform::GetPosition()
+{
+	return Position;
+}
+void EntityTransform::SetScale(glm::vec3 NewScale)
+{
+	Scale = NewScale;
+
+	bModelMatrixDirty = true;
+	bXMirroredModelMatrixDirty = true;
+}
+glm::vec3 EntityTransform::GetScale()
+{
+	return Scale;
+}
+
+glm::quat EntityTransform::GetRotation()
+{
+	return Rotation;
 }

@@ -17,7 +17,7 @@ public:
 	virtual void OnDestroy() {};
 	virtual void OnEnable() {};
 	virtual void OnDisable() {};
-	virtual void OnPostPhysics(float DeltaTime) {};
+	virtual void OnPostPhysics(float FixedDeltaTime) {};
 	virtual void OnPreTick(float DeltaTime) {};
 	virtual void OnTick(float DeltaTime) {};
 	virtual void OnPostTick(float DeltaTime) {};
@@ -35,6 +35,7 @@ public:
 	static void SpawnPendingObjects();
 	static void DestroyPendingObjects();
 	static void TickAllObjects(float DeltaTime);
+	static void TickPhysics(float FixedDeltaTime);
 	static void PostRenderAllObjects(float DeltaTime);
 	static bool bCreationLock;
 

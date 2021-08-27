@@ -94,12 +94,7 @@ void GameBaseObject::DestroyPendingObjects()
 
 void GameBaseObject::TickAllObjects(float DeltaTime)
 {
-	for (GameBaseObject* BaseObject : AllBaseObjects)
-	{
-		if (!BaseObject->bEnabled) continue;
-		if (BaseObject->bPendingDestroy) continue;
-		BaseObject->OnPostPhysics(DeltaTime);
-	}
+
 
 	for (GameBaseObject* BaseObject : AllBaseObjects)
 	{
@@ -120,6 +115,16 @@ void GameBaseObject::TickAllObjects(float DeltaTime)
 		if (!BaseObject->bEnabled) continue;
 		if (BaseObject->bPendingDestroy) continue;
 		BaseObject->OnPostTick(DeltaTime);
+	}
+}
+
+void GameBaseObject::TickPhysics(float FixedDeltaTime)
+{
+	for (GameBaseObject* BaseObject : AllBaseObjects)
+	{
+		if (!BaseObject->bEnabled) continue;
+		if (BaseObject->bPendingDestroy) continue;
+		BaseObject->OnPostPhysics(FixedDeltaTime);
 	}
 }
 

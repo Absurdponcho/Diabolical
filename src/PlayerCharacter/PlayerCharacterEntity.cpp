@@ -1,6 +1,7 @@
 #include "PlayerCharacterEntity.h"
 #include "../Physics/RigidbodyComponent.h"
 #include "../Rendering/Particles/Particle.h"
+#include "../Rendering/SpriteRendererComponent.h"
 
 void PlayerCharacterEntity::OnSpawn()
 {
@@ -17,25 +18,21 @@ void PlayerCharacterEntity::OnTick(float DeltaTime)
 	{
 		b2Vec2 Force(glm::clamp(HorizontalMovement, -1.f, 1.f) * DeltaTime * HorizonalMovementForce, 0.f);
 		GetComponent<RigidbodyComponent>()->AddForceAtCenter(Force);
-
-		Particle Particle;
-		Particle.Color = glm::vec4((float)(rand() % 100) / 100, (float)(rand() % 100) / 100, (float)(rand() % 100) / 100, 1);
-		Particle.Position = GetTransform().Position;
-		Particle.Size = 0.1f;
-		Particle.Speed = 5.5f;
-		constexpr float Pi = glm::pi<float>();
-		if (HorizontalMovement > 0)
-		{
-			Particle.Rotation = -Pi / 2 + (glm::mod<float>((float)rand(), Pi / 2) - Pi / 4);
-		}
-		else
-		{
-			Particle.Rotation = Pi / 2 + (glm::mod<float>((float)rand(), Pi / 2) - Pi / 4);
-
-		}
-		ParticleManager::RegisterParticle(Particle);
 	}
 
+
+	glm::ivec2 ScreenPos;
+	SDL_GetMouseState((int*)&ScreenPos, (int*)&ScreenPos + 1);
+	glm::vec3 WorldPosition = Utility::ScreenToWorld(ScreenPos, CameraComponent::GetActiveCamera());
+	if (WorldPosition.x > GetTransform().GetPosition().x)
+	{
+		GetComponent<SpriteRendererComponent>()->bMirrored = false;
+	}
+	else
+	{
+		GetComponent<SpriteRendererComponent>()->bMirrored = true;
+
+	}
 
 }
 
@@ -48,7 +45,7 @@ void PlayerCharacterEntity::Jump(ActionInfo ActionInfo)
 
 	Particle Particle;
 	Particle.Color = glm::vec4((float)(rand() % 100) / 100, (float)(rand() % 100) / 100, (float)(rand() % 100) / 100, 1);
-	Particle.Position = GetTransform().Position;
+	Particle.Position = GetTransform().GetPosition();
 	Particle.Size = 0.1f;
 	constexpr float Pi = glm::pi<float>();
 	for (int i = 0; i < 100; i++)

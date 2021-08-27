@@ -177,7 +177,8 @@ void SpriteRendererComponent::SelectSpriteSheetIndex(float DeltaTime)
 void SpriteRendererComponent::Render(CameraComponent& Camera)
 {
     
-    glm::mat4x4 ModelMatrix = GetParentEntity().GetModelMatrix();
+    glm::mat4x4 ModelMatrix = bMirrored ? GetParentEntity().GetTransform().GetXMirroredModelMatrix() : GetParentEntity().GetTransform().GetModelMatrix();
+
     glm::mat4 ViewMatrix = Camera.GetViewMatrix();
     glm::mat4x4 ProjectionMatrix = Camera.GetProjectionMatrix();
 

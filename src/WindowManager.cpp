@@ -24,6 +24,8 @@ WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint
 	}
 	glewInit();
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void WindowManager::Initialize(const char* WindowTitle, int x, int y, int w, int h, Uint32 WindowFlags)

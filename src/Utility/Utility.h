@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 
+class CameraComponent;
 struct b2Vec2;
 
 class Utility
@@ -14,6 +15,7 @@ public:
 	static void DrawDebugLine(const glm::vec3& From, const glm::vec3& To);
 	static std::wstring StringToWString(const std::string& String);
 	static std::string WStringToString(const std::wstring& String);
+	static glm::vec3 ScreenToWorld(glm::vec2 ScreenPos, CameraComponent* Camera);
 
 	template<class T, class Pred>
 	static T FindPred(std::vector<T> Vector, Pred Predicate)
@@ -35,4 +37,6 @@ public:
 		}
 		return false;
 	}
+
+	
 };

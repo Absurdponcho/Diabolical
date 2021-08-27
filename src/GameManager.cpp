@@ -35,6 +35,7 @@ void GameManager::EventTick()
 {
 	SDL_Event Event;
 	while (SDL_PollEvent(&Event)) {
+
 		switch (Event.type) {
 
 		case SDL_KEYDOWN:
@@ -51,6 +52,10 @@ void GameManager::EventTick()
 
 		case SDL_QUIT:
 			bMainLoopRunning = false;
+			break;
+
+		case 512: // screen resize thing
+			glViewport(0, 0, WindowManager::Get().GetScreenSize().x, WindowManager::Get().GetScreenSize().y);
 			break;
 
 		default:

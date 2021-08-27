@@ -39,7 +39,7 @@ void Utility::DrawDebugLine(const glm::vec3& From, const glm::vec3& To)
 {
 	//SDL_SetRenderDrawColor(WindowManager::GetSDLRenderer(), 255, 0, 0, 255);
 
-	CameraComponent* Camera = CameraComponent::GetActiveCamera();
+	/*CameraComponent* Camera = CameraComponent::GetActiveCamera();
 	if (!Camera) return;
 
 	glm::vec4 From4 = glm::vec4(From, 1);
@@ -53,7 +53,7 @@ void Utility::DrawDebugLine(const glm::vec3& From, const glm::vec3& To)
 	To4 = VPMatrix * To4;
 
 	From4 = glm::vec4(WindowManager::Get().ScreenSpaceToPixelCoord(From4), 0);
-	To4 = glm::vec4(WindowManager::Get().ScreenSpaceToPixelCoord(To4), 0);
+	To4 = glm::vec4(WindowManager::Get().ScreenSpaceToPixelCoord(To4), 0);*/
 
 	//SDL_RenderDrawLineF(WindowManager::GetSDLRenderer(), From4.x, From4.y, To4.x, To4.y);
 }
@@ -67,4 +67,19 @@ std::string Utility::WStringToString(const std::wstring& String)
 {
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 	return (converter.to_bytes(String));
+}
+
+glm::vec3 Utility::ScreenToWorld(glm::vec2 ScreenPos, CameraComponent* Camera)
+{
+	if (!Camera) return glm::vec3();
+
+	glm::vec4 ScreenSpace = glm::vec4(WindowManager::Get().PixelCoordToScreenSpace(ScreenPos), 1.0f);
+	glm::mat4 ViewMatrix = Camera->GetViewMatrix();
+	glm::mat4 ProjMatrix = Camera->GetProjectionMatrix();
+	glm::mat4 ViewProjectionMatrix = ProjMatrix * ViewMatrix;
+	ViewProjectionMatrix = glm::inverse(ViewProjectionMatrix);
+	glm::vec4 WorldSpace = ViewProjectionMatrix * ScreenSpace;
+	WorldSpace.z = 0;
+	return WorldSpace;
+
 }

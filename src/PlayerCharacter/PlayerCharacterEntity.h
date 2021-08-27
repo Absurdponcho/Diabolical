@@ -14,7 +14,7 @@ public:
 	void Right(ActionInfo ActionInfo);
 	void Left(ActionInfo ActionInfo);
 
-	float HorizonalMovementForce = 1200;
+	float HorizonalMovementForce = 2000;
 	float JumpVelocity = 8;
 
 private:

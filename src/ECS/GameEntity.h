@@ -9,12 +9,33 @@ class GameComponent;
 
 struct EntityTransform
 {
+public:
+	void SetEulerRotation(glm::vec3 Euler);
+	glm::vec3 GetEulerRotation();
+
+	glm::quat GetRotation();
+
+	void SetPosition(glm::vec3 NewPosition);
+	glm::vec3 GetPosition();
+
+	void SetScale(glm::vec3 NewScale);
+	glm::vec3 GetScale();
+
+	glm::mat4x4 GetModelMatrix();
+	glm::mat4x4 GetXMirroredModelMatrix();
+	glm::mat4x4 GetTransRotationMatrix();
+
+private:
 	glm::vec3 Position = glm::vec3(0, 0, 0);
 	glm::quat Rotation = glm::quat(1.0, 0.0, 0.0, 0.0);;
 	glm::vec3 Scale = glm::vec3(1, 1, 1);
 
-	void SetEulerRotation(glm::vec3 Euler);
-	glm::vec3 GetEulerRotation();
+	bool bModelMatrixDirty = false;
+	glm::mat4x4 CachedModelMatrix;
+	bool bXMirroredModelMatrixDirty = false;
+	glm::mat4x4 CachedXMirroredModelMatrix;
+	bool bTransRotationMatrixDirty = false;
+	glm::mat4x4 CachedTransRotationMatrix;
 };
 
 class GameEntity : public GameBaseObject
@@ -38,17 +59,19 @@ public:
 		return nullptr;
 	}
 
-	glm::mat4x4 GetModelMatrix();
-	glm::mat4x4 GetTransRotationMatrix();
+
 
 	// dont call these manually 
 	void AttachComponent(GameComponent* Component);
 	void DetachComponent(GameComponent* Component);
 
 private:
+
+
 	EntityTransform Transform = EntityTransform();
 
 	std::vector<GameComponent*> AttachedComponents;
+	std::vector<GameEntity*> AttachedEntites;
 };
 
 
