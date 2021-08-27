@@ -25,6 +25,19 @@ public:
 
 	EntityTransform& GetTransform();
 
+	template <class UserClass>
+	UserClass* GetComponent()
+	{
+		for (GameComponent* Component : AttachedComponents)
+		{
+			if (UserClass* Comp = dynamic_cast<UserClass*>(Component))
+			{
+				return Comp;
+			}
+		}
+		return nullptr;
+	}
+
 	glm::mat4x4 GetModelMatrix();
 	glm::mat4x4 GetTransRotationMatrix();
 

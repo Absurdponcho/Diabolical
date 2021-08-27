@@ -109,15 +109,18 @@ void ParticleManager::Initialize()
 
         // Generate and bind VAO, which stores the VBO and EBO
         glGenVertexArrays(1, &VertexArrayObject);
+        Check(VertexArrayObject);
         glBindVertexArray(VertexArrayObject);
 
         // Generate and bind VBO, which stores vertex information
         glGenBuffers(1, &VertexBufferObject);
+        Check(VertexBufferObject);
         glBindBuffer(GL_ARRAY_BUFFER, VertexBufferObject);
         glBufferData(GL_ARRAY_BUFFER, sizeof(ParticleVertices), ParticleVertices, GL_STATIC_DRAW);
 
         // Generate and bind VBO, which stores element information
         glGenBuffers(1, &ElementBufferObject);
+        Check(ElementBufferObject);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ElementBufferObject);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(ParticleIndices), ParticleIndices, GL_STATIC_DRAW);
 
@@ -131,31 +134,34 @@ void ParticleManager::Initialize()
 
 void ParticleManager::BatchParticle(CameraComponent& Camera, Particle& Particle, float DeltaTime, int BatchIndex)
 {
-    glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), Particle.Position);
-    glm::mat4x4 ParticleModelMatrix = glm::scale(TranslateMatrix, glm::vec3(Particle.Size));
+    if (Particle.Lifetime > 0)
+    {
+        glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), Particle.Position);
+        glm::mat4x4 ParticleModelMatrix = glm::scale(TranslateMatrix, glm::vec3(Particle.Size));
 
-    glm::mat4 ViewMatrix = Camera.GetViewMatrix();
-    glm::mat4x4 ProjectionMatrix = Camera.GetProjectionMatrix();
+        glm::mat4 ViewMatrix = Camera.GetViewMatrix();
+        glm::mat4x4 ProjectionMatrix = Camera.GetProjectionMatrix();
 
-    glm::mat4x4 MVPMatrix = ProjectionMatrix * ViewMatrix * ParticleModelMatrix;
+        glm::mat4x4 MVPMatrix = ProjectionMatrix * ViewMatrix * ParticleModelMatrix;
 
-    // Bind shader & VAO so opengl knows what to draw
-    glUseProgram(ShaderProgram);
-    glBindVertexArray(VertexArrayObject);
+        // Bind shader & VAO so opengl knows what to draw
+        glUseProgram(ShaderProgram);
+        glBindVertexArray(VertexArrayObject);
 
-    // Upload matrix to shader
-    int MVPMatrixLocation = glGetUniformLocation(ShaderProgram, "MVP");
-    glUniformMatrix4fv(MVPMatrixLocation, 1, GL_FALSE, glm::value_ptr(MVPMatrix));
+        // Upload matrix to shader
+        int MVPMatrixLocation = glGetUniformLocation(ShaderProgram, "MVP");
+        glUniformMatrix4fv(MVPMatrixLocation, 1, GL_FALSE, glm::value_ptr(MVPMatrix));
 
-    int ParticleColorLocation = glGetUniformLocation(ShaderProgram, "ParticleColor");
-    glUniform4fv(ParticleColorLocation, 1, glm::value_ptr(Particle.Color));
+        int ParticleColorLocation = glGetUniformLocation(ShaderProgram, "ParticleColor");
+        glUniform4fv(ParticleColorLocation, 1, glm::value_ptr(Particle.Color));
 
-    // draw elements, we have 6 elements so specify 6. For meshes we would
-    // need a dynamic element count but sprites will always have 6 elements
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // draw elements, we have 6 elements so specify 6. For meshes we would
+        // need a dynamic element count but sprites will always have 6 elements
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-    Particle.Position += glm::vec3(sin(Particle.Rotation), cos(Particle.Rotation), 0) * DeltaTime * Particle.Speed;
-
-    BatchedTransformMatrices[BatchIndex] = MVPMatrix;
+        Particle.Position += glm::vec3(sin(Particle.Rotation), cos(Particle.Rotation), 0) * DeltaTime * Particle.Speed;
+        Particle.Lifetime -= DeltaTime;
+    }
+    BatchedTransformMatrices[BatchIndex] = glm::mat4();
     BatchedColors[BatchIndex] = Particle.Color;
 }

@@ -8,6 +8,7 @@ size_t GameBaseObject::UIDCounter = 1;
 std::stack<GameBaseObject*> GameBaseObject::BaseObjectsPendingSpawn;
 std::stack<GameBaseObject*> GameBaseObject::BaseObjectsPendingDestroy;
 std::vector<GameBaseObject*> GameBaseObject::AllBaseObjects;
+std::unordered_map<size_t, GameBaseObject*> GameBaseObject::BaseObjectsMap;
 bool GameBaseObject::bCreationLock = true;
 
 GameBaseObject::GameBaseObject()
@@ -58,6 +59,7 @@ void GameBaseObject::SpawnPendingObjects()
 		GameBaseObject* BaseObject = BaseObjectsPendingSpawn.top();
 		Logging::LogVerbose("GameBaseObject::SpawnPendingObjects()", "Spawned object with UID " + std::to_string(BaseObject->GetUID()));
 		AllBaseObjects.push_back(BaseObject);
+		BaseObjectsMap[BaseObject->UID] = BaseObject;
 		BaseObject->OnSpawn();
 		BaseObjectsPendingSpawn.pop();
 	}
@@ -68,6 +70,8 @@ void GameBaseObject::DestroyPendingObjects()
 	while (!BaseObjectsPendingDestroy.empty())
 	{
 		GameBaseObject* BaseObject = BaseObjectsPendingDestroy.top();
+		size_t UID = BaseObject->UID;
+
 		if (!BaseObject) continue;
 		BaseObjectsPendingDestroy.pop();
 		BaseObject->OnDestroy();
@@ -81,6 +85,8 @@ void GameBaseObject::DestroyPendingObjects()
 				break;
 			}
 		}
+
+		BaseObjectsMap.erase(UID);
 
 		delete(BaseObject);
 	}
@@ -139,5 +145,5 @@ bool GameBaseObject::IsEnabled()
 
 GameBaseObject* GameBaseObject::GetFromUID(size_t TargetUID)
 {
-	return Utility::FindPred(AllBaseObjects, [=](GameBaseObject* RHS) { return RHS->GetUID() == TargetUID; });
+	return BaseObjectsMap[TargetUID];
 }

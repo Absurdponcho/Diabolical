@@ -19,4 +19,12 @@
 #include "Rendering/Camera.h"
 #include "Input/InputManager.h"
 #include <SDL2/SDL.h>
+#include "Rendering/BasicRendererComponent.h"
+#include "Rendering/SquareRendererComponent.h"
+#include "Physics/RigidbodyComponent.h"
+#include "Textures/TextureAsset.h"
+#include "Rendering/SpriteRendererComponent.h"
+#include "Rendering/Particles/Particle.h"
+#include "PlayerCharacter/PlayerTrackerEntity.h"
+#include "PlayerCharacter/PlayerCharacterEntity.h"
 #undef PlaySound

@@ -23,6 +23,7 @@ WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint
 		bWindowValid = false;
 	}
 	glewInit();
+	glEnable(GL_DEPTH_TEST);
 }
 
 void WindowManager::Initialize(const char* WindowTitle, int x, int y, int w, int h, Uint32 WindowFlags)

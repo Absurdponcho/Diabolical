@@ -28,14 +28,22 @@ void RigidbodyComponent::OnSpawn()
 
 	MainFixture = Body->CreateFixture(&FixtureDef);
 
-	Body->SetType(bIsDynamic ? b2BodyType::b2_dynamicBody : b2BodyType::b2_kinematicBody);
+	Body->SetType(bIsDynamic ? b2BodyType::b2_dynamicBody : b2BodyType::b2_staticBody);
+	Body->SetFixedRotation(!bIsRotating);
+	Body->SetLinearDamping(DesiredLinearDamping);
 
 
 }
-
-
 void RigidbodyComponent::OnPostPhysics(float DeltaTime)
 {
+	GameComponent::OnPostPhysics(DeltaTime);
+
+	// perform horizontal damping
+	b2Vec2 Velocity = GetVelocity();
+	Velocity = b2Vec2(Velocity.x - (Velocity.x * DeltaTime * HorizontalDamping), Velocity.y);
+	SetVelocity(Velocity);
+	//!perform horizontal damping
+	//! 
 	GameEntity& Parent = GetParentEntity();
 	b2Vec2 BodyPos = Body->GetPosition();
 	Parent.GetTransform().Position = glm::vec3(BodyPos.x, BodyPos.y, Parent.GetTransform().Position.z);
@@ -68,6 +76,39 @@ void RigidbodyComponent::SetDynamic(bool bDynamic)
 	
 }
 
+void RigidbodyComponent::SetRotates(bool bRotates)
+{
+	if (bSpawned)
+	{
+		Body->SetFixedRotation(!bRotates);
+	}
+	bIsRotating = bRotates;
+}
+
+void RigidbodyComponent::SetLinearDamping(float Drag)
+{
+	if (bSpawned)
+	{
+		Body->SetLinearDamping(Drag);
+	}
+	DesiredLinearDamping = Drag;
+}
+
+void RigidbodyComponent::SetVelocity(b2Vec2 Velocity)
+{
+	Body->SetLinearVelocity(Velocity);
+}
+
+b2Vec2 RigidbodyComponent::GetVelocity()
+{
+	return Body->GetLinearVelocity();
+}
+
+void RigidbodyComponent::SetHorizonalDamping(float Damping)
+{
+	HorizontalDamping = Damping;
+}
+
 void RigidbodyComponent::OnPostRender(float DeltaTime)
 {
 	if (!bDrawDebugPolys) return;
@@ -75,6 +116,7 @@ void RigidbodyComponent::OnPostRender(float DeltaTime)
 
 	
 }
+
 
 void RigidbodyComponent::Jump(ActionInfo Info)
 {
@@ -87,4 +129,12 @@ void RigidbodyComponent::Right(ActionInfo Info)
 
 void RigidbodyComponent::Left(ActionInfo Info)
 {
+}
+
+void RigidbodyComponent::AddForceAtCenter(const b2Vec2& Force)
+{
+	if (Body)
+	{
+		Body->ApplyForceToCenter(Force, true);
+	}
 }

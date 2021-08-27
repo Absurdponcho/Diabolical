@@ -155,12 +155,15 @@
     <ClCompile Include="ECS\GameBaseObject.cpp" />
     <ClCompile Include="ECS\GameComponent.cpp" />
     <ClCompile Include="ECS\GameEntity.cpp" />
+    <ClCompile Include="ECS\GameWeakObjectPointer.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GunGame.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Physics\RigidbodyComponent.cpp" />
+    <ClCompile Include="PlayerCharacter\PlayerCharacterEntity.cpp" />
+    <ClCompile Include="PlayerCharacter\PlayerTrackerEntity.cpp" />
     <ClCompile Include="Rendering\BasicRendererComponent.cpp" />
     <ClCompile Include="Rendering\Camera.cpp" />
     <ClCompile Include="Rendering\GameRendererComponent.cpp" />
@@ -185,6 +188,7 @@
     <ClInclude Include="ECS\GameBaseObject.h" />
     <ClInclude Include="ECS\GameComponent.h" />
     <ClInclude Include="ECS\GameEntity.h" />
+    <ClInclude Include="ECS\GameWeakObjectPointer.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GunGame.h" />
     <ClInclude Include="Input\InputManager.h" />
@@ -192,6 +196,8 @@
     <ClInclude Include="opengl.h" />
     <ClInclude Include="Physics\PhysicsWorld.h" />
     <ClInclude Include="Physics\RigidbodyComponent.h" />
+    <ClInclude Include="PlayerCharacter\PlayerCharacterEntity.h" />
+    <ClInclude Include="PlayerCharacter\PlayerTrackerEntity.h" />
     <ClInclude Include="Rendering\BasicRendererComponent.h" />
     <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Rendering\Camera.h" />

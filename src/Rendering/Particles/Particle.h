@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 #include "../Camera.h"
 
-#define PARTICLE_LIMIT 5000
+#define PARTICLE_LIMIT 1000
 
 struct Particle
 {
@@ -11,6 +11,7 @@ struct Particle
 	float Speed;
 	float Rotation; //not using rotation for now, except for movement
 	float Size;
+	float Lifetime = 1;
 };
 
 class ParticleManager

@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <stack>
 #include <vector>
+#include <unordered_map>
 
 class GameBaseObject
 {
@@ -45,6 +46,7 @@ private:
 	static std::stack<GameBaseObject*> BaseObjectsPendingSpawn;
 	static std::stack<GameBaseObject*> BaseObjectsPendingDestroy;
 	static std::vector<GameBaseObject*> AllBaseObjects;
+	static std::unordered_map<size_t, GameBaseObject*> BaseObjectsMap;
 
 	bool bPendingDestroy = false;
 	bool bEnabled = true;
