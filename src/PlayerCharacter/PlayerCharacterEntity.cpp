@@ -14,7 +14,7 @@ void PlayerCharacterEntity::OnTick(float DeltaTime)
 {
 	if (HorizontalMovement != 0)
 	{
-		b2Vec2 Force(HorizontalMovement * DeltaTime * HorizonalMovementForce, 0.f);
+		b2Vec2 Force(glm::clamp(HorizontalMovement, -1.f, 1.f) * DeltaTime * HorizonalMovementForce, 0.f);
 		GetComponent<RigidbodyComponent>()->AddForceAtCenter(Force);
 	}
 }
