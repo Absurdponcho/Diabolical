@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 
     GameEntity* Square1 = CreateEntity<GameEntity>();
     {
-        Square1->GetTransform().Position = glm::vec3(0, -6, 0);
+        Square1->GetTransform().Position = glm::vec3(0, -6, 1);
         Square1->GetTransform().Scale = glm::vec3(40, 1, 1);
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square1);
         CreateComponent<SpriteRendererComponent>(Square1)->SetTexture(CrateTexturePointer);
