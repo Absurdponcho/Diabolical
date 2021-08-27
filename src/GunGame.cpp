@@ -30,10 +30,10 @@ int main(int argc, char** argv)
 
     GameAssetSoftPointer<TextureAsset> CrateTexturePointer("GameAssetFiles/Crate.png");
 
-    for (int i = 5; i < 10; i++)
+    for (int i = 5; i < 100; i++)
     {
         GameEntity* Square0 = CreateEntity<GameEntity>();
-        Square0->GetTransform().Position = glm::vec3(sin(i) * 10.f, i / 5.f, 0);
+        Square0->GetTransform().Position = glm::vec3(sin(i) * 10.f, i / 10.f, 0);
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square0);
         CreateComponent<SpriteRendererComponent>(Square0)->SetTexture(CrateTexturePointer);
         Rigidbody->SetDynamic(true);

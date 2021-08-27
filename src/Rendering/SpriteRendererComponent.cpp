@@ -169,15 +169,12 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     // need a dynamic element count but sprites will always have 6 elements
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     
-    Particle Particle;
-    Particle.Color = glm::vec4((float)(rand() % 100) / 100, (float)(rand() % 100) / 100, (float)(rand() % 100) / 100, 1);
-    Particle.Position = GetParentEntity().GetTransform().Position;
-    Particle.Size = 0.1f;
-    Particle.Speed = 0.5f;
-    Particle.Rotation = (float)(rand() % 360);
-    ParticleManager::RegisterParticle(Particle);
-    /*glBindTexture(GL_TEXTURE_2D, 0);
-    glBindVertexArray(0);
-    glUseProgram(0);*/
+    //Particle Particle;
+    //Particle.Color = glm::vec4((float)(rand() % 100) / 100, (float)(rand() % 100) / 100, (float)(rand() % 100) / 100, 1);
+    //Particle.Position = GetParentEntity().GetTransform().Position;
+    //Particle.Size = 0.1f;
+    //Particle.Speed = 5.5f;
+    //Particle.Rotation = (float)(rand() % 360);
+    //ParticleManager::RegisterParticle(Particle);
 
 }

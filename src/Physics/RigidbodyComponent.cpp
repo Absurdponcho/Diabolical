@@ -28,7 +28,7 @@ void RigidbodyComponent::OnSpawn()
 
 	MainFixture = Body->CreateFixture(&FixtureDef);
 
-	Body->SetType(bIsDynamic ? b2BodyType::b2_dynamicBody : b2BodyType::b2_kinematicBody);
+	Body->SetType(bIsDynamic ? b2BodyType::b2_dynamicBody : b2BodyType::b2_staticBody);
 	Body->SetFixedRotation(!bIsRotating);
 	Body->SetLinearDamping(DesiredLinearDamping);
 
