@@ -55,7 +55,7 @@ int main(int argc, char** argv)
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(PlayerCharacter);
         Rigidbody->SetDynamic(true);
         Rigidbody->SetRotates(false);
-        Rigidbody->SetHorizonalDamping(200);
+        Rigidbody->SetHorizonalDamping(5);
         CreateComponent<SpriteRendererComponent>(PlayerCharacter)->SetTexture(CrateTexturePointer);
     }
 

@@ -34,16 +34,16 @@ void RigidbodyComponent::OnSpawn()
 
 
 }
-
-
 void RigidbodyComponent::OnPostPhysics(float DeltaTime)
 {
+	GameComponent::OnPostPhysics(DeltaTime);
+
 	// perform horizontal damping
 	b2Vec2 Velocity = GetVelocity();
-	Velocity = b2Vec2(Velocity.x - (Velocity.x * DeltaTime), Velocity.y);
+	Velocity = b2Vec2(Velocity.x - (Velocity.x * DeltaTime * HorizontalDamping), Velocity.y);
 	SetVelocity(Velocity);
 	//!perform horizontal damping
-
+	//! 
 	GameEntity& Parent = GetParentEntity();
 	b2Vec2 BodyPos = Body->GetPosition();
 	Parent.GetTransform().Position = glm::vec3(BodyPos.x, BodyPos.y, Parent.GetTransform().Position.z);
