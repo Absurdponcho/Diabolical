@@ -55,7 +55,7 @@ void PlayerCharacterEntity::Jump(ActionInfo ActionInfo)
 	{
 		Particle.Speed = 5.5f + glm::mod<float>((float)rand(), 30.f) / 10;
 		Particle.Rotation = Pi + (glm::mod<float>((float)rand(), Pi / 2) - Pi / 4);
-		Particle.Lifetime = .3 + glm::mod<float>((float)rand(), 5.f) / 10;
+		Particle.Lifetime = .3f + glm::mod<float>((float)rand(), 5.f) / 10;
 		ParticleManager::RegisterParticle(Particle);
 	}
 }
