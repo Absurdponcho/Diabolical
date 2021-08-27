@@ -15,27 +15,20 @@ enum class EInputType
 	IT_Held
 };
 
-enum class EEventType {
-	KeyboardEvent,
-	MouseButtonEvent,
-	MouseWheelEvent,
-	MouseMoveEvent
-};
-
 
 struct ActionInfo
 {
 public:
 	EInputType InputType;
-	EEventType EventType;
 	union
 	{
+		SDL_CommonEvent* Event;
 		SDL_KeyboardEvent* KeyboardEvent;
 		SDL_MouseButtonEvent* MouseButtonEvent;
 		SDL_MouseWheelEvent* MouseWheelEvent;
-		SDL_MouseMotionEvent* MouseMotionEvent;
-	}_event;
+	};
 };
+
 
 typedef GameMulticastDelegate<ActionInfo> InputDelegate;
 
@@ -43,12 +36,12 @@ class InputManager
 {
 public:
 	static void HandleKeyboardEvent(SDL_KeyboardEvent& KeyboardEvent);
-	static void HandleMouseMotionEvent(SDL_MouseMotionEvent& MouseMotionEvent);
 	static void HandleMouseWheelEvent(SDL_MouseWheelEvent& MouseWheelEvent);
 	static void HandleMouseButtonEvent(SDL_MouseButtonEvent& MouseEvent);
 
 	static void AddKeyMapping(std::string Action, SDL_Keycode Symbol);
 	static void AddMouseButtonMapping(std::string Action, Uint8 Button);
+	static void AddMouseWheelMapping(std::string Action, Uint32 Direction);
 
 	template<class UserClass>
 	static void BindMethod(std::string Action, UserClass* Object, void (UserClass::* MethodPtr)(ActionInfo))

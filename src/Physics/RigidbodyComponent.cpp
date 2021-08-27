@@ -39,9 +39,23 @@ void RigidbodyComponent::OnPostPhysics(float DeltaTime)
 	GameEntity& Parent = GetParentEntity();
 	b2Vec2 BodyPos = Body->GetPosition();
 	Parent.GetTransform().Position = glm::vec3(BodyPos.x, BodyPos.y, Parent.GetTransform().Position.z);
-
 	glm::vec3 Euler = Parent.GetTransform().GetEulerRotation();
 	Parent.GetTransform().SetEulerRotation(glm::vec3(Euler.x, Euler.y, Body->GetAngle() / 0.0174533f));
+
+	int x, y;
+	SDL_GetMouseState(&x, &y);
+	glm::vec2 PixelSpace = { x, y };
+	glm::vec4 ScreenSpace = glm::vec4(WindowManager::Get().PixelCoordToScreenSpace(PixelSpace), 1.0f);
+	glm::mat4 ViewMatrix = CameraComponent::GetActiveCamera()->GetViewMatrix();
+	glm::mat4 ProjMatrix = CameraComponent::GetActiveCamera()->GetProjectionMatrix();
+	glm::mat4 ViewProjectionMatrix = ProjMatrix * ViewMatrix;
+	ViewProjectionMatrix = glm::inverse(ViewProjectionMatrix);
+	glm::vec4 WorldSpace = ViewProjectionMatrix * ScreenSpace;
+	WorldSpace.z = 0;
+	glm::vec3 mouse_pos = WorldSpace;
+	glm::vec3 position = GetParentEntity().GetTransform().Position;
+	glm::vec2 force = mouse_pos - position;
+	Body->ApplyForceToCenter({ force[0], force[1] }, true);
 }
 
 void RigidbodyComponent::SetDynamic(bool bDynamic)
@@ -64,21 +78,6 @@ void RigidbodyComponent::OnPostRender(float DeltaTime)
 
 void RigidbodyComponent::Jump(ActionInfo Info)
 {
-	if (Info.EventType == EEventType::MouseButtonEvent) {
-		b2Vec2 world = Body->GetWorldCenter();
-		glm::vec2 PixelSpace = { Info._event.MouseButtonEvent->x, Info._event.MouseButtonEvent->y };
-		glm::vec4 ScreenSpace = glm::vec4(WindowManager::Get().PixelCoordToScreenSpace(PixelSpace), 1.0f);
-		glm::mat4 ViewMatrix = CameraComponent::GetActiveCamera()->GetViewMatrix();
-		glm::mat4 ProjMatrix = CameraComponent::GetActiveCamera()->GetProjectionMatrix();
-		glm::mat4 ViewProjectionMatrix = ProjMatrix * ViewMatrix;
-		ViewProjectionMatrix = glm::inverse(ViewProjectionMatrix);
-		glm::vec4 WorldSpace = ViewProjectionMatrix * ScreenSpace;
-		WorldSpace.z = 0;
-		glm::vec3 ws = WorldSpace;
-		if (glm::distance(ws, GetParentEntity().GetTransform().Position) < 1.0f) {
-			Body->ApplyForce({ 0,100 }, world, true);
-		}
-	}
 
 }
 

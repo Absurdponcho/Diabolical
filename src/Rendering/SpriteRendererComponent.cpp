@@ -175,8 +175,8 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     Particle.Speed = 5;
     Particle.Rotation = (float)(rand() % 360);
     ParticleManager::RegisterParticle(Particle);
-    /*glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
-    glUseProgram(0);*/
+    glUseProgram(0);
 
 }

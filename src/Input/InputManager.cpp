@@ -102,13 +102,14 @@ void InputManager::HandleKeyboardEvent(SDL_KeyboardEvent& KeyboardEvent)
 	
 }
 
-void InputManager::HandleMouseMotionEvent(SDL_MouseMotionEvent& MouseMotionEvent)
-{
-
-}
-
 void InputManager::HandleMouseWheelEvent(SDL_MouseWheelEvent& MouseWheelEvent)
 {
+	if (MouseWheelEvent.y > 0) {
+
+	}
+	else {
+
+	}
 }
 
 void InputManager::HandleMouseButtonEvent(SDL_MouseButtonEvent& MouseEvent)
@@ -158,8 +159,7 @@ void InputManager::PushAction(SDL_KeyboardEvent KBEvent)
 				default:
 					Check(false);
 				}
-				Info.EventType = EEventType::KeyboardEvent;
-				Info._event.KeyboardEvent = &KBEvent;
+				Info.KeyboardEvent = &KBEvent;
 				Group->Execute(Info);
 			}
 		}
@@ -199,8 +199,7 @@ void InputManager::PushActionMouseButton(SDL_MouseButtonEvent MSBEvent)
 				default:
 					Check(false);
 				}
-				Info.EventType = EEventType::MouseButtonEvent;
-				Info._event.MouseButtonEvent = &MSBEvent;
+				Info.MouseButtonEvent = &MSBEvent;
 				Group->Execute(Info);
 			}
 		}
@@ -269,6 +268,11 @@ void InputManager::AddMouseButtonMapping(std::string Action, Uint8 Button)
 	}
 	Check(Group);
 	// ==========================================
+}
+
+void InputManager::AddMouseWheelMapping(std::string Action, Uint32 Direction)
+{
+
 }
 
 InputManager::MouseButtonMapping::MouseButtonMapping(Uint8 Button) :

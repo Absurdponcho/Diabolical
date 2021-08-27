@@ -41,10 +41,6 @@ void GameManager::EventTick()
 		case SDL_KEYUP:
 			InputManager::HandleKeyboardEvent(Event.key);
 			break;
-
-		case SDL_MOUSEMOTION:
-			InputManager::HandleMouseMotionEvent(Event.motion);
-			break;
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
 			InputManager::HandleMouseButtonEvent(Event.button);
