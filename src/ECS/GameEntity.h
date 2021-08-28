@@ -4,12 +4,16 @@
 #include "../GunGame.h"
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include "../ECS/GameWeakObjectPointer.h"
 
 class GameComponent;
+class GameEntity;
 
 struct EntityTransform
 {
 public:
+	EntityTransform(GameEntity* NewParent) : Parent(NewParent){};
+
 	void SetEulerRotation(glm::vec3 Euler);
 	glm::vec3 GetEulerRotation();
 
@@ -22,18 +26,26 @@ public:
 	glm::vec3 GetScale();
 
 	glm::mat4x4 GetModelMatrix();
-	glm::mat4x4 GetXMirroredModelMatrix();
 	glm::mat4x4 GetTransRotationMatrix();
+
+	void AttachTo(GameEntity* Entity);
+	void SetDirtyMatrixCache();
 
 private:
 	glm::vec3 Position = glm::vec3(0, 0, 0);
-	glm::quat Rotation = glm::quat(1.0, 0.0, 0.0, 0.0);;
+	glm::quat Rotation = glm::quat(1.0, 0.0, 0.0, 0.0);
 	glm::vec3 Scale = glm::vec3(1, 1, 1);
+	GameWeakObjectPointer<GameEntity> AttachedEntity;
+
+	void AddChild(GameWeakObjectPointer<GameEntity>);
+
+	std::vector<GameWeakObjectPointer<GameEntity>> Children;
+
+	GameEntity* Parent;
+
 
 	bool bModelMatrixDirty = false;
 	glm::mat4x4 CachedModelMatrix;
-	bool bXMirroredModelMatrixDirty = false;
-	glm::mat4x4 CachedXMirroredModelMatrix;
 	bool bTransRotationMatrixDirty = false;
 	glm::mat4x4 CachedTransRotationMatrix;
 };
@@ -68,7 +80,7 @@ public:
 private:
 
 
-	EntityTransform Transform = EntityTransform();
+	EntityTransform Transform = EntityTransform(this);
 
 	std::vector<GameComponent*> AttachedComponents;
 	std::vector<GameEntity*> AttachedEntites;

@@ -83,3 +83,8 @@ glm::vec3 Utility::ScreenToWorld(glm::vec2 ScreenPos, CameraComponent* Camera)
 	return WorldSpace;
 
 }
+
+float Utility::AngleBetween(glm::vec2 From, glm::vec2 To)
+{
+	return atan2(To.y - From.y, To.x - From.x);
+}

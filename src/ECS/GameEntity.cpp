@@ -26,38 +26,70 @@ glm::mat4x4 EntityTransform::GetModelMatrix()
 {
 	if (bModelMatrixDirty)
 	{
-		glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), Position);
-		glm::mat4x4 RotateMatrix = glm::toMat4(Rotation);
-		glm::mat4x4 ScaleMatrix = glm::scale(glm::mat4x4(1.0f), Scale);
-		CachedModelMatrix = TranslateMatrix * RotateMatrix * ScaleMatrix;
+		glm::mat4x4 TranslateMatrix;
+		if (GameEntity* Entity = AttachedEntity.Get())
+		{
+			TranslateMatrix = glm::translate(Entity->GetTransform().GetModelMatrix(), Position);
+		}
+		else
+		{
+			TranslateMatrix = glm::translate(glm::mat4x4(1.0f), Position);
+		}
+		glm::mat4x4 RotateMatrix = TranslateMatrix * glm::toMat4(Rotation);
+		glm::mat4x4 ScaleMatrix = glm::scale(RotateMatrix, Scale);
+		CachedModelMatrix = ScaleMatrix;
 		bModelMatrixDirty = false;
 	}
 	return CachedModelMatrix;
 }
 
-glm::mat4x4 EntityTransform::GetXMirroredModelMatrix()
+void EntityTransform::SetDirtyMatrixCache()
 {
-	if (bXMirroredModelMatrixDirty)
+	bModelMatrixDirty = true;
+	bTransRotationMatrixDirty = true;
+
+	for (GameWeakObjectPointer<GameEntity> Entity : Children)
 	{
-		glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), Position);
-		glm::mat4x4 RotateMatrix = glm::toMat4(Rotation);
-		glm::mat4x4 ScaleMatrix = glm::scale(glm::mat4x4(1.0f), Scale * glm::vec3(-1, 1, 1));
-		CachedXMirroredModelMatrix = TranslateMatrix * RotateMatrix * ScaleMatrix;
+		if (GameEntity* Child = Entity.Get())
+		{
+			Child->GetTransform().SetDirtyMatrixCache();
+		}
 	}
-	return CachedXMirroredModelMatrix;
 }
 
 glm::mat4x4 EntityTransform::GetTransRotationMatrix()
 {
 	if (bTransRotationMatrixDirty)
 	{
-		glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), Position);
-		glm::mat4x4 RotateMatrix = glm::toMat4(Rotation);
-		CachedTransRotationMatrix = TranslateMatrix * RotateMatrix;
+		glm::mat4x4 TranslateMatrix;
+		if (GameEntity* Entity = AttachedEntity.Get())
+		{
+			TranslateMatrix = glm::translate(Entity->GetTransform().GetTransRotationMatrix(), Position);
+		}
+		else
+		{
+			TranslateMatrix = glm::translate(glm::mat4x4(1.0f), Position);
+		}
+		glm::mat4x4 RotateMatrix = TranslateMatrix * glm::toMat4(Rotation);
+		CachedTransRotationMatrix = RotateMatrix;
+		bTransRotationMatrixDirty = false;
 	}
 	return CachedTransRotationMatrix;
 }
 
+void EntityTransform::AttachTo(GameEntity* Entity)
+{
+	AttachedEntity = GameWeakObjectPointer<GameEntity>(Entity);
+	if (Entity)
+	{
+		Entity->GetTransform().AddChild(GameWeakObjectPointer<GameEntity>(Parent));
+	}
+}
+
+void EntityTransform::AddChild(GameWeakObjectPointer<GameEntity> Child)
+{
+	Children.push_back(Child);
+}
 
 EntityTransform& GameEntity::GetTransform()
 {
@@ -91,9 +123,10 @@ void EntityTransform::SetEulerRotation(glm::vec3 Euler)
 	Euler *= 0.0174533f; // deg to rad
 	Rotation = glm::quat(Euler);
 
-	bModelMatrixDirty = true;
-	bXMirroredModelMatrixDirty = true;
-	bTransRotationMatrixDirty = true;
+	//bModelMatrixDirty = true;
+	//bXMirroredModelMatrixDirty = true;
+	//bTransRotationMatrixDirty = true;
+	SetDirtyMatrixCache();
 }
 
 glm::vec3 EntityTransform::GetEulerRotation()
@@ -105,9 +138,10 @@ void EntityTransform::SetPosition(glm::vec3 NewPosition)
 {
 	Position = NewPosition;
 
-	bModelMatrixDirty = true;
-	bXMirroredModelMatrixDirty = true;
-	bTransRotationMatrixDirty = true;
+	//bModelMatrixDirty = true;
+	//bXMirroredModelMatrixDirty = true;
+	//bTransRotationMatrixDirty = true;
+	SetDirtyMatrixCache();
 }
 glm::vec3 EntityTransform::GetPosition()
 {
@@ -117,8 +151,9 @@ void EntityTransform::SetScale(glm::vec3 NewScale)
 {
 	Scale = NewScale;
 
-	bModelMatrixDirty = true;
-	bXMirroredModelMatrixDirty = true;
+	//bModelMatrixDirty = true;
+	//bXMirroredModelMatrixDirty = true;
+	SetDirtyMatrixCache();
 }
 glm::vec3 EntityTransform::GetScale()
 {

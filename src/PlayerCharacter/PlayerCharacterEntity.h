@@ -17,6 +17,9 @@ public:
 	float HorizonalMovementForce = 2000;
 	float JumpVelocity = 8;
 
+	GameEntity* PlayerArm = nullptr;
+	GameEntity* HeldItem = nullptr;
+
 private:
 
 	float HorizontalMovement = 0;

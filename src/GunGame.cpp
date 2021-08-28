@@ -32,6 +32,7 @@ int main(int argc, char** argv)
     GameAssetSoftPointer<TextureAsset> PlayerTexturePointer("GameAssetFiles/Player.png");
     GameAssetSoftPointer<TextureAsset> ArcaneBulletTexturePointer("GameAssetFiles/ArcaneBullet.png");
     GameAssetSoftPointer<TextureAsset> PlayerArmTexturePointer("GameAssetFiles/PlayerArm.png");
+    GameAssetSoftPointer<TextureAsset> GunTexturePointer("GameAssetFiles/Gun.png");
 
     for (int i = 0; i < 3; i++)
     {
@@ -52,8 +53,8 @@ int main(int argc, char** argv)
 
     PlayerCharacterEntity* PlayerCharacter = CreateEntity<PlayerCharacterEntity>();
     {
-        PlayerCharacter->GetTransform().SetPosition(glm::vec3(0, 1, 0));
-        PlayerCharacter->GetTransform().SetScale(glm::vec3(1, 2, 1));
+        PlayerCharacter->GetTransform().SetPosition(glm::vec3(0, 0, 0));
+        PlayerCharacter->GetTransform().SetScale(glm::vec3(2, 2, 2));
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(PlayerCharacter);
         Rigidbody->SetDynamic(true);
         Rigidbody->SetRotates(false);
@@ -64,15 +65,24 @@ int main(int argc, char** argv)
         Sprite->SpriteSheetProgressionSpeed = 4;
     }
 
-    GameEntity* PlayerArm = CreateEntity<GameEntity>();
+    PlayerCharacter->PlayerArm = CreateEntity<GameEntity>();
     {
-        PlayerArm->GetTransform().SetPosition(PlayerCharacter->GetTransform().GetPosition() + glm::vec3(0, 0, 0.01f));
-        PlayerArm->GetTransform().SetScale(glm::vec3(1, 1, 1));
-        SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(PlayerArm);
+        PlayerCharacter->PlayerArm->GetTransform().SetPosition(glm::vec3(0, -0.05f, 0.01f));
+        PlayerCharacter->PlayerArm->GetTransform().SetScale(glm::vec3(.5, .5, .5));
+        SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(PlayerCharacter->PlayerArm);
         Sprite->SetTexture(PlayerArmTexturePointer);
-
+        PlayerCharacter->PlayerArm->GetTransform().AttachTo(PlayerCharacter);
     }
     
+    PlayerCharacter->HeldItem = CreateEntity<GameEntity>();
+    {
+        PlayerCharacter->HeldItem->GetTransform().SetPosition(glm::vec3(0, -0.55f, 0.02f));
+        PlayerCharacter->HeldItem->GetTransform().SetEulerRotation(glm::vec3(0, 0, -90));
+        PlayerCharacter->HeldItem->GetTransform().SetScale(glm::vec3(.7f, .7f, .7f));
+        SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(PlayerCharacter->HeldItem);
+        Sprite->SetTexture(GunTexturePointer);
+        PlayerCharacter->HeldItem->GetTransform().AttachTo(PlayerCharacter->PlayerArm);
+    }
 
     PlayerTrackerEntity* PlayerTracker = CreateEntity<PlayerTrackerEntity>();
     {
@@ -88,7 +98,7 @@ int main(int argc, char** argv)
         Sprite->SetTexture(ArcaneBulletTexturePointer);
         Sprite->SpriteSheetSize = glm::ivec2(4, 1);
         Sprite->SpriteSheetProgressionSpeed = 8;
-        Sprite->bMirrored = false;
+        Sprite->bXMirrored = false;
     }
 
     GManager.MainGameLoop();

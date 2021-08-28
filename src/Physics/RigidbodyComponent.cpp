@@ -23,7 +23,7 @@ void RigidbodyComponent::OnSpawn()
 
 	b2FixtureDef FixtureDef;
 	FixtureDef.shape = &Box;
-	FixtureDef.density = 1.0f;
+	FixtureDef.density = .5f;
 	FixtureDef.friction = 0.3f;
 
 	MainFixture = Body->CreateFixture(&FixtureDef);

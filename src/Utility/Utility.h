@@ -17,6 +17,9 @@ public:
 	static std::string WStringToString(const std::wstring& String);
 	static glm::vec3 ScreenToWorld(glm::vec2 ScreenPos, CameraComponent* Camera);
 
+	// In radians
+	static float AngleBetween(glm::vec2 From, glm::vec2 To);
+
 	template<class T, class Pred>
 	static T FindPred(std::vector<T> Vector, Pred Predicate)
 	{

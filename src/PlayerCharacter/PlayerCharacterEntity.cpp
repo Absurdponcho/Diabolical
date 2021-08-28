@@ -14,25 +14,37 @@ void PlayerCharacterEntity::OnSpawn()
 
 void PlayerCharacterEntity::OnTick(float DeltaTime)
 {
+	Check(PlayerArm);
+	Check(HeldItem);
+
 	if (HorizontalMovement != 0)
 	{
 		b2Vec2 Force(glm::clamp(HorizontalMovement, -1.f, 1.f) * DeltaTime * HorizonalMovementForce, 0.f);
 		GetComponent<RigidbodyComponent>()->AddForceAtCenter(Force);
 	}
 
-
 	glm::ivec2 ScreenPos;
 	SDL_GetMouseState((int*)&ScreenPos, (int*)&ScreenPos + 1);
 	glm::vec3 WorldPosition = Utility::ScreenToWorld(ScreenPos, CameraComponent::GetActiveCamera());
+
 	if (WorldPosition.x > GetTransform().GetPosition().x)
 	{
-		GetComponent<SpriteRendererComponent>()->bMirrored = false;
+		GetComponent<SpriteRendererComponent>()->bXMirrored = false;
+		PlayerArm->GetComponent<SpriteRendererComponent>()->bXMirrored = false;
+		PlayerArm->GetTransform().SetPosition(glm::vec3(-0.05f, -0.05f, 0.01f));
+		HeldItem->GetComponent<SpriteRendererComponent>()->bYMirrored = false;
+
 	}
 	else
 	{
-		GetComponent<SpriteRendererComponent>()->bMirrored = true;
+		GetComponent<SpriteRendererComponent>()->bXMirrored = true;
+		PlayerArm->GetComponent<SpriteRendererComponent>()->bXMirrored = true;
+		PlayerArm->GetTransform().SetPosition(glm::vec3(0.05f, -0.05f, 0.01f));
+		HeldItem->GetComponent<SpriteRendererComponent>()->bYMirrored = true;
 
 	}
+
+	PlayerArm->GetTransform().SetEulerRotation(glm::vec3(0, 0, Utility::AngleBetween(GetTransform().GetPosition(), glm::vec2(WorldPosition)) * 57.2958f + 90));
 
 }
 
