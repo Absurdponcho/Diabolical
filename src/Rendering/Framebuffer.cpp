@@ -5,6 +5,7 @@
 #include "../Assets/GameAssetSoftPointer.h"
 #include "SpriteRendererComponent.h"
 #include "../GameManager.h"
+#include <glm/gtc/type_ptr.hpp>
 
 GLuint Framebuffer::ShaderProgram;
 GLuint Framebuffer::VertexBufferObject;
@@ -49,6 +50,9 @@ void Framebuffer::Draw()
 
     int TimeLocation = glGetUniformLocation(ShaderProgram, "Time");
     glUniform1f(TimeLocation, GameManager::GetTime());
+    
+    int Location = glGetUniformLocation(ShaderProgram, "Resolution");
+    glUniform2fv(Location, 1, glm::value_ptr(glm::vec2(Width, Height)));
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
