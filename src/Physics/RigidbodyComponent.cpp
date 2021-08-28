@@ -19,21 +19,13 @@ void RigidbodyComponent::OnSpawn()
 
 	Body = PhysicsWorld::Get().GetWorld().CreateBody(&BodyDef);
 
-	Box.SetAsBox(Parent.GetTransform().GetScale().x / 2, Parent.GetTransform().GetScale().y / 2);
-
-	b2FixtureDef FixtureDef;
-	FixtureDef.shape = &Box;
-	FixtureDef.density = .5f;
-	FixtureDef.friction = 0.3f;
-
-	MainFixture = Body->CreateFixture(&FixtureDef);
-
 	Body->SetType(bIsDynamic ? b2BodyType::b2_dynamicBody : b2BodyType::b2_staticBody);
 	Body->SetFixedRotation(!bIsRotating);
 	Body->SetLinearDamping(DesiredLinearDamping);
 
 
 }
+
 void RigidbodyComponent::OnPostPhysics(float FixedDeltaTime)
 {
 	GameComponent::OnPostPhysics(FixedDeltaTime);
@@ -46,7 +38,7 @@ void RigidbodyComponent::OnPostPhysics(float FixedDeltaTime)
 	
 	GameEntity& Parent = GetParentEntity();
 	b2Vec2 BodyPos = Body->GetPosition();
-	Parent.GetTransform().SetPosition(glm::vec3(BodyPos.x, BodyPos.y, Parent.GetTransform().GetPosition().z));
+	Parent.GetTransform().SetPosition(glm::vec3(BodyPos.x + Offset.x, BodyPos.y + Offset.y, Parent.GetTransform().GetPosition().z));
 	glm::vec3 Euler = Parent.GetTransform().GetEulerRotation();
 	Parent.GetTransform().SetEulerRotation(glm::vec3(Euler.x, Euler.y, Body->GetAngle() / 0.0174533f));
 
@@ -137,4 +129,14 @@ void RigidbodyComponent::AddForceAtCenter(const b2Vec2& Force)
 	{
 		Body->ApplyForceToCenter(Force, true);
 	}
+}
+
+b2Body* RigidbodyComponent::GetBody()
+{
+	return Body;
+}
+
+void RigidbodyComponent::SetOffset(glm::vec2 NewOffset)
+{
+	Offset = NewOffset;
 }

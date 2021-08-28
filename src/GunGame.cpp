@@ -1,5 +1,6 @@
 #include "CoreEngine.h"
 #include "Rendering/RenderPipeline.h"
+#include "Physics/ColliderComponent.h"
 
 #undef main
 
@@ -44,16 +45,18 @@ int main(int argc, char** argv)
         GameEntity* Square0 = CreateEntity<GameEntity>();
         Square0->GetTransform().SetPosition(glm::vec3(sin(i) * 10.f, i / 10.f, 0));
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square0);
+        CreateComponent<ColliderComponent>(Square0);
         CreateComponent<SpriteRendererComponent>(Square0)->SetTexture(CrateTexturePointer);
         Rigidbody->SetDynamic(true);
     }
 
-    GameEntity* Square1 = CreateEntity<GameEntity>();
+    GameEntity* Floor = CreateEntity<GameEntity>();
     {
-        Square1->GetTransform().SetPosition(glm::vec3(0, -1, 1));
-        Square1->GetTransform().SetScale(glm::vec3(40, 1, 1));
-        RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Square1);
-        CreateComponent<SpriteRendererComponent>(Square1)->SetTexture(CrateTexturePointer);
+        Floor->GetTransform().SetPosition(glm::vec3(0, -1, 1));
+        Floor->GetTransform().SetScale(glm::vec3(40, 1, 1));
+        RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Floor);
+        CreateComponent<ColliderComponent>(Floor)->SetSize(b2Vec2(20.f, .5f));
+        CreateComponent<SpriteRendererComponent>(Floor)->SetTexture(CrateTexturePointer);
     }
 
     PlayerCharacterEntity* PlayerCharacter = CreateEntity<PlayerCharacterEntity>();
@@ -64,6 +67,11 @@ int main(int argc, char** argv)
         Rigidbody->SetDynamic(true);
         Rigidbody->SetRotates(false);
         Rigidbody->SetHorizonalDamping(2);
+        Rigidbody->SetOffset(glm::vec2(0, .5f));
+        ColliderComponent* Collider = CreateComponent<ColliderComponent>(PlayerCharacter);
+        Collider->SetSize(b2Vec2(.2f, .5f));
+        Collider->SetDensity(3);
+
         SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(PlayerCharacter);
         Sprite->SetTexture(PlayerTexturePointer);
         Sprite->SpriteSheetSize = glm::ivec2(2, 1);
