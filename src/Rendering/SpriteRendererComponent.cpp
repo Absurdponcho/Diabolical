@@ -216,7 +216,9 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     //Particle.Speed = 5.5f;
     //Particle.Rotation = (float)(rand() % 360);
     //ParticleManager::RegisterParticle(Particle);
+}
 
-    
-
+void SpriteRendererComponent::BindVertexArray()
+{
+    glBindVertexArray(VertexArrayObject);
 }

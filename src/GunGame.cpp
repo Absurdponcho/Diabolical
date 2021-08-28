@@ -1,10 +1,12 @@
 #include "CoreEngine.h"
+#include "Rendering/RenderPipeline.h"
 
 #undef main
 
 
 int main(int argc, char** argv)
 {
+
     Logging::SetLogVerbosity(ELogVerbosity::LV_Default);
 
     WindowManager::Initialize(
@@ -15,6 +17,9 @@ int main(int argc, char** argv)
     PhysicsWorld::Initialize(b2Vec2(0, -13.8f));
    
     ParticleManager::Initialize();
+
+    RenderPipeline DefaultRenderPipeline = RenderPipeline();
+    DefaultRenderPipeline.Bind();
 
     InputManager::AddKeyMapping("Jump", SDLK_SPACE);
     InputManager::AddKeyMapping("Jump", SDLK_UP);

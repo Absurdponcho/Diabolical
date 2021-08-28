@@ -20,6 +20,8 @@ public:
 	float SpriteSheetProgressionSpeed = 0;
 	bool bXMirrored = false;
 	bool bYMirrored = false;
+
+	static void BindVertexArray();
 private:
 	glm::ivec2 SpriteSheetIndex = glm::ivec2(0, 0);
 	float SpriteSheetProgress = 0.f;

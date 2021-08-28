@@ -8,9 +8,13 @@
 #include <SDL2/SDL.h>
 #include "Input/InputManager.h"
 #include "WindowManager.h"
+#include "Rendering/Framebuffer.h"
+#include "Rendering/RenderPipeline.h"
 
 float GameManager::FPS = 0;
 float GameManager::GameTime = 0;
+
+
 void GameManager::MainGameLoop()
 {
 	Logging::LogVerbose("GameManager::MainGameLoop()", "Main game loop started");
@@ -55,7 +59,13 @@ void GameManager::EventTick()
 			break;
 
 		case 512: // screen resize thing
+			if (Event.window.event != 6) break;
+			//Logging::Log("", std::to_string(Event.window.event));
 			glViewport(0, 0, WindowManager::Get().GetScreenSize().x, WindowManager::Get().GetScreenSize().y);
+			if (RenderPipeline* RP = RenderPipeline::GetActive())
+			{
+				RP->Bind(); // rebind the render pipeline so we can regen the framebuffers
+			}
 			break;
 
 		default:
@@ -76,23 +86,18 @@ void GameManager::ManagerTick()
 
 	FPS = 1.f / DeltaTime;
 
-	GameBaseObject::SpawnPendingObjects();
+	GameBaseObject::SpawnPendingObjects(); 
 	GameBaseObject::DestroyPendingObjects();
 	PhysicsWorld::Get().Step();
 	GameBaseObject::TickAllObjects(DeltaTime);
 
-	glClearColor(0, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	if (CameraComponent* Camera = CameraComponent::GetActiveCamera())
+	if (RenderPipeline* Pipeline = RenderPipeline::GetActive())
 	{
-		Camera->Draw(DeltaTime);
+		Pipeline->Draw(DeltaTime);
 	}
 
 	GameBaseObject::PostRenderAllObjects(DeltaTime);
 
-
-	SDL_GL_SwapWindow(WindowManager::GetSDLWindow());
 
 	GameTime += DeltaTime;
 }
