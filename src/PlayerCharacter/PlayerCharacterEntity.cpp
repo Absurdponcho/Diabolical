@@ -3,7 +3,12 @@
 #include "../Physics/ColliderComponent.h"
 #include "../Rendering/Particles/Particle.h"
 #include "../Rendering/SpriteRendererComponent.h"
+#include "glm/glm.hpp"
+#include "../WindowManager.h"
+#include "../Audio\AudioAsset.h"
+#include "../Audio/GameAudio.h"
 GameAssetSoftPointer<TextureAsset> ArcaneBulletTexturePointer("GameAssetFiles/ArcaneBullet.png");
+GameAssetSoftPointer<AudioAsset> PhaserSoundPointer("GameAssetFiles/phaser1.wav");
 void PlayerCharacterEntity::OnSpawn()
 {
 	GameEntity::OnSpawn();
@@ -103,22 +108,50 @@ void PlayerCharacterEntity::Shoot(ActionInfo ActionInfo)
 	if (ActionInfo.MouseButtonEvent->state == SDL_PRESSED) {
 		GameEntity* ArcaneBullet = CreateEntity<GameEntity>();
 		{
-			// Use BulletComponent
+			int x, y;
+			SDL_GetMouseState(&x, &y);
+			glm::vec2 PixelSpace = { x, y };
+			glm::vec4 ScreenSpace = glm::vec4(WindowManager::Get().PixelCoordToScreenSpace(PixelSpace), 1.0f);
+			glm::mat4 ViewMatrix = CameraComponent::GetActiveCamera()->GetViewMatrix();
+			glm::mat4 ProjMatrix = CameraComponent::GetActiveCamera()->GetProjectionMatrix();
+			glm::mat4 ViewProjectionMatrix = ProjMatrix * ViewMatrix;
+			ViewProjectionMatrix = glm::inverse(ViewProjectionMatrix);
+			glm::vec4 WorldSpace = ViewProjectionMatrix * ScreenSpace;
+			WorldSpace.z = 0;
+			glm::vec3 mouse_pos = WorldSpace;
+			glm::vec3 position = this->GetTransform().GetPosition();
+			glm::vec2 distvec = mouse_pos - position;
+			auto force = distvec*5.0f;
+
 			RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(ArcaneBullet);
 			Rigidbody->SetDynamic(true);
-			Rigidbody->SetRotates(false);
+			Rigidbody->SetRotates(true);
 			Rigidbody->Enable();
-			auto pos = this->GetTransform().GetPosition();
-			pos[0] += 1;
-			ArcaneBullet->GetTransform().SetPosition(pos);
-			ColliderComponent* Collider = CreateComponent<ColliderComponent>(ArcaneBullet);
-			Collider->SetSize(b2Vec2(.2f, .5f));
-			Collider->SetDensity(3);
+
 			SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(ArcaneBullet);
 			Sprite->SetTexture(ArcaneBulletTexturePointer);
 			Sprite->SpriteSheetSize = glm::ivec2(4, 1);
 			Sprite->SpriteSheetProgressionSpeed = 8;
-			Sprite->bXMirrored = false;
+
+
+
+			auto pos = this->GetTransform().GetPosition();
+			if (distvec[0] > 0) {
+				pos[0] += 1;
+				Sprite->bXMirrored = false;
+			}
+			else {
+				pos[0] -= 1;
+				Sprite->bXMirrored = true;
+			}
+			ArcaneBullet->GetTransform().SetPosition(pos);
+
+			ColliderComponent* Collider = CreateComponent<ColliderComponent>(ArcaneBullet);
+			Collider->SetSize(b2Vec2(.2f, .5f));
+			Collider->SetDensity(1);
+			Rigidbody->SetVelocity({ force[0], force[1] });
+			GameAudio::PlaySound(PhaserSoundPointer);
+
 
 		}
 	}

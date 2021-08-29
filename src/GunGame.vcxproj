@@ -162,7 +162,6 @@
     <ClCompile Include="GunGame.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
-    <ClCompile Include="Physics\BulletComponent.cpp" />
     <ClCompile Include="Physics\ColliderComponent.cpp" />
     <ClCompile Include="Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Physics\RigidbodyComponent.cpp" />
