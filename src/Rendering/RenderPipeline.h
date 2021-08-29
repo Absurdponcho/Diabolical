@@ -1,5 +1,6 @@
 #pragma once
 #include <gl/glew.h>
+#include "ParallaxBackground.h"
 class Framebuffer;
 
 class RenderPipeline
@@ -9,11 +10,12 @@ public:
 	// will reset it and reset all framebuffers and stuff
 	virtual void Bind();
 	virtual void Unbind();
-	virtual void Draw(float DeltaTime);
+	virtual void Draw(CameraComponent* Camera, float DeltaTime);
+	RenderPipeline();
 
 	static RenderPipeline* GetActive();
 private:
 	static RenderPipeline* ActiveRenderPipeline;
 	Framebuffer* MainFramebuffer;
-
+	ParallaxBackground BackgroundContainer;
 };

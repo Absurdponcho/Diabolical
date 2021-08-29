@@ -95,7 +95,7 @@ void GameManager::ManagerTick()
 
 	if (RenderPipeline* Pipeline = RenderPipeline::GetActive())
 	{
-		Pipeline->Draw(DeltaTime);
+		Pipeline->Draw(CameraComponent::GetActiveCamera(), DeltaTime);
 	}
 
 	GameBaseObject::PostRenderAllObjects(DeltaTime);

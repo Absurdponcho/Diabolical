@@ -171,6 +171,7 @@
     <ClCompile Include="Rendering\Camera.cpp" />
     <ClCompile Include="Rendering\Framebuffer.cpp" />
     <ClCompile Include="Rendering\GameRendererComponent.cpp" />
+    <ClCompile Include="Rendering\ParallaxBackground.cpp" />
     <ClCompile Include="Rendering\Particles\Particle.cpp" />
     <ClCompile Include="Rendering\RenderPipeline.cpp" />
     <ClCompile Include="Rendering\SpriteRendererComponent.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="Rendering\Camera.h" />
     <ClInclude Include="Rendering\Framebuffer.h" />
     <ClInclude Include="Rendering\GameRendererComponent.h" />
+    <ClInclude Include="Rendering\ParallaxBackground.h" />
     <ClInclude Include="Rendering\Particles\Particle.h" />
     <ClInclude Include="Rendering\RenderPipeline.h" />
     <ClInclude Include="Rendering\SpriteRendererComponent.h" />
@@ -221,10 +223,12 @@
     <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GameAssetFiles\Shaders\ParallaxFragment.glsl" />
+    <None Include="GameAssetFiles\Shaders\ParallaxVertex.glsl" />
     <None Include="GameAssetFiles\Shaders\ParticleFragment.glsl" />
     <None Include="GameAssetFiles\Shaders\ParticleVertex.glsl" />
     <None Include="GameAssetFiles\Shaders\SimpleTextureVertex.glsl" />
-    <None Include="GameAssetFiles\Shaders\SimpleTextureFragment.glsl" />
+    <None Include="GameAssetFiles\Shaders\FXAAFragment.glsl" />
     <None Include="GameAssetFiles\Shaders\SpriteFragment.glsl" />
     <None Include="GameAssetFiles\Shaders\SpriteVertex.glsl" />
   </ItemGroup>
