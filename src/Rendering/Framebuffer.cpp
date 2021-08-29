@@ -4,6 +4,7 @@
 #include "../Assets/TextAsset.h"
 #include "../Assets/GameAssetSoftPointer.h"
 #include "SpriteRendererComponent.h"
+#include "..\GameManager.h"
 
 GLuint Framebuffer::ShaderProgram;
 GLuint Framebuffer::VertexBufferObject;
@@ -45,6 +46,8 @@ void Framebuffer::Draw()
     glBindVertexArray(VertexArrayObject);
     glUseProgram(ShaderProgram);
     glBindTexture(GL_TEXTURE_2D, RenderedTexture);
+    int TimeLocation = glGetUniformLocation(ShaderProgram, "Time");
+    glUniform1f(TimeLocation, GameManager::GetTime());
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 }
@@ -129,7 +132,7 @@ void Framebuffer::Initialize()
 
     if (!Success)
     {
-        glGetShaderInfoLog(VertexShader, 512, NULL, InfoLog);
+        glGetShaderInfoLog(FragmentShader, 512, NULL, InfoLog);
         Logging::LogError("Framebuffer::Initialize()", "Fragment Shader: " + std::string(InfoLog));
         return;
     }
