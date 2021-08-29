@@ -23,3 +23,9 @@ int FastRandom::GetNextRandom()
 	Seed = (214013 * Seed + 2531011);
 	return (Seed >> 16) & 0x7FFF;
 }
+
+inline int FastRandom::GetNextRandom(int Low, int High)
+{
+	Seed = (214013 * Seed + 2531011);
+	return ((Seed >> 16) & 0x7FFF % ((High - Low) + 1) ) + Low;
+}

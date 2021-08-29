@@ -29,6 +29,7 @@ int main(int argc, char** argv)
     InputManager::AddKeyMapping("Right", SDLK_RIGHT);
     InputManager::AddKeyMapping("Left", SDLK_LEFT);
     InputManager::AddKeyMapping("Left", SDLK_a);
+    InputManager::AddMouseButtonMapping("Shoot", SDL_BUTTON_LEFT);
 
     GameEntity* Test = CreateEntity<GameEntity>();
 
@@ -36,7 +37,6 @@ int main(int argc, char** argv)
 
     GameAssetSoftPointer<TextureAsset> CrateTexturePointer("GameAssetFiles/Crate.png");
     GameAssetSoftPointer<TextureAsset> PlayerTexturePointer("GameAssetFiles/Player.png");
-    GameAssetSoftPointer<TextureAsset> ArcaneBulletTexturePointer("GameAssetFiles/ArcaneBullet.png");
     GameAssetSoftPointer<TextureAsset> PlayerArmTexturePointer("GameAssetFiles/PlayerArm.png");
     GameAssetSoftPointer<TextureAsset> GunTexturePointer("GameAssetFiles/Gun.png");
 
@@ -103,16 +103,6 @@ int main(int argc, char** argv)
         CreateComponent<CameraComponent>(PlayerTracker)->SetActiveCamera();
     }
 
-    
-    GameEntity* ArcaneBullet = CreateEntity<GameEntity>();
-    {
-        ArcaneBullet->GetTransform().SetPosition(glm::vec3(0, 2, -0.1f));
-        SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(ArcaneBullet);
-        Sprite->SetTexture(ArcaneBulletTexturePointer);
-        Sprite->SpriteSheetSize = glm::ivec2(4, 1);
-        Sprite->SpriteSheetProgressionSpeed = 8;
-        Sprite->bXMirrored = false;
-    }
 
     GManager.MainGameLoop();
 

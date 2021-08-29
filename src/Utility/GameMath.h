@@ -5,7 +5,8 @@ public:
 	FastRandom();
 	FastRandom(int Seed);
 	void SetSeed(int NewSeed);
-	int GetNextRandom();
+	inline int GetNextRandom();
+	inline int GetNextRandom(int Low, int High);
 private:
 	int Seed;
 };

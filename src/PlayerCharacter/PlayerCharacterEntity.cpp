@@ -1,8 +1,9 @@
 #include "PlayerCharacterEntity.h"
 #include "../Physics/RigidbodyComponent.h"
+#include "../Physics/ColliderComponent.h"
 #include "../Rendering/Particles/Particle.h"
 #include "../Rendering/SpriteRendererComponent.h"
-
+GameAssetSoftPointer<TextureAsset> ArcaneBulletTexturePointer("GameAssetFiles/ArcaneBullet.png");
 void PlayerCharacterEntity::OnSpawn()
 {
 	GameEntity::OnSpawn();
@@ -10,6 +11,7 @@ void PlayerCharacterEntity::OnSpawn()
 	InputManager::BindMethod("Jump", this, &PlayerCharacterEntity::Jump);
 	InputManager::BindMethod("Right", this, &PlayerCharacterEntity::Right);
 	InputManager::BindMethod("Left", this, &PlayerCharacterEntity::Left);
+	InputManager::BindMethod("Shoot", this, &PlayerCharacterEntity::Shoot);
 }
 
 void PlayerCharacterEntity::OnTick(float DeltaTime)
@@ -94,4 +96,31 @@ void PlayerCharacterEntity::Left(ActionInfo ActionInfo)
 	{
 		HorizontalMovement += 1;
 	}
+}
+
+void PlayerCharacterEntity::Shoot(ActionInfo ActionInfo)
+{
+	if (ActionInfo.MouseButtonEvent->state == SDL_PRESSED) {
+		GameEntity* ArcaneBullet = CreateEntity<GameEntity>();
+		{
+			// Use BulletComponent
+			RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(ArcaneBullet);
+			Rigidbody->SetDynamic(true);
+			Rigidbody->SetRotates(false);
+			Rigidbody->Enable();
+			auto pos = this->GetTransform().GetPosition();
+			pos[0] += 1;
+			ArcaneBullet->GetTransform().SetPosition(pos);
+			ColliderComponent* Collider = CreateComponent<ColliderComponent>(ArcaneBullet);
+			Collider->SetSize(b2Vec2(.2f, .5f));
+			Collider->SetDensity(3);
+			SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(ArcaneBullet);
+			Sprite->SetTexture(ArcaneBulletTexturePointer);
+			Sprite->SpriteSheetSize = glm::ivec2(4, 1);
+			Sprite->SpriteSheetProgressionSpeed = 8;
+			Sprite->bXMirrored = false;
+
+		}
+	}
+	
 }

@@ -13,6 +13,7 @@ public:
 	void Jump(ActionInfo ActionInfo);
 	void Right(ActionInfo ActionInfo);
 	void Left(ActionInfo ActionInfo);
+	void Shoot(ActionInfo ActionInfo);
 
 	float HorizonalMovementForce = 2000;
 	float JumpVelocity = 8;
