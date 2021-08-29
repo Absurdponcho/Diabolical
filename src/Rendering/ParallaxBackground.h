@@ -10,6 +10,7 @@ struct BackgroundContainer
 	TextureAsset* Texture;
 	float RenderDepth = 0.99999f;
 	float XCameraOffsetMultiplier = 0;
+	float YCameraOffsetMultiplier = 0;
 	float YOffset = 0;
 	glm::vec2 Scale = glm::vec2(1, 1);
 };

@@ -46,6 +46,9 @@ void ParallaxBackground::Draw(CameraComponent* Camera)
         Location = glGetUniformLocation(ShaderProgram, "XCameraOffsetMultiplier");
         glUniform1f(Location, BackgroundContainer.XCameraOffsetMultiplier);
 
+        Location = glGetUniformLocation(ShaderProgram, "YCameraOffsetMultiplier");
+        glUniform1f(Location, BackgroundContainer.YCameraOffsetMultiplier);
+
         Location = glGetUniformLocation(ShaderProgram, "YOffset");
         glUniform1f(Location, BackgroundContainer.YOffset);
 
@@ -73,6 +76,7 @@ void ParallaxBackground::Initialize()
     Check(NewBackground.Texture);
     NewBackground.RenderDepth = 0.99999f;
     NewBackground.XCameraOffsetMultiplier = 0;
+    NewBackground.YCameraOffsetMultiplier = 0;
     NewBackground.YOffset = 0;
     NewBackground.Scale = glm::vec2(.5f, 1);
     BackgroundOrder.push_back(NewBackground);
@@ -85,6 +89,7 @@ void ParallaxBackground::Initialize()
     Check(NewBackground.Texture);
     NewBackground.RenderDepth = 0.99998f;
     NewBackground.XCameraOffsetMultiplier = 0.001f;
+    NewBackground.YCameraOffsetMultiplier = 0.002f;
     NewBackground.YOffset = -0.2f;
     NewBackground.Scale = glm::vec2(.5f, 1);
     BackgroundOrder.push_back(NewBackground);
@@ -97,6 +102,7 @@ void ParallaxBackground::Initialize()
     Check(NewBackground.Texture);
     NewBackground.RenderDepth = 0.99997f;
     NewBackground.XCameraOffsetMultiplier = 0.002f;
+    NewBackground.YCameraOffsetMultiplier = 0.004f;
     NewBackground.YOffset = -0.4f;
     NewBackground.Scale = glm::vec2(.5f, 1);
     BackgroundOrder.push_back(NewBackground);
@@ -109,6 +115,7 @@ void ParallaxBackground::Initialize()
     Check(NewBackground.Texture);
     NewBackground.RenderDepth = 0.99996f;
     NewBackground.XCameraOffsetMultiplier = 0.003f;
+    NewBackground.YCameraOffsetMultiplier = 0.006f;
     NewBackground.YOffset = -0.5f;
     NewBackground.Scale = glm::vec2(.5f, 1);
     BackgroundOrder.push_back(NewBackground);
