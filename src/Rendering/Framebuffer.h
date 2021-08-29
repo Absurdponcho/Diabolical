@@ -11,6 +11,7 @@ public:
 	void Draw();
 
 	void Clear();
+	static GLuint GetVAO();
 
 	static void Unbind();
 private:

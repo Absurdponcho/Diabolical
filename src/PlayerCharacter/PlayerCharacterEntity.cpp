@@ -62,12 +62,12 @@ void PlayerCharacterEntity::Jump(ActionInfo ActionInfo)
 	Particle.Position = GetTransform().GetPosition();
 	Particle.Size = 0.1f;
 	constexpr float Pi = glm::pi<float>();
-	for (int i = 0; i < 500; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		float Rand = (float)(rand() % 100);
 		Particle.Color = glm::vec4(Rand / 50, Rand / 120, 0, 1);
 		Particle.Speed = 5.5f + glm::mod<float>((float)rand(), 30.f) / 10;
-		Particle.Rotation = Pi + (glm::mod<float>((float)rand(), Pi / 2) - Pi / 4);
+		Particle.Rotation = -Pi / 2 + (glm::mod<float>((float)rand(), Pi / 2) - Pi / 4);
 		Particle.Lifetime = 30;
 		Particle.RotationOverTime = ((glm::mod<float>((float)rand(), Pi / 2) - Pi / 4)) * 3;
 		ParticleManager::RegisterParticle(Particle);

@@ -6,6 +6,11 @@
 
 RenderPipeline* RenderPipeline::ActiveRenderPipeline = nullptr;
 
+RenderPipeline::RenderPipeline()
+{
+	BackgroundContainer.Initialize();
+}
+
 void RenderPipeline::Bind()
 {
 	if (RenderPipeline* Pipeline = GetActive())
@@ -32,7 +37,7 @@ void RenderPipeline::Unbind( )
 	}
 }
 
-void RenderPipeline::Draw(float DeltaTime)
+void RenderPipeline::Draw(CameraComponent* Camera, float DeltaTime)
 {
 	Check(MainFramebuffer);
 	Framebuffer::Unbind();
@@ -42,6 +47,8 @@ void RenderPipeline::Draw(float DeltaTime)
 
 	MainFramebuffer->Bind();
 	MainFramebuffer->Clear();
+
+	BackgroundContainer.Draw(Camera);
 
 	if (CameraComponent* Camera = CameraComponent::GetActiveCamera())
 	{

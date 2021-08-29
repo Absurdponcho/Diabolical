@@ -160,7 +160,7 @@ void ParticleManager::BatchParticle(CameraComponent& Camera, Particle& Particle,
         // need a dynamic element count but sprites will always have 6 elements
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-        Particle.Position += glm::vec3(sin(Particle.Rotation), cos(Particle.Rotation), 0) * DeltaTime * Particle.Speed;
+        Particle.Position += glm::vec3(cos(Particle.Rotation), sin(Particle.Rotation), 0) * DeltaTime * Particle.Speed;
         Particle.Lifetime -= DeltaTime;
         Particle.Rotation += Particle.RotationOverTime * DeltaTime;
     }

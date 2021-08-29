@@ -30,6 +30,11 @@ void Framebuffer::Bind()
 	glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
 }
 
+GLuint Framebuffer::GetVAO()
+{
+    return VertexArrayObject;
+}
+
 void Framebuffer::Unbind()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -125,7 +130,7 @@ void Framebuffer::Initialize()
     //!Vertex Shader =========================================
 
     // Fragment Shader =======================================
-    TextAsset* FragmentShaderSource = GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/SimpleTextureFragment.glsl").LoadSynchronous();
+    TextAsset* FragmentShaderSource = GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/FXAAFragment.glsl").LoadSynchronous();
     Check(FragmentShaderSource);
     const char* FragmentShaderCString = FragmentShaderSource->GetString().c_str();
 
