@@ -24,6 +24,7 @@ void GameManager::MainGameLoop()
 	EventTick();
 	ManagerTick();
 	SDL_ShowWindow(WindowManager::GetSDLWindow());
+	SDL_GL_SetSwapInterval(-1);
 	while (bMainLoopRunning)
 	{
 		EventTick();
