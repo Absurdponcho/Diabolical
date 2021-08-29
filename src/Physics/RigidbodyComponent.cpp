@@ -22,7 +22,7 @@ void RigidbodyComponent::OnSpawn()
 	Body->SetType(bIsDynamic ? b2BodyType::b2_dynamicBody : b2BodyType::b2_staticBody);
 	Body->SetFixedRotation(!bIsRotating);
 	Body->SetLinearDamping(DesiredLinearDamping);
-
+	Body->SetLinearVelocity(DesiredVelocity);
 
 }
 
@@ -88,11 +88,20 @@ void RigidbodyComponent::SetLinearDamping(float Drag)
 
 void RigidbodyComponent::SetVelocity(b2Vec2 Velocity)
 {
-	Body->SetLinearVelocity(Velocity);
+	if (bSpawned)
+	{
+		Body->SetLinearVelocity(Velocity);
+		return;
+	}
+	DesiredVelocity = Velocity;
 }
 
 b2Vec2 RigidbodyComponent::GetVelocity()
 {
+	if (!bSpawned)
+	{
+		return DesiredVelocity;
+	}
 	return Body->GetLinearVelocity();
 }
 

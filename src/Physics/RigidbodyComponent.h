@@ -33,6 +33,8 @@ private:
 	b2Fixture* MainFixture;
 	float DesiredLinearDamping = .3f;
 	float HorizontalDamping = 0;
+	b2Vec2 DesiredVelocity = b2Vec2(0, 0);
+
 	bool bIsDynamic = false;
 	bool bIsRotating = true;
 	bool bSpawned = false;
