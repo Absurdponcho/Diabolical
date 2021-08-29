@@ -13,6 +13,7 @@
 
 float GameManager::FPS = 0;
 float GameManager::GameTime = 0;
+int GameManager::Frame = 0;
 
 
 void GameManager::MainGameLoop()
@@ -23,6 +24,7 @@ void GameManager::MainGameLoop()
 	EventTick();
 	ManagerTick();
 	SDL_ShowWindow(WindowManager::GetSDLWindow());
+	SDL_GL_SetSwapInterval(-1);
 	while (bMainLoopRunning)
 	{
 		EventTick();
@@ -100,6 +102,12 @@ void GameManager::ManagerTick()
 
 
 	GameTime += DeltaTime;
+	Frame++;
+}
+
+int GameManager::GetFrame()
+{
+	return Frame;
 }
 
 float GameManager::GetFPS() 

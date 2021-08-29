@@ -137,6 +137,7 @@ void ParticleManager::BatchParticle(CameraComponent& Camera, Particle& Particle,
     if (Particle.Lifetime > 0)
     {
         glm::mat4x4 TranslateMatrix = glm::translate(glm::mat4x4(1.0f), Particle.Position);
+        TranslateMatrix *= glm::toMat4(glm::quat(glm::vec3(0, 0, Particle.Rotation)));
         glm::mat4x4 ParticleModelMatrix = glm::scale(TranslateMatrix, glm::vec3(Particle.Size));
 
         glm::mat4 ViewMatrix = Camera.GetViewMatrix();
@@ -161,6 +162,7 @@ void ParticleManager::BatchParticle(CameraComponent& Camera, Particle& Particle,
 
         Particle.Position += glm::vec3(sin(Particle.Rotation), cos(Particle.Rotation), 0) * DeltaTime * Particle.Speed;
         Particle.Lifetime -= DeltaTime;
+        Particle.Rotation += Particle.RotationOverTime * DeltaTime;
     }
     BatchedTransformMatrices[BatchIndex] = glm::mat4();
     BatchedColors[BatchIndex] = Particle.Color;

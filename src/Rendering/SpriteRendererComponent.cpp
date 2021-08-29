@@ -85,7 +85,7 @@ void SpriteRendererComponent::OnSpawn()
 
             if (!Success)
             {
-                glGetShaderInfoLog(VertexShader, 512, NULL, InfoLog);
+                glGetShaderInfoLog(FragmentShader, 512, NULL, InfoLog);
                 Logging::LogError("SpriteRendererComponent::OnSpawn()", "Fragment Shader: " + std::string(InfoLog));
                 return;
             }

@@ -22,12 +22,14 @@ public:
 	void SetVelocity(b2Vec2 Velocity);
 	b2Vec2 GetVelocity();
 
+	void SetOffset(glm::vec2 NewOffset);
+
+	b2Body* GetBody();
 
 	bool bDrawDebugPolys = false;
 
 private:
 	b2Body* Body;
-	b2PolygonShape Box;
 	b2Fixture* MainFixture;
 	float DesiredLinearDamping = .3f;
 	float HorizontalDamping = 0;
@@ -35,4 +37,6 @@ private:
 	bool bIsRotating = true;
 	bool bSpawned = false;
 
+	// Currently doesnt handle rotation, but it is meant to :P
+	glm::vec2 Offset = glm::vec2(0, 0);
 };

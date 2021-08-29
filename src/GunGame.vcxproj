@@ -120,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -137,6 +137,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -160,6 +162,7 @@
     <ClCompile Include="GunGame.cpp" />
     <ClCompile Include="Input\InputManager.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
+    <ClCompile Include="Physics\ColliderComponent.cpp" />
     <ClCompile Include="Physics\PhysicsWorld.cpp" />
     <ClCompile Include="Physics\RigidbodyComponent.cpp" />
     <ClCompile Include="PlayerCharacter\PlayerCharacterEntity.cpp" />
@@ -196,6 +199,7 @@
     <ClInclude Include="Input\InputManager.h" />
     <ClInclude Include="Logging\Logging.h" />
     <ClInclude Include="opengl.h" />
+    <ClInclude Include="Physics\ColliderComponent.h" />
     <ClInclude Include="Physics\PhysicsWorld.h" />
     <ClInclude Include="Physics\RigidbodyComponent.h" />
     <ClInclude Include="PlayerCharacter\PlayerCharacterEntity.h" />

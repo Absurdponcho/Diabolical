@@ -9,6 +9,7 @@ public:
 
 	static float GetFPS();
 	static float GetTime();
+	static int GetFrame();
 
 private:
 	void EventTick();
@@ -16,6 +17,7 @@ private:
 
 	bool bMainLoopRunning = true;
 
+	static int Frame;
 	static float FPS;
 	static float GameTime;
 };

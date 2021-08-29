@@ -5,7 +5,7 @@
 
 size_t GameBaseObject::UIDCounter = 1;
 
-std::stack<GameBaseObject*> GameBaseObject::BaseObjectsPendingSpawn;
+std::vector<GameBaseObject*> GameBaseObject::BaseObjectsPendingSpawn;
 std::stack<GameBaseObject*> GameBaseObject::BaseObjectsPendingDestroy;
 std::vector<GameBaseObject*> GameBaseObject::AllBaseObjects;
 std::unordered_map<size_t, GameBaseObject*> GameBaseObject::BaseObjectsMap;
@@ -15,7 +15,7 @@ GameBaseObject::GameBaseObject()
 	: UID(UIDCounter++)
 {
 	Check(!bCreationLock);
-	BaseObjectsPendingSpawn.push(this);
+	BaseObjectsPendingSpawn.push_back(this);
 }
 
 
@@ -54,15 +54,15 @@ void GameBaseObject::Disable()
 
 void GameBaseObject::SpawnPendingObjects()
 {
-	while (!BaseObjectsPendingSpawn.empty())
+	for (GameBaseObject* BaseObject : BaseObjectsPendingSpawn)
 	{
-		GameBaseObject* BaseObject = BaseObjectsPendingSpawn.top();
 		Logging::LogVerbose("GameBaseObject::SpawnPendingObjects()", "Spawned object with UID " + std::to_string(BaseObject->GetUID()));
 		AllBaseObjects.push_back(BaseObject);
 		BaseObjectsMap[BaseObject->UID] = BaseObject;
 		BaseObject->OnSpawn();
-		BaseObjectsPendingSpawn.pop();
 	}
+
+	BaseObjectsPendingSpawn.clear();
 }
 
 void GameBaseObject::DestroyPendingObjects()
