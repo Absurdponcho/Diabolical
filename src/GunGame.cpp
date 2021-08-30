@@ -18,6 +18,7 @@ int main(int argc, char** argv)
     PhysicsWorld::Initialize(b2Vec2(0, -13.8f));
     ParticleManager::Initialize();
     GlobalRandom::Initialize();
+
     RenderPipeline DefaultRenderPipeline = RenderPipeline();
     DefaultRenderPipeline.Bind();
 
