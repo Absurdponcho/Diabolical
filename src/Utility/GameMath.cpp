@@ -32,7 +32,7 @@ inline int FastRandom::GetNextRandom(int Low, int High)
 }
 
 GlobalRandom* GlobalRandom::Singleton;
-int GlobalRandom::GlobalSeed = 0;
+unsigned int GlobalRandom::GlobalSeed = 0;
 
 GlobalRandom::GlobalRandom(int Seed)
 {
@@ -53,7 +53,7 @@ void GlobalRandom::Initialize(int Seed)
 	Singleton = new GlobalRandom(Seed);
 }
 
-int GlobalRandom::operator()()
+unsigned int GlobalRandom::Next()
 {
 	GlobalSeed = (Multiplier * GlobalSeed + Increment) % Modulus;
 	return GlobalSeed;
