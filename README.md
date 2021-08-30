@@ -12,3 +12,4 @@ recommend using vcpkg to download these:
 6. glm
 7. glew
 8. soil
+9. freetype
