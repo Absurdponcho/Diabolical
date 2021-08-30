@@ -235,6 +235,8 @@
     <None Include="GameAssetFiles\Shaders\FXAAFragment.glsl" />
     <None Include="GameAssetFiles\Shaders\SpriteFragment.glsl" />
     <None Include="GameAssetFiles\Shaders\SpriteVertex.glsl" />
+    <None Include="GameAssetFiles\Shaders\TextFragment.glsl" />
+    <None Include="GameAssetFiles\Shaders\TextVertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

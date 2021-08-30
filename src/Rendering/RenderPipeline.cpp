@@ -12,6 +12,7 @@ RenderPipeline* RenderPipeline::ActiveRenderPipeline = nullptr;
 RenderPipeline::RenderPipeline()
 {
 	BackgroundContainer.Initialize();
+
 }
 
 void RenderPipeline::Bind()
@@ -57,9 +58,6 @@ void RenderPipeline::Draw(CameraComponent* Camera, float DeltaTime)
 	{
 		Camera->Draw(DeltaTime);
 	}
-
-	GameAssetSoftPointer<FreetypeFontAsset> Font("GameAssetFiles/Fonts/CreeperPixelRegular/CreeperPixelRegular-DMYx.ttf");
-	Font.LoadSynchronous();
 
 	Framebuffer::Unbind();
 

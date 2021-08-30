@@ -2,6 +2,7 @@
 #include "Rendering/RenderPipeline.h"
 #include "Physics/ColliderComponent.h"
 #include "Utility/GameMath.h"
+#include "Rendering/TextRendererComponent.h"
 #undef main
 
 
@@ -76,6 +77,10 @@ int main(int argc, char** argv)
         Sprite->SetTexture(PlayerTexturePointer);
         Sprite->SpriteSheetSize = glm::ivec2(2, 1);
         Sprite->SpriteSheetProgressionSpeed = 4;
+
+        TextRendererComponent* TextRenderer = CreateComponent<TextRendererComponent>(PlayerCharacter);
+        TextRenderer->SetFont(GameAssetSoftPointer<FreetypeFontAsset>("GameAssetFiles/Fonts/CreeperPixelRegular/CreeperPixelRegular-DMYx.ttf"));
+        TextRenderer->Text = "POOP";
     }
 
     PlayerCharacter->PlayerArm = CreateEntity<GameEntity>();

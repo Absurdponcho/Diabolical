@@ -1,6 +1,7 @@
 #pragma once
 #include <gl/glew.h>
 #include "ParallaxBackground.h"
+class FreetypeFontAsset;
 class Framebuffer;
 
 class RenderPipeline
@@ -15,6 +16,8 @@ public:
 
 	static RenderPipeline* GetActive();
 private:
+	FreetypeFontAsset* FreetypeFont = nullptr;
+
 	static RenderPipeline* ActiveRenderPipeline;
 	Framebuffer* MainFramebuffer = nullptr;
 	ParallaxBackground BackgroundContainer;
