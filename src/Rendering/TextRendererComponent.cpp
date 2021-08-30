@@ -3,6 +3,7 @@
 #include "../Assets/TextAsset.h"
 #include <glm/gtc/type_ptr.hpp>
 #include "Camera.h"
+#include "../WindowManager.h"
 
 unsigned int TextRendererComponent::VAO;
 unsigned int TextRendererComponent::VBO;
@@ -99,35 +100,57 @@ void TextRendererComponent::SetFont(GameAssetSoftPointer<FreetypeFontAsset> Font
 
 void TextRendererComponent::Render(CameraComponent& Camera)
 {
-    RenderText(0, 0, 1);
+    RenderText(Camera, 0, 0, TextSize, ForegroundColor);
+
+    if (bShadow)
+    {
+        RenderText(Camera, -ShadowOffset.x, -ShadowOffset.y, TextSize, ShadowColor);
+    }
 }
 
-void TextRendererComponent::RenderText(float x, float y, float scale)
+void TextRendererComponent::RenderText(CameraComponent& Camera, float x, float y, float scale, glm::vec3 Color)
 {
+    x *= scale;
+    y *= scale;
     glUseProgram(ShaderProgram);
     glUniform3f(glGetUniformLocation(ShaderProgram, "textColor"), Color.x, Color.y, Color.z);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
 
-    int ProjectionLocation = glGetUniformLocation(ShaderProgram, "projection");
-    glUniformMatrix4fv(ProjectionLocation, 1, GL_FALSE, glm::value_ptr(CameraComponent::GetActiveCamera()->GetProjectionMatrix()));
+    glm::mat4x4 ModelMatrix = GetParentEntity().GetTransform().GetModelMatrix();
+    glm::mat4 ViewMatrix = Camera.GetViewMatrix();
+    glm::mat4x4 ProjectionMatrix = Camera.GetProjectionMatrix();
+
+    glm::mat4x4 MVPMatrix = ProjectionMatrix * ViewMatrix * ModelMatrix;
+
+    int ProjectionLocation = glGetUniformLocation(ShaderProgram, "MVP");
+    glUniformMatrix4fv(ProjectionLocation, 1, GL_FALSE, glm::value_ptr(MVPMatrix));
 
     std::string::const_iterator c;
     for (c = Text.begin(); c != Text.end(); c++)
     {
         FreetypeCharacter ch = FreetypeCharacter::Characters[*c];
 
+        float xpos = x + ch.Bearing.x * scale;
+        float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+
+        xpos /= TEXT_WINDOW_WIDTH;
+        ypos /= TEXT_WINDOW_HEIGHT;
+
         float w = ch.Size.x * scale;
         float h = ch.Size.y * scale;
 
-        float vertices[6][4] = {
-            { 0 + x,     1,   0.0f, 0.0f },
-            { 0 + x,     0,       0.0f, 1.0f },
-            { 1 + x, 0,       1.0f, 1.0f },
+        w /= TEXT_WINDOW_WIDTH;
+        h /= TEXT_WINDOW_HEIGHT;
 
-            { 0 + x,     1,   0.0f, 0.0f },
-            { 1 + x, 0,       1.0f, 1.0f },
-            { 1 + x, 1,   1.0f, 0.0f }
+        float vertices[6][4] = {
+            { xpos,     ypos + h,   0.0f, 0.0f },
+            { xpos,     ypos,       0.0f, 1.0f },
+            { xpos + w, ypos,       1.0f, 1.0f },
+
+            { xpos,     ypos + h,   0.0f, 0.0f },
+            { xpos + w, ypos,       1.0f, 1.0f },
+            { xpos + w, ypos + h,   1.0f, 0.0f }
         };
 
         glBindTexture(GL_TEXTURE_2D, ch.TextureID);
@@ -138,7 +161,7 @@ void TextRendererComponent::RenderText(float x, float y, float scale)
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        x++;
+        x += (ch.Advance >> 6) * scale;
     }
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);

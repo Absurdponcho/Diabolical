@@ -77,10 +77,6 @@ int main(int argc, char** argv)
         Sprite->SetTexture(PlayerTexturePointer);
         Sprite->SpriteSheetSize = glm::ivec2(2, 1);
         Sprite->SpriteSheetProgressionSpeed = 4;
-
-        TextRendererComponent* TextRenderer = CreateComponent<TextRendererComponent>(PlayerCharacter);
-        TextRenderer->SetFont(GameAssetSoftPointer<FreetypeFontAsset>("GameAssetFiles/Fonts/CreeperPixelRegular/CreeperPixelRegular-DMYx.ttf"));
-        TextRenderer->Text = "POOP";
     }
 
     PlayerCharacter->PlayerArm = CreateEntity<GameEntity>();
@@ -106,6 +102,19 @@ int main(int argc, char** argv)
     {
         PlayerTracker->SetTrackTarget(PlayerCharacter);
         CreateComponent<CameraComponent>(PlayerTracker)->SetActiveCamera();
+    }
+
+    GameEntity* TextTest = CreateEntity<GameEntity>();
+    {
+        TextTest->GetTransform().SetPosition(glm::vec3(0, 5, 0));
+        TextRendererComponent* TextRenderer = CreateComponent<TextRendererComponent>(TextTest);
+        TextRenderer->SetFont(GameAssetSoftPointer<FreetypeFontAsset>("GameAssetFiles/Fonts/GothicPixel/GothicPixelRegular-j1dG.ttf"));
+        TextRenderer->Text = "Welcome to the game!";
+        TextRenderer->ForegroundColor = glm::vec3(.3f, .5, .3f);
+        TextRenderer->ShadowColor = glm::vec3(.3f, .5, .3f) / 2.f;
+        TextRenderer->TextSize = 16;
+        TextRenderer->ShadowOffset = glm::vec2(-2, -2);
+        TextRenderer->bShadow = true;
     }
 
 

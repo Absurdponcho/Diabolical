@@ -2,13 +2,14 @@
 #include <glm/glm.hpp>
 #include "../Camera.h"
 
-#define PARTICLE_LIMIT 1000
+#define PARTICLE_LIMIT 500
 
 struct Particle
 {
 	glm::vec4 Color; // R,G,B,A
 	glm::vec3 Position;
 	float Speed = 1;
+	float Acceleration = 0;
 	float Rotation = 0;
 	float RotationOverTime = 0;
 	float Size = 1;

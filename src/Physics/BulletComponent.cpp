@@ -1,5 +1,7 @@
 #include "BulletComponent.h"
 #include "..\Rendering\Camera.h"
+#include "../Utility/Utility.h"
+
 void BulletComponent::OnSpawn()
 {
 	int x, y;
