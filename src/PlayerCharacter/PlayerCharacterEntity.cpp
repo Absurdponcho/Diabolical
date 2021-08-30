@@ -64,8 +64,8 @@ void PlayerCharacterEntity::Jump(ActionInfo ActionInfo)
 
 	Particle Particle;
 	//Particle.Color = glm::vec4((float)(rand() % 100) / 100, (float)(rand() % 100) / 100, (float)(rand() % 100) / 100, 1);
-	Particle.Position = GetTransform().GetPosition();
-	Particle.Size = 0.1f;
+	Particle.Position = GetTransform().GetPosition() - glm::vec3(0, .6f, 0);
+	Particle.Size = 1.f / 16.f;
 	constexpr float Pi = glm::pi<float>();
 	for (int i = 0; i < 100; i++)
 	{

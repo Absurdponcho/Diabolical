@@ -106,7 +106,7 @@ int main(int argc, char** argv)
 
     GameEntity* TextTest = CreateEntity<GameEntity>();
     {
-        TextTest->GetTransform().SetPosition(glm::vec3(0, 5, 0));
+        TextTest->GetTransform().SetPosition(glm::vec3(0, 5, -1.f));
         TextRendererComponent* TextRenderer = CreateComponent<TextRendererComponent>(TextTest);
         TextRenderer->SetFont(GameAssetSoftPointer<FreetypeFontAsset>("GameAssetFiles/Fonts/GothicPixel/GothicPixelRegular-j1dG.ttf"));
         TextRenderer->Text = "Welcome to the game!";
