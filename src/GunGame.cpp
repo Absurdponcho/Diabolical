@@ -1,7 +1,7 @@
 #include "CoreEngine.h"
 #include "Rendering/RenderPipeline.h"
 #include "Physics/ColliderComponent.h"
-
+#include "Utility/GameMath.h"
 #undef main
 
 
@@ -16,8 +16,8 @@ int main(int argc, char** argv)
         1600, 800, SDL_WINDOW_HIDDEN);
 
     PhysicsWorld::Initialize(b2Vec2(0, -13.8f));
-   
     ParticleManager::Initialize();
+    GlobalRandom::Initialize();
 
     RenderPipeline DefaultRenderPipeline = RenderPipeline();
     DefaultRenderPipeline.Bind();
