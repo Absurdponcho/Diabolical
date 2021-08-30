@@ -8,7 +8,7 @@ AudioAsset* AudioAsset::TryLoad(std::filesystem::path Path)
 {
 	if (!std::filesystem::exists(Path))
 	{
-		Logging::LogError("GameAsset::TryLoad()", "Could not find asset at path " + Path.string());
+		Logging::LogError("AudioAsset::TryLoad()", "Could not find asset at path " + Path.string());
 		return nullptr;
 	}
 

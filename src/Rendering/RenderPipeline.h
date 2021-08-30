@@ -16,6 +16,6 @@ public:
 	static RenderPipeline* GetActive();
 private:
 	static RenderPipeline* ActiveRenderPipeline;
-	Framebuffer* MainFramebuffer;
+	Framebuffer* MainFramebuffer = nullptr;
 	ParallaxBackground BackgroundContainer;
 };

@@ -170,6 +170,7 @@
     <ClCompile Include="Rendering\BasicRendererComponent.cpp" />
     <ClCompile Include="Rendering\Camera.cpp" />
     <ClCompile Include="Rendering\Framebuffer.cpp" />
+    <ClCompile Include="Rendering\FreetypeFontAsset.cpp" />
     <ClCompile Include="Rendering\GameRendererComponent.cpp" />
     <ClCompile Include="Rendering\ParallaxBackground.cpp" />
     <ClCompile Include="Rendering\Particles\Particle.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Rendering\Camera.h" />
     <ClInclude Include="Rendering\Framebuffer.h" />
+    <ClInclude Include="Rendering\FreetypeFontAsset.h" />
     <ClInclude Include="Rendering\GameRendererComponent.h" />
     <ClInclude Include="Rendering\ParallaxBackground.h" />
     <ClInclude Include="Rendering\Particles\Particle.h" />

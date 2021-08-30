@@ -78,7 +78,7 @@ void ParallaxBackground::Initialize()
     NewBackground.XCameraOffsetMultiplier = 0;
     NewBackground.YCameraOffsetMultiplier = 0;
     NewBackground.YOffset = 0;
-    NewBackground.Scale = glm::vec2(.5f, 1);
+    NewBackground.Scale = glm::vec2(1, 1);
     BackgroundOrder.push_back(NewBackground);
 
     NewBackground = BackgroundContainer();
@@ -91,7 +91,7 @@ void ParallaxBackground::Initialize()
     NewBackground.XCameraOffsetMultiplier = 0.001f;
     NewBackground.YCameraOffsetMultiplier = 0.002f;
     NewBackground.YOffset = -0.2f;
-    NewBackground.Scale = glm::vec2(.5f, 1);
+    NewBackground.Scale = glm::vec2(.3f, 1);
     BackgroundOrder.push_back(NewBackground);
 
     NewBackground = BackgroundContainer();

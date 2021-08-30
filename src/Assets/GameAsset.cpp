@@ -60,11 +60,11 @@ GameAsset* GameAsset::TryLoad(std::filesystem::path Path)
 		return nullptr;
 	}
 
-	std::ifstream FileStream(Path.string());
+	std::ifstream FileStream(Path.string(), std::ios::binary | std::ios::ate);
 
 	GameAsset* LoadedAsset = new GameAsset();
 
-	LoadedAsset->FileSize = std::filesystem::file_size(Path);
+	LoadedAsset->FileSize = FileStream.tellg();
 
 	LoadedAsset->bDataAssigned = true;
 	LoadedAsset->AssetData = new uint8_t[LoadedAsset->FileSize];

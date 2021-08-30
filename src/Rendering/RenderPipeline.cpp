@@ -3,6 +3,9 @@
 #include "../WindowManager.h"
 #include "Camera.h"
 #include <gl/glew.h>
+#include "../Assets/GameAsset.h"
+#include "../Assets/GameAssetSoftPointer.h"
+#include "FreetypeFontAsset.h"
 
 RenderPipeline* RenderPipeline::ActiveRenderPipeline = nullptr;
 
@@ -54,6 +57,9 @@ void RenderPipeline::Draw(CameraComponent* Camera, float DeltaTime)
 	{
 		Camera->Draw(DeltaTime);
 	}
+
+	GameAssetSoftPointer<FreetypeFontAsset> Font("GameAssetFiles/Fonts/CreeperPixelRegular/CreeperPixelRegular-DMYx.ttf");
+	Font.LoadSynchronous();
 
 	Framebuffer::Unbind();
 
