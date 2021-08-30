@@ -125,7 +125,7 @@ void PlayerCharacterEntity::Shoot(ActionInfo ActionInfo)
 
 			RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(ArcaneBullet);
 			Rigidbody->SetDynamic(true);
-			Rigidbody->SetRotates(true);
+			Rigidbody->SetRotates(false);
 			Rigidbody->Enable();
 
 			SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(ArcaneBullet);
