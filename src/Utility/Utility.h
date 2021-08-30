@@ -17,10 +17,25 @@ public:
 	static std::string WStringToString(const std::wstring& String);
 	static glm::vec3 ScreenToWorld(glm::vec2 ScreenPos, CameraComponent* Camera);
 
-	static b2Vec2 ConvertTob2Vec2(glm::vec2 From);
-	static b2Vec3 ConvertTob2Vec3(glm::vec3 From);
-	static glm::vec2 ConvertToGLMVec2(b2Vec2 From);
-	static glm::vec3 ConvertToGLMVec3(b2Vec3 From);
+	static inline b2Vec2 ConvertTob2Vec2(glm::vec2 From)
+	{
+		return b2Vec2(From.x, From.y);
+	}
+
+	static inline b2Vec3 ConvertTob2Vec3(glm::vec3 From)
+	{
+		return b2Vec3(From.x, From.y, From.z);
+	}
+
+	static inline glm::vec2 ConvertToGLMVec2(b2Vec2 From)
+	{
+		return glm::vec2(From.x, From.y);
+	}
+
+	static inline glm::vec3 ConvertToGLMVec3(b2Vec3 From)
+	{
+		return glm::vec3(From.x, From.y, From.z);
+	}
 
 	// In radians
 	static float AngleBetween(glm::vec2 From, glm::vec2 To);

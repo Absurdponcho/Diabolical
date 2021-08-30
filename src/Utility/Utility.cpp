@@ -84,25 +84,7 @@ glm::vec3 Utility::ScreenToWorld(glm::vec2 ScreenPos, CameraComponent* Camera)
 
 }
 
-b2Vec2 Utility::ConvertTob2Vec2(glm::vec2 From)
-{
-	return b2Vec2(From.x, From.y);
-}
 
-b2Vec3 Utility::ConvertTob2Vec3(glm::vec3 From)
-{
-	return b2Vec3(From.x, From.y, From.z);
-}
-
-glm::vec2 Utility::ConvertToGLMVec2(b2Vec2 From)
-{
-	return glm::vec2(From.x, From.y);
-}
-
-glm::vec3 Utility::ConvertToGLMVec3(b2Vec3 From)
-{
-	return glm::vec3(From.x, From.y, From.z);
-}
 
 float Utility::AngleBetween(glm::vec2 From, glm::vec2 To)
 {

@@ -8,6 +8,7 @@
 #include "Framebuffer.h"
 #include "Camera.h"
 #include <glm/gtc/type_ptr.hpp>
+#include "ShaderCompiler.h"
 
 GLuint ParallaxBackground::ShaderProgram;
 GLuint ParallaxBackground::VertexBufferObject;
@@ -128,65 +129,10 @@ void ParallaxBackground::InitializeShader()
 	if (bShaderInitialized) return;
 	bShaderInitialized = true;
 
-    // Vertex Shader =========================================
-    TextAsset* VertexShaderSource = GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParallaxVertex.glsl").LoadSynchronous();
-    Check(VertexShaderSource);
-    const char* VertexShaderCString = VertexShaderSource->GetString().c_str();
-
-    unsigned int VertexShader;
-    VertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(VertexShader, 1, &VertexShaderCString, NULL);
-    glCompileShader(VertexShader);
-
-    int Success;
-    char InfoLog[512];
-    glGetShaderiv(VertexShader, GL_COMPILE_STATUS, &Success);
-
-    if (!Success)
-    {
-        glGetShaderInfoLog(VertexShader, 512, NULL, InfoLog);
-        Logging::LogError("ParallaxBackground::InitializeShader()", "Vertex Shader: " + std::string(InfoLog));
-        return;
-    }
-    //!Vertex Shader =========================================
-
-    // Fragment Shader =======================================
-    TextAsset* FragmentShaderSource = GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParallaxFragment.glsl").LoadSynchronous();
-    Check(FragmentShaderSource);
-    const char* FragmentShaderCString = FragmentShaderSource->GetString().c_str();
-
-    unsigned int FragmentShader;
-    FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(FragmentShader, 1, &FragmentShaderCString, NULL);
-    glCompileShader(FragmentShader);
-
-    glGetShaderiv(FragmentShader, GL_COMPILE_STATUS, &Success);
-
-    if (!Success)
-    {
-        glGetShaderInfoLog(FragmentShader, 512, NULL, InfoLog);
-        Logging::LogError("ParallaxBackground::InitializeShader()", "Fragment Shader: " + std::string(InfoLog));
-        return;
-    }
-    //!Fragment Shader =======================================
-
-    // Shader Program ========================================
-    ShaderProgram = glCreateProgram();
-
-    glAttachShader(ShaderProgram, VertexShader);
-    glAttachShader(ShaderProgram, FragmentShader);
-    glLinkProgram(ShaderProgram);
-
-    glGetProgramiv(ShaderProgram, GL_LINK_STATUS, &Success);
-    if (!Success) {
-        glGetProgramInfoLog(ShaderProgram, 512, NULL, InfoLog);
-        Logging::LogError("ParallaxBackground::InitializeShader()", "Shader Program: " + std::string(InfoLog));
-    }
-
-    //!Shader Program ========================================
-
-    glDeleteShader(VertexShader); // delete shaders after shader program is created
-    glDeleteShader(FragmentShader);
+    ShaderProgram = ShaderCompiler::CompileShaderProgram(
+        GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParallaxVertex.glsl"),
+        GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParallaxFragment.glsl"));
+    Check(ShaderProgram);
 
     // Vertex Array Object ===================================
 

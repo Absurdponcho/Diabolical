@@ -176,6 +176,7 @@
     <ClCompile Include="Rendering\ParallaxBackground.cpp" />
     <ClCompile Include="Rendering\Particles\Particle.cpp" />
     <ClCompile Include="Rendering\RenderPipeline.cpp" />
+    <ClCompile Include="Rendering\ShaderCompiler.cpp" />
     <ClCompile Include="Rendering\SpriteRendererComponent.cpp" />
     <ClCompile Include="Rendering\SquareRendererComponent.cpp" />
     <ClCompile Include="Rendering\TextRendererComponent.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="Rendering\ParallaxBackground.h" />
     <ClInclude Include="Rendering\Particles\Particle.h" />
     <ClInclude Include="Rendering\RenderPipeline.h" />
+    <ClInclude Include="Rendering\ShaderCompiler.h" />
     <ClInclude Include="Rendering\SpriteRendererComponent.h" />
     <ClInclude Include="Rendering\SquareRendererComponent.h" />
     <ClInclude Include="Rendering\TextRendererComponent.h" />

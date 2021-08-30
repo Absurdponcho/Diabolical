@@ -3,6 +3,7 @@
 #include "../SpriteRendererComponent.h"
 #include <glm/gtc/type_ptr.hpp>
 #include "../../Assets/TextAsset.h"
+#include "../ShaderCompiler.h"
 
 unsigned int ParticleManager::VertexBufferObject = 0;
 unsigned int ParticleManager::VertexArrayObject = 0;
@@ -45,65 +46,11 @@ void ParticleManager::RenderParticles(CameraComponent& Camera, float DeltaTime)
 
 void ParticleManager::Initialize()
 {
-    // Vertex Shader =========================================
-        TextAsset* VertexShaderSource = GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParticleVertex.glsl").LoadSynchronous();
-        Check(VertexShaderSource);
-        const char* VertexShaderCString = VertexShaderSource->GetString().c_str();
+    ShaderProgram = ShaderCompiler::CompileShaderProgram(
+        GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParticleVertex.glsl"),
+        GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParticleFragment.glsl"));
+    Check(ShaderProgram);
 
-        unsigned int VertexShader;
-        VertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(VertexShader, 1, &VertexShaderCString, NULL);
-        glCompileShader(VertexShader);
-
-        int Success;
-        char InfoLog[512];
-        glGetShaderiv(VertexShader, GL_COMPILE_STATUS, &Success);
-
-        if (!Success)
-        {
-            glGetShaderInfoLog(VertexShader, 512, NULL, InfoLog);
-            Logging::LogError("SpriteRendererComponent::OnSpawn()", "Vertex Shader: " + std::string(InfoLog));
-            return;
-        }
-    //!Vertex Shader =========================================
-
-    // Fragment Shader =======================================
-        TextAsset* FragmentShaderSource = GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParticleFragment.glsl").LoadSynchronous();
-        Check(FragmentShaderSource);
-        const char* FragmentShaderCString = FragmentShaderSource->GetString().c_str();
-
-        unsigned int FragmentShader;
-        FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(FragmentShader, 1, &FragmentShaderCString, NULL);
-        glCompileShader(FragmentShader);
-
-        glGetShaderiv(FragmentShader, GL_COMPILE_STATUS, &Success);
-
-        if (!Success)
-        {
-            glGetShaderInfoLog(VertexShader, 512, NULL, InfoLog);
-            Logging::LogError("SpriteRendererComponent::OnSpawn()", "Fragment Shader: " + std::string(InfoLog));
-            return;
-        }
-    //!Fragment Shader =======================================
-
-    // Shader Program ========================================
-        ShaderProgram = glCreateProgram();
-
-        glAttachShader(ShaderProgram, VertexShader);
-        glAttachShader(ShaderProgram, FragmentShader);
-        glLinkProgram(ShaderProgram);
-
-        glGetProgramiv(ShaderProgram, GL_LINK_STATUS, &Success);
-        if (!Success) {
-            glGetProgramInfoLog(ShaderProgram, 512, NULL, InfoLog);
-            Logging::LogError("SpriteRendererComponent::OnSpawn()", "Shader Program: " + std::string(InfoLog));
-        }
-
-    //!Shader Program ========================================
-
-    glDeleteShader(VertexShader); // delete shaders after shader program is created
-    glDeleteShader(FragmentShader);
 
     // Vertex Array Object ===================================
 
