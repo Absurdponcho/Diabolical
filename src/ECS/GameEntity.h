@@ -16,11 +16,15 @@ public:
 
 	void SetEulerRotation(glm::vec3 Euler);
 	glm::vec3 GetEulerRotation();
+	glm::vec3 GetWorldEulerRotation();
 
+	void SetRotation(glm::quat NewRotation);
 	glm::quat GetRotation();
+	glm::quat GetWorldRotation();
 
 	void SetPosition(glm::vec3 NewPosition);
 	glm::vec3 GetPosition();
+	glm::vec3 GetWorldPosition();
 
 	void SetScale(glm::vec3 NewScale);
 	glm::vec3 GetScale();

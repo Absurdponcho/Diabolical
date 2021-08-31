@@ -122,8 +122,9 @@ void PlayerCharacterEntity::Shoot(ActionInfo ActionInfo)
 			Sprite->SpriteSheetProgressionSpeed = 8;
 
 
-
-			auto pos = this->GetTransform().GetPosition();
+			Check(HeldItem);
+			auto pos = HeldItem->GetTransform().GetWorldPosition();
+			auto euler = HeldItem->GetTransform().GetWorldEulerRotation() + glm::vec3(0, 0, 90);
 			/*if (distvec[0] > 0) {
 				pos[0] += 1;
 				Sprite->bXMirrored = false;
@@ -133,6 +134,7 @@ void PlayerCharacterEntity::Shoot(ActionInfo ActionInfo)
 				Sprite->bXMirrored = true;
 			}*/
 			ArcaneBullet->GetTransform().SetPosition(pos);
+			ArcaneBullet->GetTransform().SetEulerRotation(euler);
 
 			ColliderComponent* Collider = CreateComponent<ColliderComponent>(ArcaneBullet);
 			Collider->SetSize(b2Vec2(.2f, .5f));

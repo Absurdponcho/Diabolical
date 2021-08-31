@@ -131,7 +131,12 @@ void EntityTransform::SetEulerRotation(glm::vec3 Euler)
 
 glm::vec3 EntityTransform::GetEulerRotation()
 {
-	return glm::eulerAngles(Rotation);
+	return glm::eulerAngles(GetRotation()) / 0.0174533f;
+}
+
+glm::vec3 EntityTransform::GetWorldEulerRotation()
+{
+	return glm::eulerAngles(GetWorldRotation()) / 0.0174533f;
 }
 
 void EntityTransform::SetPosition(glm::vec3 NewPosition)
@@ -143,6 +148,18 @@ void EntityTransform::SetPosition(glm::vec3 NewPosition)
 	//bTransRotationMatrixDirty = true;
 	SetDirtyMatrixCache();
 }
+glm::vec3 EntityTransform::GetWorldPosition()
+{
+	if (!AttachedEntity.Get())
+	{
+		return GetPosition();
+	}
+	else
+	{
+		return glm::vec3(AttachedEntity.Get()->GetTransform().GetModelMatrix() * glm::vec4(GetPosition(), 1.f));
+	}
+}
+
 glm::vec3 EntityTransform::GetPosition()
 {
 	return Position;
@@ -158,6 +175,23 @@ void EntityTransform::SetScale(glm::vec3 NewScale)
 glm::vec3 EntityTransform::GetScale()
 {
 	return Scale;
+}
+
+glm::quat EntityTransform::GetWorldRotation()
+{
+	if (!AttachedEntity.Get())
+	{
+		return GetRotation();
+	}
+	else
+	{
+		return GetRotation() * glm::quat_cast(GetModelMatrix());
+	}
+}
+
+void EntityTransform::SetRotation(glm::quat NewRotation)
+{
+	Rotation = NewRotation;
 }
 
 glm::quat EntityTransform::GetRotation()
