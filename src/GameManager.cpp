@@ -62,7 +62,7 @@ void GameManager::EventTick()
 
 		case SDL_WINDOWEVENT: // screen resize thing
 			if (Event.window.event != SDL_WINDOWEVENT_SIZE_CHANGED) break;
-			//Logging::Log("", std::to_string(Event.window.event));
+			
 			glViewport(0, 0, WindowManager::Get().GetScreenSize().x, WindowManager::Get().GetScreenSize().y);
 			if (RenderPipeline* RP = RenderPipeline::GetActive())
 			{

@@ -33,4 +33,6 @@ private:
 
 	static SDL_Window* GameWindow;
 	static SDL_GLContext GameGLContext;
+
+	static void FixWindowsHighDPIScaling();
 };
