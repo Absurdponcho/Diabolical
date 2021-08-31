@@ -198,3 +198,10 @@ glm::quat EntityTransform::GetRotation()
 {
 	return Rotation;
 }
+
+
+glm::vec2 EntityTransform::ForwardVector2D()
+{
+	glm::vec4 TransformedResult = (glm::mat4_cast(GetWorldRotation()) * glm::vec4(1, 0, 0, 1));
+	return glm::vec2(TransformedResult.x, TransformedResult.y);
+}

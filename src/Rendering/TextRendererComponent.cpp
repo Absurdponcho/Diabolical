@@ -64,7 +64,7 @@ void TextRendererComponent::RenderText(CameraComponent& Camera, float x, float y
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
 
-    glm::mat4x4 ModelMatrix = GetParentEntity().GetTransform().GetModelMatrix();
+    glm::mat4x4 ModelMatrix = GetParentEntity()->GetTransform().GetModelMatrix();
     glm::mat4 ViewMatrix = Camera.GetViewMatrix();
     glm::mat4x4 ProjectionMatrix = Camera.GetProjectionMatrix();
 

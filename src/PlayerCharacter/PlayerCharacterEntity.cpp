@@ -7,6 +7,8 @@
 #include "../WindowManager.h"
 #include "../Audio\AudioAsset.h"
 #include "../Audio/GameAudio.h"
+#include "../Utility/GameMath.h"
+#include "../Physics/BulletComponent.h"
 GameAssetSoftPointer<TextureAsset> ArcaneBulletTexturePointer("GameAssetFiles/ArcaneBullet.png");
 GameAssetSoftPointer<AudioAsset> PhaserSoundPointer("GameAssetFiles/phaser1.wav");
 void PlayerCharacterEntity::OnSpawn()
@@ -107,42 +109,39 @@ void PlayerCharacterEntity::Left(ActionInfo ActionInfo)
 void PlayerCharacterEntity::Shoot(ActionInfo ActionInfo)
 {
 	if (ActionInfo.MouseButtonEvent->state == SDL_PRESSED) {
+
 		GameEntity* ArcaneBullet = CreateEntity<GameEntity>();
 		{
-
-
 			RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(ArcaneBullet);
 			Rigidbody->SetDynamic(true);
 			Rigidbody->SetRotates(false);
-			Rigidbody->Enable();
 
 			SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(ArcaneBullet);
 			Sprite->SetTexture(ArcaneBulletTexturePointer);
 			Sprite->SpriteSheetSize = glm::ivec2(4, 1);
 			Sprite->SpriteSheetProgressionSpeed = 8;
 
-
 			Check(HeldItem);
 			auto pos = HeldItem->GetTransform().GetWorldPosition();
 			auto euler = HeldItem->GetTransform().GetWorldEulerRotation() + glm::vec3(0, 0, 90);
-			/*if (distvec[0] > 0) {
-				pos[0] += 1;
-				Sprite->bXMirrored = false;
-			}
-			else {
-				pos[0] -= 1;
-				Sprite->bXMirrored = true;
-			}*/
+
 			ArcaneBullet->GetTransform().SetPosition(pos);
 			ArcaneBullet->GetTransform().SetEulerRotation(euler);
 
+			glm::ivec2 ScreenPos;
+			SDL_GetMouseState((int*)&ScreenPos, (int*)&ScreenPos + 1);
+			glm::vec3 MouseWorldPosition = Utility::ScreenToWorld(ScreenPos, CameraComponent::GetActiveCamera());
+			glm::vec2 ForceDirection = glm::normalize(MouseWorldPosition - pos);
+			
 			ColliderComponent* Collider = CreateComponent<ColliderComponent>(ArcaneBullet);
-			Collider->SetSize(b2Vec2(.2f, .5f));
+			Collider->SetSize(b2Vec2(.1f, .1f));
 			Collider->SetDensity(1);
-			//Rigidbody->SetVelocity({ force[0], force[1] });
+
+			CreateComponent<BulletComponent>(ArcaneBullet);
+
+			b2Vec2 Force = Utility::ConvertTob2Vec2(ForceDirection * 30.f);
+			Rigidbody->SetVelocity(Force);
 			GameAudio::PlaySound(PhaserSoundPointer);
-
-
 		}
 	}
 	

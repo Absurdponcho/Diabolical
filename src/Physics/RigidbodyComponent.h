@@ -28,6 +28,8 @@ public:
 
 	bool bDrawDebugPolys = false;
 
+	static std::unordered_map<b2Fixture*, RigidbodyComponent*> FixtureRigidbodyMap;
+
 private:
 	b2Body* Body;
 	b2Fixture* MainFixture;

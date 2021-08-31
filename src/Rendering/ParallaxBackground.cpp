@@ -42,7 +42,7 @@ void ParallaxBackground::Draw(CameraComponent* Camera)
         glUniform1f(Location, BackgroundContainer.RenderDepth);
         
         Location = glGetUniformLocation(ShaderProgram, "CameraPosition");
-        glUniform3fv(Location, 1, glm::value_ptr(Camera->GetParentEntity().GetTransform().GetPosition())); 
+        glUniform3fv(Location, 1, glm::value_ptr(Camera->GetParentEntity()->GetTransform().GetPosition())); 
 
         Location = glGetUniformLocation(ShaderProgram, "XCameraOffsetMultiplier");
         glUniform1f(Location, BackgroundContainer.XCameraOffsetMultiplier);

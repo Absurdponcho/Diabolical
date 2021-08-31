@@ -74,9 +74,9 @@ float CameraComponent::GetAspectRatio()
 
 glm::mat4x4 CameraComponent::GetViewMatrix()
 {
-	glm::vec3 ForwardVector = glm::vec3(0, 0, -1) * GetParentEntity().GetTransform().GetRotation();
-	glm::vec3 UpVector = glm::vec3(0, 1, 0) * GetParentEntity().GetTransform().GetRotation();
-	return glm::lookAt(GetParentEntity().GetTransform().GetPosition(), GetParentEntity().GetTransform().GetPosition() + ForwardVector, UpVector);
+	glm::vec3 ForwardVector = glm::vec3(0, 0, -1) * GetParentEntity()->GetTransform().GetRotation();
+	glm::vec3 UpVector = glm::vec3(0, 1, 0) * GetParentEntity()->GetTransform().GetRotation();
+	return glm::lookAt(GetParentEntity()->GetTransform().GetPosition(), GetParentEntity()->GetTransform().GetPosition() + ForwardVector, UpVector);
 }
 
 void CameraComponent::Draw(float DeltaTime)

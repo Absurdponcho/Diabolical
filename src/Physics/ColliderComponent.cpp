@@ -1,10 +1,15 @@
 #include "ColliderComponent.h"
 #include "../GunGame.h"
 #include "RigidbodyComponent.h"
+std::unordered_map<b2Fixture*, ColliderComponent*> ColliderComponent::FixtureColliderMap;
 
+ColliderComponent::~ColliderComponent()
+{
+	FixtureColliderMap.erase(Fixture);
+}
 void ColliderComponent::OnSpawn()
 {
-	RigidbodyComponent* Rigidbody = GetParentEntity().GetComponent<RigidbodyComponent>();
+	RigidbodyComponent* Rigidbody = GetParentEntity()->GetComponent<RigidbodyComponent>();
 	Check(Rigidbody);
 
 	b2PolygonShape Box;
@@ -15,7 +20,9 @@ void ColliderComponent::OnSpawn()
 	FixtureDef.density = DesiredDensity;
 	FixtureDef.friction = 0.3f;
 
-	b2Fixture* Fixture = Rigidbody->GetBody()->CreateFixture(&FixtureDef);
+	Fixture = Rigidbody->GetBody()->CreateFixture(&FixtureDef);
+	Check(Fixture);
+	FixtureColliderMap[Fixture] = this;
 }
 
 void ColliderComponent::SetSize(b2Vec2 Size)

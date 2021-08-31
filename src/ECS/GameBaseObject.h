@@ -45,7 +45,7 @@ private:
 	static size_t UIDCounter;
 
 	static std::vector<GameBaseObject*> BaseObjectsPendingSpawn;
-	static std::stack<GameBaseObject*> BaseObjectsPendingDestroy;
+	static std::vector<GameBaseObject*> BaseObjectsPendingDestroy;
 	static std::vector<GameBaseObject*> AllBaseObjects;
 	static std::unordered_map<size_t, GameBaseObject*> BaseObjectsMap;
 

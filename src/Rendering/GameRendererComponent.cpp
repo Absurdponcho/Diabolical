@@ -16,7 +16,7 @@ void GameRendererComponent::OnDestroy()
 
 	for (int Index = 0; Index < AllGameRendererComponents.size(); Index++)
 	{
-		if (*this == *AllGameRendererComponents[Index])
+		if (this == AllGameRendererComponents[Index])
 		{
 			AllGameRendererComponents.erase(AllGameRendererComponents.begin() + Index);
 			return;

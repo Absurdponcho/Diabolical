@@ -11,7 +11,7 @@ void GameComponent::OnSpawn()
 void GameComponent::OnDestroy()
 {
 	GameBaseObject::OnDestroy();
-	if (ParentEntity)
+	if (GetParentEntity())
 	{
 		ParentEntity->DetachComponent(this);
 	}
@@ -24,8 +24,16 @@ void GameComponent::SetParentEntity(GameEntity* Entity)
 	ParentEntity->AttachComponent(this);
 }
 
-GameEntity& GameComponent::GetParentEntity()
+GameEntity* GameComponent::GetParentEntity()
 {
+	if (IsPendingDestroy())
+	{
+		return nullptr;
+	}
+	if (ParentEntity->IsPendingDestroy())
+	{
+		return nullptr;
+	}
 	Check(ParentEntity);
-	return *ParentEntity;
+	return ParentEntity;
 }

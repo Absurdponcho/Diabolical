@@ -124,7 +124,7 @@ void SpriteRendererComponent::SelectSpriteSheetIndex(float DeltaTime)
 void SpriteRendererComponent::Render(CameraComponent& Camera)
 {
     
-    glm::mat4x4 ModelMatrix = GetParentEntity().GetTransform().GetModelMatrix();
+    glm::mat4x4 ModelMatrix = GetParentEntity()->GetTransform().GetModelMatrix();
     if (bXMirrored)
     {
         ModelMatrix = glm::scale(ModelMatrix, glm::vec3(-1, 1, 1));
@@ -158,7 +158,7 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     
     //Particle Particle;
     //Particle.Color = glm::vec4((float)(rand() % 100) / 100, (float)(rand() % 100) / 100, (float)(rand() % 100) / 100, 1);
-    //Particle.Position = GetParentEntity().GetTransform().Position;
+    //Particle.Position = GetParentEntity()->GetTransform().Position;
     //Particle.Size = 0.1f;
     //Particle.Speed = 5.5f;
     //Particle.Rotation = (float)(rand() % 360);
