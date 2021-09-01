@@ -10,6 +10,7 @@ class SpriteRendererComponent : public GameRendererComponent
 public:
 	virtual void Render(CameraComponent& Camera) override;
 	virtual void OnSpawn() override;
+	virtual void OnDestroy() override;
 	virtual void OnTick(float DeltaTime) override;
 
 	virtual void SelectSpriteSheetIndex(float DeltaTime);
@@ -31,6 +32,7 @@ private:
 	static unsigned int VertexArrayObject;
 	static unsigned int ElementBufferObject;
 	static unsigned int ShaderProgram;
-
+	static int MVPMatrixLocation;
+	static int SpriteDimensionsLocation;
 	unsigned int OpenGLTexture = 0;
 };

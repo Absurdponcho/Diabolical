@@ -77,8 +77,10 @@ public:
 
 	void Execute(Parameters... Args)
 	{
-		for (GameMulticastDelegate::MulticastDelegateBinding<Parameters...>& Binding : Bindings)
+		for (int Index = (int)Bindings.size() - 1; Index >= 0; Index--)
 		{
+			GameMulticastDelegate::MulticastDelegateBinding<Parameters...>& Binding = Bindings[Index];
+
 			if (GameBaseObject::GetFromUID(Binding.UID))
 			{
 				Binding.Function(Args...);

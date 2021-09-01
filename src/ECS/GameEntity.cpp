@@ -7,7 +7,6 @@
 void GameEntity::OnTick(float DeltaTime)
 {
 	GameBaseObject::OnTick(DeltaTime);
-	//Logging::LogVerbose("GameEntity::OnTick()", "Ticked");
 }
 void GameEntity::Destroy()
 {
@@ -18,6 +17,7 @@ void GameEntity::Destroy()
 			AttachedComponents[Index]->Destroy();
 		}
 	}
+	AttachedComponents.clear();
 	GameBaseObject::Destroy();
 
 }
@@ -103,11 +103,14 @@ void GameEntity::AttachComponent(GameComponent* Component)
 
 	AttachedComponents.push_back(Component);
 
-	Logging::LogVerbose("GameEntity::AttachComponent()", "Component (" + std::to_string(Component->GetUID()) + ") attached to entity (" + std::to_string(GetUID()) + ")");
+	LOGVERBOSE("GameEntity::AttachComponent()", "Component (" + std::to_string(Component->GetUID()) + ") attached to entity (" + std::to_string(GetUID()) + ")");
 }
 
 void GameEntity::DetachComponent(GameComponent* Component)
 {
+
+	Check(Component);
+	if (Component == nullptr) return;
 	for (int Index = 0; Index < AttachedComponents.size(); Index++)
 	{
 		if (Component->GetUID() == AttachedComponents[Index]->GetUID())
@@ -197,4 +200,11 @@ void EntityTransform::SetRotation(glm::quat NewRotation)
 glm::quat EntityTransform::GetRotation()
 {
 	return Rotation;
+}
+
+
+glm::vec2 EntityTransform::ForwardVector2D()
+{
+	glm::vec4 TransformedResult = (glm::mat4_cast(GetWorldRotation()) * glm::vec4(1, 0, 0, 1));
+	return glm::vec2(TransformedResult.x, TransformedResult.y);
 }

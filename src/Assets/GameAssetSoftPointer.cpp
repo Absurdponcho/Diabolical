@@ -9,11 +9,11 @@ GameAsset* SoftPointer::Get_Internal()
 
 	//if (LoadedAsset)
 	//{
-	//	Logging::LogVerbose("GameAssetSoftPointer::Get_Internal()", "Getting Asset " + Path.string() + ", already loaded");
+	//	LOGVERBOSE("GameAssetSoftPointer::Get_Internal()", "Getting Asset " + Path.string() + ", already loaded");
 	//}
 	//else
 	//{
-	//	Logging::LogVerbose("GameAssetSoftPointer::Get_Internal()", "Getting Asset " + Path.string() + ", not loaded");
+	//	LOGVERBOSE("GameAssetSoftPointer::Get_Internal()", "Getting Asset " + Path.string() + ", not loaded");
 	//}
 	return LoadedAsset;
 }

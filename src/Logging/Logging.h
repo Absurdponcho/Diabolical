@@ -4,6 +4,8 @@
 // Example 
 // Logging::Log("Class::Function", "Debug String");
 
+#define LOGGING
+
 enum class ELogVerbosity : uint8_t
 {
 	LV_ErrorOnly = 0,
@@ -33,3 +35,19 @@ protected:
 	static void SetLogColor(uint8_t Color);
 	static uint8_t LogColor;
 };
+
+#ifdef LOGGING
+
+#define LOG(DebugScope, DebugString) Logging::Log(DebugScope, DebugString);
+#define LOGVERBOSE(DebugScope, DebugString) Logging::LogVerbose(DebugScope, DebugString);
+#define LOGWARNING(DebugScope, DebugString) Logging::LogWarning(DebugScope, DebugString);
+#define LOGERROR(DebugScope, DebugString) Logging::LogError(DebugScope, DebugString);
+
+#else
+
+#define LOG(DebugScope, DebugString)
+#define LOGVERBOSE(DebugScope, DebugString)
+#define LOGWARNING(DebugScope, DebugString)
+#define LOGERROR(DebugScope, DebugString)
+
+#endif

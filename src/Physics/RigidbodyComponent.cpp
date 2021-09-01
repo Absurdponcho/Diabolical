@@ -7,15 +7,17 @@
 #include "..\WindowManager.h"
 #include "..\Rendering\Camera.h"
 
+
+
 void RigidbodyComponent::OnSpawn()
 {
 	bSpawned = true;
 
-	GameEntity& Parent = GetParentEntity();
+	GameEntity* Parent = GetParentEntity();
 	b2BodyDef BodyDef;
 	BodyDef.type = b2BodyType::b2_dynamicBody;
-	BodyDef.position.Set(Parent.GetTransform().GetPosition().x, Parent.GetTransform().GetPosition().y);
-	BodyDef.angle = Parent.GetTransform().GetEulerRotation().z * 0.0174533f; // deg to rad
+	BodyDef.position.Set(Parent->GetTransform().GetPosition().x, Parent->GetTransform().GetPosition().y);
+	BodyDef.angle = Parent->GetTransform().GetEulerRotation().z * 0.0174533f; // deg to rad
 
 	Body = PhysicsWorld::Get().GetWorld().CreateBody(&BodyDef);
 
@@ -24,6 +26,12 @@ void RigidbodyComponent::OnSpawn()
 	Body->SetLinearDamping(DesiredLinearDamping);
 	Body->SetLinearVelocity(DesiredVelocity);
 
+}
+
+void RigidbodyComponent::OnDestroy()
+{
+	PhysicsWorld::Get().GetWorld().DestroyBody(Body);
+	Body = nullptr;
 }
 
 void RigidbodyComponent::OnPostPhysics(float FixedDeltaTime)
@@ -36,11 +44,11 @@ void RigidbodyComponent::OnPostPhysics(float FixedDeltaTime)
 	SetVelocity(Velocity);
 	//!perform horizontal damping
 	
-	GameEntity& Parent = GetParentEntity();
+	GameEntity* Parent = GetParentEntity();
 	b2Vec2 BodyPos = Body->GetPosition();
-	Parent.GetTransform().SetPosition(glm::vec3(BodyPos.x + Offset.x, BodyPos.y + Offset.y, Parent.GetTransform().GetPosition().z));
-	glm::vec3 Euler = Parent.GetTransform().GetEulerRotation();
-	Parent.GetTransform().SetEulerRotation(glm::vec3(Euler.x, Euler.y, Body->GetAngle() / 0.0174533f));
+	Parent->GetTransform().SetPosition(glm::vec3(BodyPos.x + Offset.x, BodyPos.y + Offset.y, Parent->GetTransform().GetPosition().z));
+	glm::vec3 Euler = Parent->GetTransform().GetEulerRotation();
+	Parent->GetTransform().SetEulerRotation(glm::vec3(Euler.x, Euler.y, Body->GetAngle() / 0.0174533f));
 
 	/*int x, y;
 	SDL_GetMouseState(&x, &y);
@@ -53,7 +61,7 @@ void RigidbodyComponent::OnPostPhysics(float FixedDeltaTime)
 	glm::vec4 WorldSpace = ViewProjectionMatrix * ScreenSpace;
 	WorldSpace.z = 0;
 	glm::vec3 mouse_pos = WorldSpace;
-	glm::vec3 position = GetParentEntity().GetTransform().Position;
+	glm::vec3 position = GetParentEntity()->GetTransform().Position;
 	glm::vec2 force = mouse_pos - position;*/
 	//Body->ApplyForceToCenter({ force[0], force[1] }, true);
 }

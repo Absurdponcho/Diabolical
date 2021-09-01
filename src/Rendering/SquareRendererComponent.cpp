@@ -13,12 +13,12 @@ void SquareRendererComponent::Render(CameraComponent& Camera)
 
 	GameRendererComponent::Render(Camera);
 
-	GameEntity& Parent = GetParentEntity();
+	GameEntity* Parent = GetParentEntity();
 
 	glm::vec4 From = glm::vec4(-.5f, -.5f, 0, 1);
 	glm::vec4 To = glm::vec4(.5f, .5f, 0, 1);
 
-	glm::mat4x4 ModelMatrix = Parent.GetTransform().GetModelMatrix();
+	glm::mat4x4 ModelMatrix = Parent->GetTransform().GetModelMatrix();
 	glm::mat4 ViewMatrix = Camera.GetViewMatrix();
 	glm::mat4x4 ProjectionMatrix = Camera.GetProjectionMatrix();
 

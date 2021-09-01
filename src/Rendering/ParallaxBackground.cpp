@@ -14,7 +14,13 @@ GLuint ParallaxBackground::ShaderProgram;
 GLuint ParallaxBackground::VertexBufferObject;
 GLuint ParallaxBackground::VertexArrayObject;
 GLuint ParallaxBackground::ElementBufferObject;
-
+int ParallaxBackground::RenderDepthLocation = 0;
+int ParallaxBackground::CameraPositionLocation =0;
+int ParallaxBackground::XCameraOffsetMultiplierLocation = 0;
+int ParallaxBackground::YCameraOffsetMultiplierLocation = 0;
+int ParallaxBackground::YOffsetLocation = 0;
+int ParallaxBackground::AspectRatioLocation = 0;
+int ParallaxBackground::ScaleLocation =0;
 float ParallaxVertices[] = {
      1.f,  1.f, 0.0f,   1.0f, 0.0f, // top right
      1.f, -1.f, 0.0f,   1.0f, 1.0f, // bottom right
@@ -37,27 +43,13 @@ void ParallaxBackground::Draw(CameraComponent* Camera)
 	{
 		glBindTexture(GL_TEXTURE_2D, BackgroundContainer.Texture->GetTexture());
        
-
-        int Location = glGetUniformLocation(ShaderProgram, "RenderDepth");
-        glUniform1f(Location, BackgroundContainer.RenderDepth);
-        
-        Location = glGetUniformLocation(ShaderProgram, "CameraPosition");
-        glUniform3fv(Location, 1, glm::value_ptr(Camera->GetParentEntity().GetTransform().GetPosition())); 
-
-        Location = glGetUniformLocation(ShaderProgram, "XCameraOffsetMultiplier");
-        glUniform1f(Location, BackgroundContainer.XCameraOffsetMultiplier);
-
-        Location = glGetUniformLocation(ShaderProgram, "YCameraOffsetMultiplier");
-        glUniform1f(Location, BackgroundContainer.YCameraOffsetMultiplier);
-
-        Location = glGetUniformLocation(ShaderProgram, "YOffset");
-        glUniform1f(Location, BackgroundContainer.YOffset);
-
-        Location = glGetUniformLocation(ShaderProgram, "AspectRatio");
-        glUniform1f(Location, Camera->GetAspectRatio());
-
-        Location = glGetUniformLocation(ShaderProgram, "Scale");
-        glUniform2fv(Location, 1, glm::value_ptr(BackgroundContainer.Scale));
+        glUniform1f(RenderDepthLocation, BackgroundContainer.RenderDepth);
+        glUniform3fv(CameraPositionLocation, 1, glm::value_ptr(Camera->GetParentEntity()->GetTransform().GetPosition()));
+        glUniform1f(XCameraOffsetMultiplierLocation, BackgroundContainer.XCameraOffsetMultiplier);
+        glUniform1f(YCameraOffsetMultiplierLocation, BackgroundContainer.YCameraOffsetMultiplier);
+        glUniform1f(YOffsetLocation, BackgroundContainer.YOffset);
+        glUniform1f(AspectRatioLocation, Camera->GetAspectRatio());
+        glUniform2fv(ScaleLocation, 1, glm::value_ptr(BackgroundContainer.Scale));
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
@@ -134,6 +126,13 @@ void ParallaxBackground::InitializeShader()
         GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParallaxFragment.glsl"));
     Check(ShaderProgram);
 
+    RenderDepthLocation = glGetUniformLocation(ShaderProgram, "RenderDepth");
+    CameraPositionLocation = glGetUniformLocation(ShaderProgram, "CameraPosition");
+    XCameraOffsetMultiplierLocation = glGetUniformLocation(ShaderProgram, "XCameraOffsetMultiplier");
+    YCameraOffsetMultiplierLocation = glGetUniformLocation(ShaderProgram, "YCameraOffsetMultiplier");
+    YOffsetLocation = glGetUniformLocation(ShaderProgram, "YOffset");
+    AspectRatioLocation = glGetUniformLocation(ShaderProgram, "AspectRatio");
+    ScaleLocation = glGetUniformLocation(ShaderProgram, "Scale");
     // Vertex Array Object ===================================
 
         // Generate and bind VAO, which stores the VBO and EBO

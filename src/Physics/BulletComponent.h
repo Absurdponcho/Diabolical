@@ -13,5 +13,7 @@ private:
 	float ForceCoefficient;
 	glm::vec2 ForceVector;
 	glm::vec2 DirectionVector;
+
+	void OnHitSomething(ColliderComponent* Self, ColliderComponent* Other, b2Contact* Contact);
 };
 

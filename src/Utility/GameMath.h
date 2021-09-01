@@ -1,4 +1,6 @@
 #pragma once
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 class FastRandom {
 public:
@@ -31,3 +33,12 @@ private:
 	static unsigned int GlobalSeed;
 };
 
+class GameMath {
+public:
+	static inline glm::vec2 RotateVector2D(glm::vec2 Vector, float DegreesAngle)
+	{
+		glm::mat4 Matrix = glm::mat4_cast(glm::quat(glm::vec3(0, 0, DegreesAngle * 0.0174533f)));
+		glm::vec4 TransformedVector = Matrix * glm::vec4(Vector, 0, 1);
+		return glm::vec2(TransformedVector.x, TransformedVector.y);
+	}
+};

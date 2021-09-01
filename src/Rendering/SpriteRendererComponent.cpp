@@ -20,7 +20,8 @@ unsigned int SpriteRendererComponent::VertexBufferObject = 0;
 unsigned int SpriteRendererComponent::VertexArrayObject = 0;
 unsigned int SpriteRendererComponent::ElementBufferObject = 0;
 unsigned int SpriteRendererComponent::ShaderProgram = 0;
-
+int SpriteRendererComponent::MVPMatrixLocation = 0;
+int SpriteRendererComponent::SpriteDimensionsLocation = 0;
 // Verts for a square of size 1x1
 // layout is:
 // vertices (x,y,z) then uv (x,y)
@@ -35,6 +36,11 @@ unsigned int Indices[] = {
     0, 1, 3,   // first triangle
     1, 2, 3    // second triangle
 };
+
+void SpriteRendererComponent::OnDestroy()
+{
+    GameRendererComponent::OnDestroy();
+}
 
 void SpriteRendererComponent::OnSpawn()
 {
@@ -55,6 +61,8 @@ void SpriteRendererComponent::OnSpawn()
             GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/SpriteFragment.glsl"));
         Check(ShaderProgram);
 
+        MVPMatrixLocation = glGetUniformLocation(ShaderProgram, "MVP");
+        SpriteDimensionsLocation = glGetUniformLocation(ShaderProgram, "SpriteDimensions");
 
         // Vertex Array Object ===================================
 
@@ -124,7 +132,7 @@ void SpriteRendererComponent::SelectSpriteSheetIndex(float DeltaTime)
 void SpriteRendererComponent::Render(CameraComponent& Camera)
 {
     
-    glm::mat4x4 ModelMatrix = GetParentEntity().GetTransform().GetModelMatrix();
+    glm::mat4x4 ModelMatrix = GetParentEntity()->GetTransform().GetModelMatrix();
     if (bXMirrored)
     {
         ModelMatrix = glm::scale(ModelMatrix, glm::vec3(-1, 1, 1));
@@ -145,10 +153,10 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     glBindVertexArray(VertexArrayObject);
 
     // Upload matrix to shader
-    int MVPMatrixLocation = glGetUniformLocation(ShaderProgram, "MVP");
+    
     glUniformMatrix4fv(MVPMatrixLocation, 1, GL_FALSE, glm::value_ptr(MVPMatrix));
 
-    int SpriteDimensionsLocation = glGetUniformLocation(ShaderProgram, "SpriteDimensions");
+    
     glUniform4i(SpriteDimensionsLocation, SpriteSheetIndex.x, SpriteSheetIndex.y, SpriteSheetSize.x, SpriteSheetSize.y);
 
     glBindTexture(GL_TEXTURE_2D, OpenGLTexture);
@@ -158,7 +166,7 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     
     //Particle Particle;
     //Particle.Color = glm::vec4((float)(rand() % 100) / 100, (float)(rand() % 100) / 100, (float)(rand() % 100) / 100, 1);
-    //Particle.Position = GetParentEntity().GetTransform().Position;
+    //Particle.Position = GetParentEntity()->GetTransform().Position;
     //Particle.Size = 0.1f;
     //Particle.Speed = 5.5f;
     //Particle.Rotation = (float)(rand() % 360);

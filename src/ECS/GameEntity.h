@@ -32,6 +32,8 @@ public:
 	glm::mat4x4 GetModelMatrix();
 	glm::mat4x4 GetTransRotationMatrix();
 
+	glm::vec2 ForwardVector2D();
+
 	void AttachTo(GameEntity* Entity);
 	void SetDirtyMatrixCache();
 

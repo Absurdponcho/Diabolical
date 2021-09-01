@@ -31,7 +31,7 @@ int GameAudio::PlaySound(GameAssetSoftPointer<AudioAsset>& AudioAssetSoftPointer
     Sound->volume = (uint8_t)(128.f * Volume);
 
     int FreeChannel = GetChannel(AudioPriority);
-    Logging::LogVerbose("GameAudio::PlaySound()", "Playing sound on channel " + std::to_string(FreeChannel));
+    LOGVERBOSE("GameAudio::PlaySound()", "Playing sound on channel " + std::to_string(FreeChannel));
     return Mix_PlayChannel(FreeChannel, Sound, 0);
 }
 

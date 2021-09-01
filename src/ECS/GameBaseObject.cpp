@@ -6,7 +6,7 @@
 size_t GameBaseObject::UIDCounter = 1;
 
 std::vector<GameBaseObject*> GameBaseObject::BaseObjectsPendingSpawn;
-std::stack<GameBaseObject*> GameBaseObject::BaseObjectsPendingDestroy;
+std::vector<GameBaseObject*> GameBaseObject::BaseObjectsPendingDestroy;
 std::vector<GameBaseObject*> GameBaseObject::AllBaseObjects;
 std::unordered_map<size_t, GameBaseObject*> GameBaseObject::BaseObjectsMap;
 bool GameBaseObject::bCreationLock = true;
@@ -31,10 +31,12 @@ bool GameBaseObject::operator==(const GameBaseObject& RHS)
 
 void GameBaseObject::Destroy()
 {
+	LOGVERBOSE("GameBaseObject::Destroy()", "Destroying UID " + std::to_string(GetUID()));
 	Check(!bPendingDestroy);
 
+	if (bPendingDestroy) return;
 	bPendingDestroy = true;
-	BaseObjectsPendingDestroy.push(this);
+	BaseObjectsPendingDestroy.push_back(this);
 }
 
 void GameBaseObject::Enable()
@@ -56,7 +58,7 @@ void GameBaseObject::SpawnPendingObjects()
 {
 	for (GameBaseObject* BaseObject : BaseObjectsPendingSpawn)
 	{
-		Logging::LogVerbose("GameBaseObject::SpawnPendingObjects()", "Spawned object with UID " + std::to_string(BaseObject->GetUID()));
+		LOGVERBOSE("GameBaseObject::SpawnPendingObjects()", "Spawned object with UID " + std::to_string(BaseObject->GetUID()));
 		AllBaseObjects.push_back(BaseObject);
 		BaseObjectsMap[BaseObject->UID] = BaseObject;
 		BaseObject->OnSpawn();
@@ -67,15 +69,14 @@ void GameBaseObject::SpawnPendingObjects()
 
 void GameBaseObject::DestroyPendingObjects()
 {
-	while (!BaseObjectsPendingDestroy.empty())
+	for (GameBaseObject* BaseObject : BaseObjectsPendingDestroy)
 	{
-		GameBaseObject* BaseObject = BaseObjectsPendingDestroy.top();
-		size_t UID = BaseObject->UID;
-
-		if (!BaseObject) continue;
-		BaseObjectsPendingDestroy.pop();
+		Check(BaseObject);
 		BaseObject->OnDestroy();
-		Logging::LogVerbose("GameBaseObject::SpawnPendingObjects()", "Destroyed object with UID " + std::to_string(BaseObject->GetUID()));
+		LOGVERBOSE("GameBaseObject::DestroyPendingObjects()", "Pending destroy " + std::to_string(BaseObject->GetUID()));
+
+		size_t UID = BaseObject->UID;
+		BaseObjectsMap.erase(UID);
 
 		for (int Index = 0; Index < AllBaseObjects.size(); Index++)
 		{
@@ -86,10 +87,9 @@ void GameBaseObject::DestroyPendingObjects()
 			}
 		}
 
-		BaseObjectsMap.erase(UID);
-
 		delete(BaseObject);
 	}
+	BaseObjectsPendingDestroy.clear();
 }
 
 void GameBaseObject::TickAllObjects(float DeltaTime)

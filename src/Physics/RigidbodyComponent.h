@@ -8,6 +8,7 @@ public:
 	virtual void OnSpawn() override;
 	virtual void OnPostPhysics(float DeltaTime) override;
 	virtual void OnPostRender(float DeltaTime) override;
+	virtual void OnDestroy() override;
 
 	void AddForceAtCenter(const b2Vec2& Force);
 
@@ -27,6 +28,8 @@ public:
 	b2Body* GetBody();
 
 	bool bDrawDebugPolys = false;
+
+	static std::unordered_map<b2Fixture*, RigidbodyComponent*> FixtureRigidbodyMap;
 
 private:
 	b2Body* Body;

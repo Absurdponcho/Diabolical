@@ -9,6 +9,8 @@
 unsigned int TextRendererComponent::VAO;
 unsigned int TextRendererComponent::VBO;
 unsigned int TextRendererComponent::ShaderProgram;
+int TextRendererComponent::TextColorLocation = 0;
+int TextRendererComponent::ProjectionLocation = 0;
 TextRendererComponent::TextRendererComponent()
 {
 
@@ -33,6 +35,9 @@ TextRendererComponent::TextRendererComponent()
             GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/TextVertex.glsl"), 
             GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/TextFragment.glsl"));
         Check(ShaderProgram);
+
+        TextColorLocation = glGetUniformLocation(ShaderProgram, "textColor");
+        ProjectionLocation = glGetUniformLocation(ShaderProgram, "MVP");
 	}
 }
 
@@ -42,7 +47,7 @@ void TextRendererComponent::SetFont(GameAssetSoftPointer<FreetypeFontAsset> Font
 	Check(FontAsset);
 	
 
-	Logging::Log("TextRendererComponent::SetFont()", "Set Text Renderer Font to " + FontAssetPointer.GetPath().string());
+	LOG("TextRendererComponent::SetFont()", "Set Text Renderer Font to " + FontAssetPointer.GetPath().string());
 }
 
 void TextRendererComponent::Render(CameraComponent& Camera)
@@ -60,17 +65,17 @@ void TextRendererComponent::RenderText(CameraComponent& Camera, float x, float y
     x *= scale;
     y *= scale;
     glUseProgram(ShaderProgram);
-    glUniform3f(glGetUniformLocation(ShaderProgram, "textColor"), Color.x, Color.y, Color.z);
+    glUniform3f(TextColorLocation, Color.x, Color.y, Color.z);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
 
-    glm::mat4x4 ModelMatrix = GetParentEntity().GetTransform().GetModelMatrix();
+    glm::mat4x4 ModelMatrix = GetParentEntity()->GetTransform().GetModelMatrix();
     glm::mat4 ViewMatrix = Camera.GetViewMatrix();
     glm::mat4x4 ProjectionMatrix = Camera.GetProjectionMatrix();
 
     glm::mat4x4 MVPMatrix = ProjectionMatrix * ViewMatrix * ModelMatrix;
 
-    int ProjectionLocation = glGetUniformLocation(ShaderProgram, "MVP");
+    
     glUniformMatrix4fv(ProjectionLocation, 1, GL_FALSE, glm::value_ptr(MVPMatrix));
 
     std::string::const_iterator c;

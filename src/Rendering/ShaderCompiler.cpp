@@ -19,7 +19,7 @@ GLuint ShaderCompiler::CompileShaderProgram(GameAssetSoftPointer<TextAsset> Vert
     if (!Success)
     {
         glGetShaderInfoLog(VertexShader, 512, NULL, InfoLog);
-        Logging::LogError("ShaderCompiler::CompileShaderProgram()", "Vertex Shader: " + std::string(InfoLog));
+        LOGERROR("ShaderCompiler::CompileShaderProgram()", "Vertex Shader: " + std::string(InfoLog));
         return 0;
     }
     //!Vertex Shader =========================================
@@ -39,7 +39,7 @@ GLuint ShaderCompiler::CompileShaderProgram(GameAssetSoftPointer<TextAsset> Vert
     if (!Success)
     {
         glGetShaderInfoLog(FragmentShader, 512, NULL, InfoLog);
-        Logging::LogError("ShaderCompiler::CompileShaderProgram()", "Fragment Shader: " + std::string(InfoLog));
+        LOGERROR("ShaderCompiler::CompileShaderProgram()", "Fragment Shader: " + std::string(InfoLog));
         glDeleteShader(VertexShader);
         return 0;
     }
@@ -55,7 +55,7 @@ GLuint ShaderCompiler::CompileShaderProgram(GameAssetSoftPointer<TextAsset> Vert
     glGetProgramiv(ShaderProgram, GL_LINK_STATUS, &Success);
     if (!Success) {
         glGetProgramInfoLog(ShaderProgram, 512, NULL, InfoLog);
-        Logging::LogError("TShaderCompiler::CompileShaderProgram()", "Shader Program: " + std::string(InfoLog));
+        LOGERROR("TShaderCompiler::CompileShaderProgram()", "Shader Program: " + std::string(InfoLog));
         glDeleteShader(VertexShader); // delete shaders after shader program is created
         glDeleteShader(FragmentShader);
         return 0;

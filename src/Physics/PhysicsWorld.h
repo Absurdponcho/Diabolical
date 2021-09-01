@@ -3,7 +3,7 @@
 #include <box2d/b2_math.h>
 #include <box2d/b2_world.h>
 
-class PhysicsWorld
+class PhysicsWorld : public b2ContactListener
 {
 public:
 	static PhysicsWorld& Get();
@@ -14,6 +14,9 @@ public:
 	void Step();
 
 	b2World& GetWorld();
+
+	virtual void BeginContact(b2Contact* contact) override;
+	virtual void EndContact(b2Contact* contact) override;
 
 private:
 	static PhysicsWorld* Singleton;
