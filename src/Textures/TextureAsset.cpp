@@ -11,7 +11,7 @@ TextureAsset* TextureAsset::TryLoad(std::filesystem::path Path)
 
 	if (!std::filesystem::exists(Path))
 	{
-		Logging::LogError("GameAsset::TryLoad()", "Could not find asset at path " + Path.string());
+		LOGERROR("GameAsset::TryLoad()", "Could not find asset at path " + Path.string());
 		return nullptr;
 	}
 
@@ -31,7 +31,7 @@ TextureAsset* TextureAsset::TryLoad(std::filesystem::path Path)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	if (LoadedAsset->OpenGLTexture == 0) {
-		Logging::LogError("TextureASset::TryLoad()", "SOIL_load_OGL_texture failed: " + std::string(SOIL_last_result()) + " : " + std::string((char*)Path.c_str()));
+		LOGERROR("TextureASset::TryLoad()", "SOIL_load_OGL_texture failed: " + std::string(SOIL_last_result()) + " : " + std::string((char*)Path.c_str()));
 		return nullptr;
 	}
 

@@ -96,7 +96,7 @@ Framebuffer::Framebuffer(int NewWidth, int NewHeight)
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	Logging::Log("Framebuffer::Framebuffer()", "New Framebuffer generated with dimensions " + std::to_string(NewWidth) + "x" + std::to_string(NewHeight));
+	LOG("Framebuffer::Framebuffer()", "New Framebuffer generated with dimensions " + std::to_string(NewWidth) + "x" + std::to_string(NewHeight));
 
 	Initialize();
 		

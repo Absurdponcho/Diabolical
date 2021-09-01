@@ -42,7 +42,7 @@ void TextRendererComponent::SetFont(GameAssetSoftPointer<FreetypeFontAsset> Font
 	Check(FontAsset);
 	
 
-	Logging::Log("TextRendererComponent::SetFont()", "Set Text Renderer Font to " + FontAssetPointer.GetPath().string());
+	LOG("TextRendererComponent::SetFont()", "Set Text Renderer Font to " + FontAssetPointer.GetPath().string());
 }
 
 void TextRendererComponent::Render(CameraComponent& Camera)

@@ -8,6 +8,7 @@ public:
 	virtual void OnSpawn() override;
 	virtual void OnPostPhysics(float DeltaTime) override;
 	virtual void OnPostRender(float DeltaTime) override;
+	virtual void OnDestroy() override;
 
 	void AddForceAtCenter(const b2Vec2& Force);
 

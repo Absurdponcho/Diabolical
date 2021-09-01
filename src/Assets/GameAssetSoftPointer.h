@@ -35,8 +35,8 @@ public:
 			return Asset;
 		}
 
-		Logging::LogWarning("GameAssetSoftPointer::LoadSynchronous()", "Note: GameAsset memory deallocation needs to be implemented!");
-		Logging::Log("GameAssetSoftPointer::LoadSynchronous()", "Loading asset " + Internal.Path.string());
+		LOGWARNING("GameAssetSoftPointer::LoadSynchronous()", "Note: GameAsset memory deallocation needs to be implemented!");
+		LOG("GameAssetSoftPointer::LoadSynchronous()", "Loading asset " + Internal.Path.string());
 
 
 		AssetType* LoadedAsset = AssetType::TryLoad(Internal.Path);

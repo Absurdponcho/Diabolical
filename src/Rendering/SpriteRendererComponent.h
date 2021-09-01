@@ -10,6 +10,7 @@ class SpriteRendererComponent : public GameRendererComponent
 public:
 	virtual void Render(CameraComponent& Camera) override;
 	virtual void OnSpawn() override;
+	virtual void OnDestroy() override;
 	virtual void OnTick(float DeltaTime) override;
 
 	virtual void SelectSpriteSheetIndex(float DeltaTime);

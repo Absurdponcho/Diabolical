@@ -9,7 +9,7 @@ typedef GameMulticastDelegate<ColliderComponent*, ColliderComponent*, b2Contact*
 class ColliderComponent : public GameComponent
 {
 public:
-	~ColliderComponent();
+	
 	void SetSize(b2Vec2 Size);
 	void SetDensity(float Density);
 
@@ -28,7 +28,8 @@ public:
 
 
 	virtual void OnSpawn() override;
-	//virtual void OnDestroy() override;
+	virtual void OnDestroy() override;
+	
 	static std::unordered_map<b2Fixture*, ColliderComponent*> FixtureColliderMap;
 
 private:

@@ -26,14 +26,14 @@ void GameComponent::SetParentEntity(GameEntity* Entity)
 
 GameEntity* GameComponent::GetParentEntity()
 {
-	if (IsPendingDestroy())
+	/*if (IsPendingDestroy())
 	{
 		return nullptr;
 	}
 	if (ParentEntity->IsPendingDestroy())
 	{
 		return nullptr;
-	}
+	}*/
 	Check(ParentEntity);
 	return ParentEntity;
 }

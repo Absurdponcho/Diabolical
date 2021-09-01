@@ -109,39 +109,41 @@ void PlayerCharacterEntity::Left(ActionInfo ActionInfo)
 void PlayerCharacterEntity::Shoot(ActionInfo ActionInfo)
 {
 	if (ActionInfo.MouseButtonEvent->state == SDL_PRESSED) {
-
-		GameEntity* ArcaneBullet = CreateEntity<GameEntity>();
+		for (int i = 0; i < 20; i++)
 		{
-			RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(ArcaneBullet);
-			Rigidbody->SetDynamic(true);
-			Rigidbody->SetRotates(false);
+			GameEntity* ArcaneBullet = CreateEntity<GameEntity>();
+			{
+				RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(ArcaneBullet);
+				Rigidbody->SetDynamic(true);
+				Rigidbody->SetRotates(false);
 
-			SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(ArcaneBullet);
-			Sprite->SetTexture(ArcaneBulletTexturePointer);
-			Sprite->SpriteSheetSize = glm::ivec2(4, 1);
-			Sprite->SpriteSheetProgressionSpeed = 8;
+				SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(ArcaneBullet);
+				Sprite->SetTexture(ArcaneBulletTexturePointer);
+				Sprite->SpriteSheetSize = glm::ivec2(4, 1);
+				Sprite->SpriteSheetProgressionSpeed = 8;
 
-			Check(HeldItem);
-			auto pos = HeldItem->GetTransform().GetWorldPosition();
-			auto euler = HeldItem->GetTransform().GetWorldEulerRotation() + glm::vec3(0, 0, 90);
+				Check(HeldItem);
+				auto pos = HeldItem->GetTransform().GetWorldPosition();
+				auto euler = HeldItem->GetTransform().GetWorldEulerRotation() + glm::vec3(0, 0, 90);
 
-			ArcaneBullet->GetTransform().SetPosition(pos);
-			ArcaneBullet->GetTransform().SetEulerRotation(euler);
+				ArcaneBullet->GetTransform().SetPosition(pos);
+				ArcaneBullet->GetTransform().SetEulerRotation(euler);
 
-			glm::ivec2 ScreenPos;
-			SDL_GetMouseState((int*)&ScreenPos, (int*)&ScreenPos + 1);
-			glm::vec3 MouseWorldPosition = Utility::ScreenToWorld(ScreenPos, CameraComponent::GetActiveCamera());
-			glm::vec2 ForceDirection = glm::normalize(MouseWorldPosition - pos);
-			
-			ColliderComponent* Collider = CreateComponent<ColliderComponent>(ArcaneBullet);
-			Collider->SetSize(b2Vec2(.1f, .1f));
-			Collider->SetDensity(1);
+				glm::ivec2 ScreenPos;
+				SDL_GetMouseState((int*)&ScreenPos, (int*)&ScreenPos + 1);
+				glm::vec3 MouseWorldPosition = Utility::ScreenToWorld(ScreenPos, CameraComponent::GetActiveCamera());
+				glm::vec2 ForceDirection = glm::normalize(MouseWorldPosition - pos);
 
-			CreateComponent<BulletComponent>(ArcaneBullet);
+				ColliderComponent* Collider = CreateComponent<ColliderComponent>(ArcaneBullet);
+				Collider->SetSize(b2Vec2(.1f, .1f));
+				Collider->SetDensity(1);
 
-			b2Vec2 Force = Utility::ConvertTob2Vec2(ForceDirection * 30.f);
-			Rigidbody->SetVelocity(Force);
-			GameAudio::PlaySound(PhaserSoundPointer);
+				CreateComponent<BulletComponent>(ArcaneBullet);
+
+				b2Vec2 Force = Utility::ConvertTob2Vec2(ForceDirection * 30.f);
+				Rigidbody->SetVelocity(Force);
+				GameAudio::PlaySound(PhaserSoundPointer);
+			}
 		}
 	}
 	

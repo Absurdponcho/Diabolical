@@ -1,11 +1,21 @@
 #include "ColliderComponent.h"
 #include "../GunGame.h"
 #include "RigidbodyComponent.h"
+#include "PhysicsWorld.h"
 std::unordered_map<b2Fixture*, ColliderComponent*> ColliderComponent::FixtureColliderMap;
 
-ColliderComponent::~ColliderComponent()
+
+void ColliderComponent::OnDestroy()
 {
-	FixtureColliderMap.erase(Fixture);
+	if (Fixture)
+	{
+		FixtureColliderMap.erase(Fixture);
+		RigidbodyComponent* Rigidbody = GetParentEntity()->GetComponent<RigidbodyComponent>();
+		if (!Rigidbody) return;
+		if (!Rigidbody->GetBody()) return;
+		Rigidbody->GetBody()->DestroyFixture(Fixture);
+		Fixture = nullptr;
+	}
 }
 void ColliderComponent::OnSpawn()
 {

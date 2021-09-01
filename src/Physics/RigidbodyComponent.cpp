@@ -28,6 +28,12 @@ void RigidbodyComponent::OnSpawn()
 
 }
 
+void RigidbodyComponent::OnDestroy()
+{
+	PhysicsWorld::Get().GetWorld().DestroyBody(Body);
+	Body = nullptr;
+}
+
 void RigidbodyComponent::OnPostPhysics(float FixedDeltaTime)
 {
 	GameComponent::OnPostPhysics(FixedDeltaTime);

@@ -56,7 +56,7 @@ GameAsset* GameAsset::TryLoad(std::filesystem::path Path)
 {
 	if (!std::filesystem::exists(Path))
 	{
-		Logging::LogError("GameAsset::TryLoad()", "Could not find asset at path " + Path.string());
+		LOGERROR("GameAsset::TryLoad()", "Could not find asset at path " + Path.string());
 		return nullptr;
 	}
 

@@ -56,11 +56,13 @@ void PhysicsWorld::BeginContact(b2Contact* contact)
 	ColliderComponent* Collider = ColliderComponent::FixtureColliderMap[contact->GetFixtureA()];
 	ColliderComponent* Collider2 = ColliderComponent::FixtureColliderMap[contact->GetFixtureB()];
 
-	Check(Collider);
-	Check(Collider2);
-
-	Collider->OnStartCollision(Collider2, contact);
-	Collider2->OnStartCollision(Collider, contact);
+	//Check(Collider);
+	//Check(Collider2);
+	if (Collider && Collider2)
+	{
+		Collider->OnStartCollision(Collider2, contact);
+		Collider2->OnStartCollision(Collider, contact);
+	}
 
 }
 void PhysicsWorld::EndContact(b2Contact* contact)
@@ -71,9 +73,11 @@ void PhysicsWorld::EndContact(b2Contact* contact)
 	ColliderComponent* Collider = ColliderComponent::FixtureColliderMap[contact->GetFixtureA()];
 	ColliderComponent* Collider2 = ColliderComponent::FixtureColliderMap[contact->GetFixtureB()];
 
-	Check(Collider);
-	Check(Collider2);
-
-	Collider->OnEndCollision(Collider2, contact);
-	Collider2->OnEndCollision(Collider, contact);
+	//Check(Collider);
+	//Check(Collider2);
+	if (Collider && Collider2)
+	{
+		Collider->OnEndCollision(Collider2, contact);
+		Collider2->OnEndCollision(Collider, contact);
+	}
 }

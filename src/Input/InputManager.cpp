@@ -18,19 +18,19 @@ std::vector<InputDelegate> InputManager::InputDelegates;
 InputManager::ActionGroup::ActionGroup(std::string Action)
 	:	ActionName(Action)
 {
-	Logging::Log("ActionGroup::ActionGroup()", "Added new Action Group \"" + Action + "\"");
+	LOG("ActionGroup::ActionGroup()", "Added new Action Group \"" + Action + "\"");
 
 }
 
 void InputManager::ActionGroup::BindFunction(std::function<void (ActionInfo&)> Function)
 {
-	Logging::LogVerbose("ActionGroup::ActionGroup()", "Bound function to \"" + GetActionName() + "\".");
+	LOGVERBOSE("ActionGroup::ActionGroup()", "Bound function to \"" + GetActionName() + "\".");
 	FunctionBindings.push_back(Function);
 }
 
 void InputManager::ActionGroup::BindInputDelegate(InputDelegate Delegate)
 {
-	//Logging::LogVerbose("ActionGroup::ActionGroup()", "Bound delegate to \"" + GetActionName() + "\" for UID (" + std::to_string(Delegate) + ")");
+	//LOGVERBOSE("ActionGroup::ActionGroup()", "Bound delegate to \"" + GetActionName() + "\" for UID (" + std::to_string(Delegate) + ")");
 	InputDelegateBindings.push_back(Delegate);
 }
 
@@ -61,20 +61,20 @@ void InputManager::KeyMapping::AddMapping(std::string ActionName)
 {
 	if (!Utility::Find(ActionMappings, ActionName))
 	{
-		Logging::Log("ActionGroup::AddMapping()", "Added ActionName \"" + ActionName + "\" to key \"" + std::string(SDL_GetKeyName(GetSymbol())) + "\".");
+		LOG("ActionGroup::AddMapping()", "Added ActionName \"" + ActionName + "\" to key \"" + std::string(SDL_GetKeyName(GetSymbol())) + "\".");
 
 		ActionMappings.push_back(ActionName);
 	}
 	else
 	{
-		Logging::LogWarning("ActionGroup::AddMapping()", "Attempted to add KeyMapping \"" + std::string(SDL_GetKeyName(GetSymbol())) + "\" to \"" + ActionName + "\" which already exists!");
+		LOGWARNING("ActionGroup::AddMapping()", "Attempted to add KeyMapping \"" + std::string(SDL_GetKeyName(GetSymbol())) + "\" to \"" + ActionName + "\" which already exists!");
 	}
 }
 
 InputManager::KeyMapping::KeyMapping(SDL_Keycode Symbol)
 	: KeySymbol(Symbol)
 {
-	Logging::Log("KeyMapping::KeyMapping()", "Added new Keymap \"" + std::string(SDL_GetKeyName(Symbol)) + "\"");
+	LOG("KeyMapping::KeyMapping()", "Added new Keymap \"" + std::string(SDL_GetKeyName(Symbol)) + "\"");
 }
 
 const std::vector<std::string>& InputManager::KeyMapping::GetActionMappings()
@@ -139,7 +139,7 @@ void InputManager::PushAction(SDL_KeyboardEvent KBEvent)
 		{
 			if (ActionGroup* Group = Utility::FindPred(ActionGroups, [=](ActionGroup* RHS) { return RHS->GetActionName() == ActionName; }))
 			{
-				Logging::LogVerbose("InputManager::PushAction()", "Action \"" + ActionName + "\" invoked.");
+				LOGVERBOSE("InputManager::PushAction()", "Action \"" + ActionName + "\" invoked.");
 				ActionInfo Info = ActionInfo();
 				switch (KBEvent.state)
 				{
@@ -166,7 +166,7 @@ void InputManager::PushAction(SDL_KeyboardEvent KBEvent)
 	}
 	else
 	{
-		//Logging::LogVerbose("InputManager::PushAction()", "Tried to push actions for key but there was no mapping.");
+		//LOGVERBOSE("InputManager::PushAction()", "Tried to push actions for key but there was no mapping.");
 	}
 }
 
@@ -179,7 +179,7 @@ void InputManager::PushActionMouseButton(SDL_MouseButtonEvent MSBEvent)
 		{
 			if (ActionGroup* Group = Utility::FindPred(ActionGroups, [=](ActionGroup* RHS) { return RHS->GetActionName() == ActionName; }))
 			{
-				Logging::LogVerbose("InputManager::PushAction()", "Action \"" + ActionName + "\" invoked.");
+				LOGVERBOSE("InputManager::PushAction()", "Action \"" + ActionName + "\" invoked.");
 				ActionInfo Info = ActionInfo();
 				switch (MSBEvent.state)
 				{
@@ -206,7 +206,7 @@ void InputManager::PushActionMouseButton(SDL_MouseButtonEvent MSBEvent)
 	}
 	else
 	{
-		//Logging::LogVerbose("InputManager::PushAction()", "Tried to push actions for key but there was no mapping.");
+		//LOGVERBOSE("InputManager::PushAction()", "Tried to push actions for key but there was no mapping.");
 	}
 }
 
@@ -289,13 +289,13 @@ void InputManager::MouseButtonMapping::AddMapping(std::string ActionName)
 {
 	if (!Utility::Find(ActionMappings, ActionName))
 	{
-		Logging::Log("ActionGroup::AddMapping()", "Added ActionName \"" + ActionName + "\" to Mouse");
+		LOG("ActionGroup::AddMapping()", "Added ActionName \"" + ActionName + "\" to Mouse");
 
 		ActionMappings.push_back(ActionName);
 	}
 	else
 	{
-		Logging::LogWarning("ActionGroup::AddMapping()", "Attempted to add a mouse button to \"" + ActionName + "\" which already exists!");
+		LOGWARNING("ActionGroup::AddMapping()", "Attempted to add a mouse button to \"" + ActionName + "\" which already exists!");
 	}
 }
 

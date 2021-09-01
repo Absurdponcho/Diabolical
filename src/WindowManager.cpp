@@ -18,15 +18,15 @@ WindowManager::WindowManager(const char* title, int x, int y, int w, int h, Uint
 	FixWindowsHighDPIScaling();
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-		Logging::LogError("WindowManager::WindowManager()", "SDL_Init() failed!");
+		LOGERROR("WindowManager::WindowManager()", "SDL_Init() failed!");
 		bWindowValid = false;
 	}
-	Logging::Log("WindowManager::WindowManager()", "SDL_Init() success");
+	LOG("WindowManager::WindowManager()", "SDL_Init() success");
 
 	GameWindow = SDL_CreateWindow(title, x, y, w, h, flags | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
 	GameGLContext = SDL_GL_CreateContext(GameWindow);
 	if (!GameGLContext) {
-		Logging::LogError("WindowManager::WindowManager()", "SDL_Init() failed!");
+		LOGERROR("WindowManager::WindowManager()", "SDL_Init() failed!");
 		bWindowValid = false;
 	}
 	glewInit();

@@ -18,7 +18,7 @@ int GameManager::Frame = 0;
 
 void GameManager::MainGameLoop()
 {
-	Logging::LogVerbose("GameManager::MainGameLoop()", "Main game loop started");
+	LOGVERBOSE("GameManager::MainGameLoop()", "Main game loop started");
 
 	// do the first tick before showing the window to prevent icky sticky white window
 	EventTick();

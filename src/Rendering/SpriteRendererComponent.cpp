@@ -36,6 +36,11 @@ unsigned int Indices[] = {
     1, 2, 3    // second triangle
 };
 
+void SpriteRendererComponent::OnDestroy()
+{
+    GameRendererComponent::OnDestroy();
+}
+
 void SpriteRendererComponent::OnSpawn()
 {
     GameRendererComponent::OnSpawn();
