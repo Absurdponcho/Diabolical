@@ -32,6 +32,7 @@ private:
 	static unsigned int VertexArrayObject;
 	static unsigned int ElementBufferObject;
 	static unsigned int ShaderProgram;
-
+	static int MVPMatrixLocation;
+	static int SpriteDimensionsLocation;
 	unsigned int OpenGLTexture = 0;
 };

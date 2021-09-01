@@ -12,7 +12,8 @@ GLuint Framebuffer::ShaderProgram;
 GLuint Framebuffer::VertexBufferObject;
 GLuint Framebuffer::VertexArrayObject;
 GLuint Framebuffer::ElementBufferObject;
-
+int Framebuffer::TimeLocation = 0;
+int Framebuffer::Location = 0;
 float FramebufferVertices[] = {
      1.f,  1.f, 0.0f,   1.0f, 1.0f, 
      1.f, -1.f, 0.0f,   1.0f, 0.0f,  
@@ -54,10 +55,8 @@ void Framebuffer::Draw()
     glUseProgram(ShaderProgram);
     glBindTexture(GL_TEXTURE_2D, RenderedTexture);
 
-    int TimeLocation = glGetUniformLocation(ShaderProgram, "Time");
     glUniform1f(TimeLocation, GameManager::GetTime());
     
-    int Location = glGetUniformLocation(ShaderProgram, "Resolution");
     glUniform2fv(Location, 1, glm::value_ptr(glm::vec2(Width, Height)));
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -113,6 +112,9 @@ void Framebuffer::Initialize()
         GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/FXAAFragment.glsl"));
     Check(ShaderProgram);
 	
+    TimeLocation = glGetUniformLocation(ShaderProgram, "Time");
+    Location = glGetUniformLocation(ShaderProgram, "Resolution");
+
     // Vertex Array Object ===================================
 
         // Generate and bind VAO, which stores the VBO and EBO

@@ -20,7 +20,8 @@ unsigned int SpriteRendererComponent::VertexBufferObject = 0;
 unsigned int SpriteRendererComponent::VertexArrayObject = 0;
 unsigned int SpriteRendererComponent::ElementBufferObject = 0;
 unsigned int SpriteRendererComponent::ShaderProgram = 0;
-
+int SpriteRendererComponent::MVPMatrixLocation = 0;
+int SpriteRendererComponent::SpriteDimensionsLocation = 0;
 // Verts for a square of size 1x1
 // layout is:
 // vertices (x,y,z) then uv (x,y)
@@ -60,6 +61,8 @@ void SpriteRendererComponent::OnSpawn()
             GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/SpriteFragment.glsl"));
         Check(ShaderProgram);
 
+        MVPMatrixLocation = glGetUniformLocation(ShaderProgram, "MVP");
+        SpriteDimensionsLocation = glGetUniformLocation(ShaderProgram, "SpriteDimensions");
 
         // Vertex Array Object ===================================
 
@@ -150,10 +153,10 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     glBindVertexArray(VertexArrayObject);
 
     // Upload matrix to shader
-    int MVPMatrixLocation = glGetUniformLocation(ShaderProgram, "MVP");
+    
     glUniformMatrix4fv(MVPMatrixLocation, 1, GL_FALSE, glm::value_ptr(MVPMatrix));
 
-    int SpriteDimensionsLocation = glGetUniformLocation(ShaderProgram, "SpriteDimensions");
+    
     glUniform4i(SpriteDimensionsLocation, SpriteSheetIndex.x, SpriteSheetIndex.y, SpriteSheetSize.x, SpriteSheetSize.y);
 
     glBindTexture(GL_TEXTURE_2D, OpenGLTexture);

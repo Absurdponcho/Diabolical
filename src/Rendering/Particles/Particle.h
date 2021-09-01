@@ -32,5 +32,7 @@ private:
 	static unsigned int ElementBufferObject;
 	static unsigned int MVPBufferObject;
 	static unsigned int ColorBufferObject;
+	static int MVPMatrixLocation;
+	static int ParticleColorLocation;
 	static std::vector<Particle> ActiveParticles;
 };

@@ -26,4 +26,6 @@ private:
 	static GLuint VertexBufferObject;
 	static GLuint VertexArrayObject;
 	static GLuint ElementBufferObject;
+	static int TimeLocation;
+	static int Location;
 };

@@ -28,4 +28,6 @@ private:
 	FreetypeFontAsset* FontAsset = nullptr;
 	static unsigned int VAO, VBO;
 	static unsigned int ShaderProgram;
+	static int TextColorLocation;
+	static int ProjectionLocation;
 };

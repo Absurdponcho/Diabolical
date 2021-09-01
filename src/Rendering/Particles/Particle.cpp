@@ -9,7 +9,8 @@ unsigned int ParticleManager::VertexBufferObject = 0;
 unsigned int ParticleManager::VertexArrayObject = 0;
 unsigned int ParticleManager::ElementBufferObject = 0;
 unsigned int ParticleManager::ShaderProgram = 0;
-
+int ParticleManager::MVPMatrixLocation = 0;
+int ParticleManager::ParticleColorLocation = 0;
 std::vector<Particle> ParticleManager::ActiveParticles;
 glm::mat4 ParticleManager::BatchedTransformMatrices[];
 glm::vec4 ParticleManager::BatchedColors[];
@@ -51,6 +52,8 @@ void ParticleManager::Initialize()
         GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParticleFragment.glsl"));
     Check(ShaderProgram);
 
+    MVPMatrixLocation = glGetUniformLocation(ShaderProgram, "MVP");
+    ParticleColorLocation = glGetUniformLocation(ShaderProgram, "ParticleColor");
 
     // Vertex Array Object ===================================
 
@@ -97,10 +100,10 @@ void ParticleManager::BatchParticle(CameraComponent& Camera, Particle& Particle,
         glBindVertexArray(VertexArrayObject);
 
         // Upload matrix to shader
-        int MVPMatrixLocation = glGetUniformLocation(ShaderProgram, "MVP");
+        
         glUniformMatrix4fv(MVPMatrixLocation, 1, GL_FALSE, glm::value_ptr(MVPMatrix));
 
-        int ParticleColorLocation = glGetUniformLocation(ShaderProgram, "ParticleColor");
+        
         glUniform4fv(ParticleColorLocation, 1, glm::value_ptr(Particle.Color));
 
         // draw elements, we have 6 elements so specify 6. For meshes we would

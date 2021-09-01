@@ -27,4 +27,12 @@ private:
 	static unsigned int VertexBufferObject;
 	static unsigned int VertexArrayObject;
 	static unsigned int ElementBufferObject;
+
+	static int RenderDepthLocation;
+	static int CameraPositionLocation;
+	static int XCameraOffsetMultiplierLocation;
+	static int YCameraOffsetMultiplierLocation;
+	static int YOffsetLocation;
+	static int AspectRatioLocation;
+	static int ScaleLocation;
 };
