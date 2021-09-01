@@ -8,6 +8,7 @@ class GameBaseObject
 {
 public:
 	GameBaseObject();
+	virtual ~GameBaseObject() {};
 
 	const size_t& GetUID();
 
