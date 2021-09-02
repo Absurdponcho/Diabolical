@@ -25,6 +25,4 @@
 #include "Textures/TextureAsset.h"
 #include "Rendering/SpriteRendererComponent.h"
 #include "Rendering/Particles/Particle.h"
-#include "PlayerCharacter/PlayerTrackerEntity.h"
-#include "PlayerCharacter/PlayerCharacterEntity.h"
 #undef PlaySound
