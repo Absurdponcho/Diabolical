@@ -1,7 +1,7 @@
 #pragma once
-#include "../ECS/GameEntity.h"
-#include "../ECS/GameWeakObjectPointer.h"
-#include "../Input/InputManager.h"
+#include <ECS/GameEntity.h>
+#include <ECS/GameWeakObjectPointer.h>
+#include <Input/InputManager.h>
 
 class PlayerCharacterEntity : public GameEntity
 {

@@ -1,7 +1,7 @@
 #pragma once
-#include "..\ECS\GameComponent.h"
-#include "RigidbodyComponent.h"
-#include "ColliderComponent.h"
+#include <ECS/GameComponent.h>
+#include <Physics/RigidbodyComponent.h>
+#include <Physics/ColliderComponent.h>
 class BulletComponent : public GameComponent
 {
 public:

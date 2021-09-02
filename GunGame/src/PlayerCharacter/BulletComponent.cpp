@@ -1,8 +1,8 @@
 #include "BulletComponent.h"
-#include "..\Rendering\Camera.h"
-#include "../Utility/Utility.h"
-#include "../Physics/ColliderComponent.h"
-#include "../PlayerCharacter/PlayerCharacterEntity.h"
+#include <Rendering\Camera.h>
+#include <Utility/Utility.h>
+#include <Physics/ColliderComponent.h>
+#include "PlayerCharacterEntity.h"
 
 void BulletComponent::OnSpawn()
 {

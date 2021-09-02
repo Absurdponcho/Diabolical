@@ -157,12 +157,9 @@
     <ClCompile Include="src\EngineMain.cpp" />
     <ClCompile Include="src\Input\InputManager.cpp" />
     <ClCompile Include="src\Logging\Logging.cpp" />
-    <ClCompile Include="src\Physics\BulletComponent.cpp" />
     <ClCompile Include="src\Physics\ColliderComponent.cpp" />
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Physics\RigidbodyComponent.cpp" />
-    <ClCompile Include="src\PlayerCharacter\PlayerCharacterEntity.cpp" />
-    <ClCompile Include="src\PlayerCharacter\PlayerTrackerEntity.cpp" />
     <ClCompile Include="src\Rendering\BasicRendererComponent.cpp" />
     <ClCompile Include="src\Rendering\Camera.cpp" />
     <ClCompile Include="src\Rendering\Framebuffer.cpp" />
@@ -198,12 +195,9 @@
     <ClInclude Include="src\Input\InputManager.h" />
     <ClInclude Include="src\Logging\Logging.h" />
     <ClInclude Include="src\opengl.h" />
-    <ClInclude Include="src\Physics\BulletComponent.h" />
     <ClInclude Include="src\Physics\ColliderComponent.h" />
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Physics\RigidbodyComponent.h" />
-    <ClInclude Include="src\PlayerCharacter\PlayerCharacterEntity.h" />
-    <ClInclude Include="src\PlayerCharacter\PlayerTrackerEntity.h" />
     <ClInclude Include="src\Rendering\BasicRendererComponent.h" />
     <ClInclude Include="src\Rendering\Camera.h" />
     <ClInclude Include="src\Rendering\Framebuffer.h" />

@@ -149,12 +149,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GunGame.cpp" />
+    <ClCompile Include="src\GunGame.cpp" />
+    <ClCompile Include="src\PlayerCharacter\BulletComponent.cpp" />
+    <ClCompile Include="src\PlayerCharacter\PlayerCharacterEntity.cpp" />
+    <ClCompile Include="src\PlayerCharacter\PlayerTrackerEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameEngine\GameEngine.vcxproj">
       <Project>{d9d5afa1-1613-4996-b84a-9de636e97320}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\PlayerCharacter\BulletComponent.h" />
+    <ClInclude Include="src\PlayerCharacter\PlayerCharacterEntity.h" />
+    <ClInclude Include="src\PlayerCharacter\PlayerTrackerEntity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
