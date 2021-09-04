@@ -127,6 +127,27 @@ void SpriteRendererComponent::SelectSpriteSheetIndex(float DeltaTime)
         SpriteSheetIndex.x = SpriteSheetIndexer % SpriteSheetSize.x;
         SpriteSheetIndex.y = SpriteSheetIndexer / SpriteSheetSize.x;
     }
+
+    if (bUseSpriteLoop)
+    {
+        if (SpriteSheetProgress >= SpriteLoopEnd)
+        {
+            SpriteSheetProgress = (float)SpriteLoopStart;
+
+            SpriteSheetIndexer = (int)SpriteSheetProgress;
+            SpriteSheetIndex.x = SpriteSheetIndexer % SpriteSheetSize.x;
+            SpriteSheetIndex.y = SpriteSheetIndexer / SpriteSheetSize.x;
+        }
+
+        if (SpriteSheetProgress < SpriteLoopStart)
+        {
+            SpriteSheetProgress = (float)SpriteLoopStart;
+
+            SpriteSheetIndexer = (int)SpriteSheetProgress;
+            SpriteSheetIndex.x = SpriteSheetIndexer % SpriteSheetSize.x;
+            SpriteSheetIndex.y = SpriteSheetIndexer / SpriteSheetSize.x;
+        }
+    }
 }
 
 void SpriteRendererComponent::Render(CameraComponent& Camera)

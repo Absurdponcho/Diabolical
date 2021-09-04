@@ -21,6 +21,7 @@ public:
 	void SetLinearDamping(float Damping);
 	void SetHorizonalDamping(float Damping);
 	void SetVelocity(b2Vec2 Velocity);
+	void SetUsesGravity(bool bGravity);
 	b2Vec2 GetVelocity();
 
 	void SetOffset(glm::vec2 NewOffset);
@@ -41,6 +42,7 @@ private:
 	bool bIsDynamic = false;
 	bool bIsRotating = true;
 	bool bSpawned = false;
+	bool bUsesGravity = true;
 
 	// Currently doesnt handle rotation, but it is meant to :P
 	glm::vec2 Offset = glm::vec2(0, 0);

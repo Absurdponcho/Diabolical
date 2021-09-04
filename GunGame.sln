@@ -9,6 +9,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngine", "GameEngine\Ga
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GunGame", "GunGame\GunGame.vcxproj", "{6DD504E8-5619-4D48-B3B3-56BC291BB65F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MageTestGame", "MageTestGame\MageTestGame.vcxproj", "{BD757E06-1DFD-4EFD-8A0A-5ECCD303FFDC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D9D5AFA1-1613-4996-B84A-9DE636E97320} = {D9D5AFA1-1613-4996-B84A-9DE636E97320}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +46,14 @@ Global
 		{6DD504E8-5619-4D48-B3B3-56BC291BB65F}.Release|x64.Build.0 = Release|x64
 		{6DD504E8-5619-4D48-B3B3-56BC291BB65F}.Release|x86.ActiveCfg = Release|Win32
 		{6DD504E8-5619-4D48-B3B3-56BC291BB65F}.Release|x86.Build.0 = Release|Win32
+		{BD757E06-1DFD-4EFD-8A0A-5ECCD303FFDC}.Debug|x64.ActiveCfg = Debug|x64
+		{BD757E06-1DFD-4EFD-8A0A-5ECCD303FFDC}.Debug|x64.Build.0 = Debug|x64
+		{BD757E06-1DFD-4EFD-8A0A-5ECCD303FFDC}.Debug|x86.ActiveCfg = Debug|Win32
+		{BD757E06-1DFD-4EFD-8A0A-5ECCD303FFDC}.Debug|x86.Build.0 = Debug|Win32
+		{BD757E06-1DFD-4EFD-8A0A-5ECCD303FFDC}.Release|x64.ActiveCfg = Release|x64
+		{BD757E06-1DFD-4EFD-8A0A-5ECCD303FFDC}.Release|x64.Build.0 = Release|x64
+		{BD757E06-1DFD-4EFD-8A0A-5ECCD303FFDC}.Release|x86.ActiveCfg = Release|Win32
+		{BD757E06-1DFD-4EFD-8A0A-5ECCD303FFDC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

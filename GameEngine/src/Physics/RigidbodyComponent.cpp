@@ -25,7 +25,7 @@ void RigidbodyComponent::OnSpawn()
 	Body->SetFixedRotation(!bIsRotating);
 	Body->SetLinearDamping(DesiredLinearDamping);
 	Body->SetLinearVelocity(DesiredVelocity);
-
+	Body->SetGravityScale(bUsesGravity ? 1.f : 0.f);
 }
 
 void RigidbodyComponent::OnDestroy()
@@ -156,4 +156,13 @@ b2Body* RigidbodyComponent::GetBody()
 void RigidbodyComponent::SetOffset(glm::vec2 NewOffset)
 {
 	Offset = NewOffset;
+}
+
+void RigidbodyComponent::SetUsesGravity(bool bGravity)
+{
+	bUsesGravity = bGravity;
+	if (Body)
+	{
+		Body->SetGravityScale(bUsesGravity ? 1.f : 0.f);
+	}
 }

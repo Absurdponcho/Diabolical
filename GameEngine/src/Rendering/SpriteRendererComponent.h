@@ -21,6 +21,9 @@ public:
 	float SpriteSheetProgressionSpeed = 0;
 	bool bXMirrored = false;
 	bool bYMirrored = false;
+	bool bUseSpriteLoop = false;
+	int SpriteLoopStart = 0;
+	int SpriteLoopEnd = 0;
 
 	static void BindVertexArray();
 private:

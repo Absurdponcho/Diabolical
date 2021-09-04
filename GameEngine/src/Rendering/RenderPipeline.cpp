@@ -11,7 +11,7 @@ RenderPipeline* RenderPipeline::ActiveRenderPipeline = nullptr;
 
 RenderPipeline::RenderPipeline()
 {
-	BackgroundContainer.Initialize();
+	//BackgroundContainer.Initialize();
 
 }
 
