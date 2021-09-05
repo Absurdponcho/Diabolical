@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Assets\ArchiveAsset.cpp" />
     <ClCompile Include="src\Assets\GameAsset.cpp" />
     <ClCompile Include="src\Assets\GameAssetSoftPointer.cpp" />
     <ClCompile Include="src\Assets\TextAsset.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="src\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Assets\ArchiveAsset.h" />
     <ClInclude Include="src\Assets\GameAsset.h" />
     <ClInclude Include="src\Assets\GameAssetSoftPointer.h" />
     <ClInclude Include="src\Assets\TextAsset.h" />
