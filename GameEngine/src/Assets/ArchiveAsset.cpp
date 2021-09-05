@@ -19,10 +19,10 @@ ArchiveAsset* ArchiveAsset::TryLoad(std::filesystem::path Path)
 		return nullptr;
 	}
 	LoadedArchive->FileStream.seekg(0);
-	size_t ArchiveIndexSize = sizeof(Archive) + (sizeof(FileDescriptor) * ArcHeader.NumberOfFiles);
+	size_t ArchiveIndexSize = sizeof(ArchiveHeader) + (sizeof(FileDescriptor) * ArcHeader.NumberOfFiles);
 	if (Archive* Arc = (Archive*)malloc(ArchiveIndexSize)) {
 
-		LoadedArchive->FileStream.read((char*)&Arc, ArchiveIndexSize);
+		LoadedArchive->FileStream.read((char*)Arc, ArchiveIndexSize);
 		// Validate Archives
 		for (int64_t i = 0; i < Arc->ArcHeader.NumberOfFiles; i++) {
 			if (!Arc->ArcFiles[i].Offset || !Arc->ArcFiles[i].Size) {
@@ -32,6 +32,7 @@ ArchiveAsset* ArchiveAsset::TryLoad(std::filesystem::path Path)
 				LoadedArchive->Files.clear();
 				return nullptr;
 			}
+			LoadedArchive->NameIndexMap.emplace(std::string(Arc->ArcFiles[i].Name), i);
 			LoadedArchive->Files.push_back(Arc->ArcFiles[i]);
 		}
 	}
@@ -73,10 +74,10 @@ const uint8_t* ArchiveAsset::GetAssetData(int64_t index)
 
 const uint8_t* ArchiveAsset::GetAssetData(std::string AssetPath)
 {
-	for (size_t i = 0; i < Files.size(); i++) {
-		auto name = std::string(Files[i].Name);
-		if (name == AssetPath) {
-			return GetAssetData(i);
+	for (auto m : NameIndexMap)
+	{
+		if (m.first == AssetPath) {
+			return GetAssetData(m.second);
 		}
 	}
 	return nullptr;
@@ -89,17 +90,12 @@ const size_t ArchiveAsset::GetAssetSize(int64_t index)
 
 const size_t ArchiveAsset::GetAssetSize(std::string AssetPath)
 {
-	for (size_t i = 0; i < Files.size(); i++) {
-		auto name = std::string(Files[i].Name);
-		if (name == AssetPath) {
-			return Files[i].SizeUncompressed;
+	for (auto m : NameIndexMap)
+	{
+		if (m.first == AssetPath) {
+			return GetAssetSize(m.second);
 		}
 	}
-	return 0;
-}
 
-bool GenerateArchive(std::filesystem::path Path)
-{
-	//to be worked on
-	return false;
+	return 0;
 }
