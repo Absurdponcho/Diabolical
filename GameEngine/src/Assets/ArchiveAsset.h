@@ -19,13 +19,13 @@ struct ArchiveHeader {
 
 struct FileDescriptor
 {
-	char Name[64];
+	char Name[260];
 	int64_t Offset;
 	int64_t Size;
 	int64_t SizeUncompressed;
 	bool bZlibCompressed;
 	// char pad[3];
-}; // sizeof = 92
+}; // sizeof = 28 + sizeof(Name)
 
 struct Archive
 {
