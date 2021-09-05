@@ -34,6 +34,9 @@ private:
 	void StartRunning();
 	void StartIdle();
 	void FinishAttack();
+
+	bool bHoldingAttack = false;
+
 	EMovementState MovementState;
 
 	glm::vec2 Movement = { 0, 0 };

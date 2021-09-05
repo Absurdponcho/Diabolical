@@ -28,7 +28,26 @@ void PlayerCharacterEntity::OnTick(float DeltaTime)
 	if (Movement.y > 1) Movement.y = 1;
 	if (Movement.y < -1) Movement.y = -1;
 
-	GetComponent<RigidbodyComponent>()->SetVelocity(Utility::ConvertTob2Vec2(Movement * DeltaTime * MovementSpeed));
+	if (glm::length(Movement) > 0)
+	{
+		GetComponent<RigidbodyComponent>()->SetVelocity(Utility::ConvertTob2Vec2(glm::normalize(Movement) * DeltaTime * MovementSpeed));
+	}
+	else
+	{
+		GetComponent<RigidbodyComponent>()->SetVelocity(b2Vec2(0, 0));
+	}
+
+	if (bHoldingAttack)
+	{
+		if (MovementState != EMovementState::MS_Attacking)
+		{
+			MovementState = EMovementState::MS_Attacking;
+			GetComponent<SpriteRendererComponent>()->SpriteLoopStart = 16;
+			GetComponent<SpriteRendererComponent>()->SpriteLoopEnd = 21;
+			AttackTimestamp = GameManager::GetTime();
+			MovementSpeed = AttackMovementSpeed;
+		}
+	}
 
 	FinishAttack();
 }
@@ -107,14 +126,12 @@ void PlayerCharacterEntity::Attack(ActionInfo ActionInfo)
 {
 	if (ActionInfo.InputType == EInputType::IT_Pressed)
 	{
-		if (MovementState != EMovementState::MS_Attacking)
-		{
-			MovementState = EMovementState::MS_Attacking;
-			GetComponent<SpriteRendererComponent>()->SpriteLoopStart = 42;
-			GetComponent<SpriteRendererComponent>()->SpriteLoopEnd = 46;
-			AttackTimestamp = GameManager::GetTime();
-			MovementSpeed = AttackMovementSpeed;
-		}
+		bHoldingAttack = true;
+
+	}
+	else if (ActionInfo.InputType == EInputType::IT_Released)
+	{
+		bHoldingAttack = false;
 	}
 }
 
@@ -160,6 +177,6 @@ void PlayerCharacterEntity::StartRunning()
 	if (MovementState == EMovementState::MS_Attacking) return;
 
 	MovementState = EMovementState::MS_Running;
-	GetComponent<SpriteRendererComponent>()->SpriteLoopStart = 10;
-	GetComponent<SpriteRendererComponent>()->SpriteLoopEnd = 15;
+	GetComponent<SpriteRendererComponent>()->SpriteLoopStart = 8;
+	GetComponent<SpriteRendererComponent>()->SpriteLoopEnd = 14;
 }

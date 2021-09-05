@@ -31,10 +31,10 @@ int main(int argc, char** argv)
     InputManager::AddMouseButtonMapping("AttackPrimary", SDL_BUTTON_LEFT);
     InputManager::AddMouseButtonMapping("AttackSecondary", SDL_BUTTON_RIGHT);
 
-    GameAssetSoftPointer<TextureAsset> PlayerTexturePointer("GameAssetFiles/Mage.png");
-    /*glBindTexture(GL_TEXTURE_2D, PlayerTexturePointer.LoadSynchronous()->GetTexture());
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);*/
+    GameAssetSoftPointer<TextureAsset> PlayerTexturePointer("GameAssetFiles/FixedMage.png");
+    glBindTexture(GL_TEXTURE_2D, PlayerTexturePointer.LoadSynchronous()->GetTexture());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     PlayerCharacterEntity* PlayerCharacter = CreateEntity<PlayerCharacterEntity>();
     {
@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 
         SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(PlayerCharacter);
         Sprite->SetTexture(PlayerTexturePointer);
-        Sprite->SpriteSheetSize = glm::ivec2(10, 12);
+        Sprite->SpriteSheetSize = glm::ivec2(8, 8);
         Sprite->SpriteSheetProgressionSpeed = 8;
         Sprite->bUseSpriteLoop = true;
         Sprite->SpriteLoopStart = 0;
