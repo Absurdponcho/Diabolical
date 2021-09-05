@@ -15,7 +15,7 @@ struct ArchiveHeader {
 	int64_t Magic;
 	int64_t VersionID;
 	int64_t NumberOfFiles;
-};
+}; // sizeof = 12
 
 struct FileDescriptor
 {
@@ -24,7 +24,8 @@ struct FileDescriptor
 	int64_t Size;
 	int64_t SizeUncompressed;
 	bool bZlibCompressed;
-};
+	// char pad[3];
+}; // sizeof = 92
 
 struct Archive
 {
