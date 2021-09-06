@@ -10,7 +10,7 @@
 
 const int64_t ARCHIVE_VALID_MAGIC = 0xD1AB011CA1;
 
-const int64_t ARCHIVE_VER_ID = 1;
+const int64_t ARCHIVE_VER_ID = 2;
 
 struct ArchiveHeader {
 	int64_t Magic;

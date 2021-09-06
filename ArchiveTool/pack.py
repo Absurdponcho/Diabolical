@@ -4,12 +4,13 @@ import zlib
 import struct
 from pathlib import Path
 
-print("Archive Packer version 0.1")
+print("\nArchive Packer version 0.2\n")
 
 magic = 0xD1AB011CA1
-version = 1
+version = 2
 path_limit = 260
 if len(argv) != 3:
+    print("\nArguments are : pack.py \\folder\\**\\*.* [output.extension]\n")
     exit()
 
 file_list = glob.glob(argv[1], recursive=True)
@@ -17,6 +18,10 @@ file_list = [x.replace("\\", "/") for x in file_list if x.find('.')
              != -1 and Path(x).stat().st_size != 0]
 number_of_files = len(file_list)
 
+if number_of_files == 0:
+    print("No files found! Try fixing the arguments")
+    print("Arguments are : pack.py \\folder\\**\\*.* [output.extension]\n")
+    exit()
 
 header = struct.pack("QQQ", magic, version, number_of_files)
 file_descriptors = []
