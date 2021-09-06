@@ -111,6 +111,9 @@
     <ClCompile Include="src\Assets\ArchiveAsset.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Physics\Box2dQueryCallback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Assets\GameAsset.h">
@@ -210,6 +213,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Assets\ArchiveAsset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Physics\Box2dQueryCallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

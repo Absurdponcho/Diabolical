@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Character\CharacterEntity.cpp" />
     <ClCompile Include="Source\Enemy\EnemyEntity.cpp" />
     <ClCompile Include="Source\MageGame.cpp" />
     <ClCompile Include="Source\PlayerCharacter\PlayerCharacterEntity.cpp" />
@@ -156,6 +157,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Character\CharacterEntity.h" />
     <ClInclude Include="Source\Enemy\EnemyEntity.h" />
     <ClInclude Include="Source\PlayerCharacter\PlayerCharacterEntity.h" />
     <ClInclude Include="Source\PlayerCharacter\PlayerTrackerEntity.h" />

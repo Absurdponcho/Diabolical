@@ -32,7 +32,7 @@ public:
 
 	bool bDrawDebugPolys = false;
 
-	static std::unordered_map<b2Fixture*, RigidbodyComponent*> FixtureRigidbodyMap;
+	static std::unordered_map<b2Body*, RigidbodyComponent*> BodyRigidbodyMap;
 
 private:
 	b2Body* Body;

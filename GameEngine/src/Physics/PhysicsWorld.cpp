@@ -7,6 +7,9 @@
 #include <box2d/b2_api.h>
 #include <box2d/b2_contact.h>
 #include "ColliderComponent.h"
+#include "Box2dQueryCallback.h"
+#include "RigidbodyComponent.h"
+
 PhysicsWorld* PhysicsWorld::Singleton;
 
 PhysicsWorld& PhysicsWorld::Get()
@@ -21,6 +24,23 @@ void PhysicsWorld::Initialize(b2Vec2 Gravity)
 	Singleton = new PhysicsWorld();
 	Singleton->World = new b2World(Gravity);
 	Singleton->World->SetContactListener(Singleton);
+}
+
+void PhysicsWorld::QueryAABB(b2AABB AABB, std::vector<GameEntity*>& OutEntities)
+{
+	// I thought using a query callback means the query would be async but NO...!!
+	// Box2d devs are weird
+	Box2dQueryCallback B2QueryCallback = Box2dQueryCallback();
+	GetWorld().QueryAABB(&B2QueryCallback, AABB);
+
+	for (b2Body* Body : B2QueryCallback.FoundBodies)
+	{
+		if (RigidbodyComponent* Rigidbody = RigidbodyComponent::BodyRigidbodyMap[Body])
+		{
+			Check(Rigidbody->GetParentEntity());
+			OutEntities.push_back(Rigidbody->GetParentEntity());
+		}
+	}
 }
 
 b2World& PhysicsWorld::GetWorld()

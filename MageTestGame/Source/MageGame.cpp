@@ -87,32 +87,38 @@ int main(int argc, char** argv)
 
     GameAssetSoftPointer<TextureAsset> SkeletonIdleTexturePointer("GameAssetFiles/Skele/Sprite Sheets/Skeleton Idle.png");
 
-
-    EnemyEntity* Skele = CreateEntity<EnemyEntity>();
+    for (int x = -20; x < 20; x++)
     {
-        Skele->GetTransform().SetScale(glm::vec3(1, 1, 1));
+        for (int y = -20; y < 20; y++)
+        {
+            EnemyEntity* Skele = CreateEntity<EnemyEntity>();
+            {
+                Skele->GetTransform().SetScale(glm::vec3(1, 1, 1));
+                Skele->GetTransform().SetPosition(glm::vec3(x / 2, y / 2, 0));
 
-        RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Skele);
-        Rigidbody->SetDynamic(true);
-        Rigidbody->SetRotates(false);
-        Rigidbody->SetHorizonalDamping(0);
-        Rigidbody->SetOffset(glm::vec2(0, .5f));
-        Rigidbody->SetUsesGravity(false);
-        Rigidbody->SetLinearDamping(12.f);
+                RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Skele);
+                Rigidbody->SetDynamic(true);
+                Rigidbody->SetRotates(false);
+                Rigidbody->SetHorizonalDamping(0);
+                Rigidbody->SetOffset(glm::vec2(0, .5f));
+                Rigidbody->SetUsesGravity(false);
+                Rigidbody->SetLinearDamping(12.f);
 
-        ColliderComponent* Collider = CreateComponent<ColliderComponent>(Skele);
-        Collider->SetSize(b2Vec2(.2f, .2f));
-        Collider->SetDensity(3);
+                ColliderComponent* Collider = CreateComponent<ColliderComponent>(Skele);
+                Collider->SetSize(b2Vec2(.2f, .2f));
+                Collider->SetDensity(3);
 
-        SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(Skele);
-        Sprite->SetTexture(SkeletonIdleTexturePointer);
-        Sprite->bUseSpriteLoop = true;
-        Sprite->SpriteLoopStart = 0;
-        Sprite->SpriteLoopEnd = 11;
-        Sprite->SpriteSheetSize = glm::ivec2(11, 1);
-        Sprite->SpriteSheetProgressionSpeed = 12;
-        Sprite->bUseYAsDepth = true;
+                SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(Skele);
+                Sprite->SetTexture(SkeletonIdleTexturePointer);
+                Sprite->bUseSpriteLoop = true;
+                Sprite->SpriteLoopStart = 0;
+                Sprite->SpriteLoopEnd = 11;
+                Sprite->SpriteSheetSize = glm::ivec2(11, 1);
+                Sprite->SpriteSheetProgressionSpeed = 12;
+                Sprite->bUseYAsDepth = true;
 
+            }
+        }
     }
 
     RunEngineLoop();

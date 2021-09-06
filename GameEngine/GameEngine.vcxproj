@@ -158,6 +158,7 @@
     <ClCompile Include="src\EngineMain.cpp" />
     <ClCompile Include="src\Input\InputManager.cpp" />
     <ClCompile Include="src\Logging\Logging.cpp" />
+    <ClCompile Include="src\Physics\Box2dQueryCallback.cpp" />
     <ClCompile Include="src\Physics\ColliderComponent.cpp" />
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Physics\RigidbodyComponent.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="src\EngineMain.h" />
     <ClInclude Include="src\Input\InputManager.h" />
     <ClInclude Include="src\Logging\Logging.h" />
+    <ClInclude Include="src\Physics\Box2dQueryCallback.h" />
     <ClInclude Include="src\Physics\ColliderComponent.h" />
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Physics\RigidbodyComponent.h" />

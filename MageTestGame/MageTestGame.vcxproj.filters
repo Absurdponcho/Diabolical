@@ -27,6 +27,9 @@
     <ClCompile Include="Source\Enemy\EnemyEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Character\CharacterEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PlayerCharacter\PlayerCharacterEntity.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Enemy\EnemyEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Character\CharacterEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,7 +7,7 @@
 #include "..\WindowManager.h"
 #include "..\Rendering\Camera.h"
 
-
+std::unordered_map<b2Body*, RigidbodyComponent*> RigidbodyComponent::BodyRigidbodyMap;
 
 void RigidbodyComponent::OnSpawn()
 {
@@ -26,10 +26,15 @@ void RigidbodyComponent::OnSpawn()
 	Body->SetLinearDamping(DesiredLinearDamping);
 	Body->SetLinearVelocity(DesiredVelocity);
 	Body->SetGravityScale(bUsesGravity ? 1.f : 0.f);
+
+	BodyRigidbodyMap[Body] = this;
 }
 
 void RigidbodyComponent::OnDestroy()
 {
+	Check(Body);
+	BodyRigidbodyMap.erase(Body);
+
 	PhysicsWorld::Get().GetWorld().DestroyBody(Body);
 	Body = nullptr;
 }

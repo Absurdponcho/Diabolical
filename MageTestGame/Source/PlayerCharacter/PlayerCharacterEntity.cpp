@@ -9,6 +9,8 @@
 #include <Audio/GameAudio.h>
 #include <Utility/GameMath.h>
 #include <GameManager.h>
+#include <Physics/PhysicsWorld.h>
+#include <box2d/b2_api.h>
 
 void PlayerCharacterEntity::OnSpawn()
 {
@@ -28,13 +30,15 @@ void PlayerCharacterEntity::OnTick(float DeltaTime)
 	if (Movement.y > 1) Movement.y = 1;
 	if (Movement.y < -1) Movement.y = -1;
 
+	RigidbodyComponent* Rigidbody = GetComponent<RigidbodyComponent>();
+
 	if (glm::length(Movement) > 0)
 	{
-		GetComponent<RigidbodyComponent>()->SetVelocity(Utility::ConvertTob2Vec2(glm::normalize(Movement) * DeltaTime * MovementSpeed));
+		Rigidbody->SetVelocity(Utility::ConvertTob2Vec2(glm::normalize(Movement) * DeltaTime * MovementSpeed));
 	}
 	else
 	{
-		GetComponent<RigidbodyComponent>()->SetVelocity(b2Vec2(0, 0));
+		Rigidbody->SetVelocity(b2Vec2(0, 0));
 	}
 
 	if (bHoldingAttack)
@@ -46,6 +50,21 @@ void PlayerCharacterEntity::OnTick(float DeltaTime)
 			GetComponent<SpriteRendererComponent>()->SpriteLoopEnd = 21;
 			AttackTimestamp = GameManager::GetTime();
 			MovementSpeed = AttackMovementSpeed;
+
+
+			b2AABB AABB;
+			AABB.lowerBound = b2Vec2(GetTransform().GetPosition().x - .5f, GetTransform().GetPosition().y - .8f);
+			AABB.upperBound = b2Vec2(GetTransform().GetPosition().x + .5f, GetTransform().GetPosition().y + .8f);
+
+			std::vector<GameEntity*> HitEntities;
+			PhysicsWorld::Get().QueryAABB(AABB, HitEntities);
+			for (GameEntity* HitEntity : HitEntities)
+			{
+				if (CharacterEntity* CharEntity = dynamic_cast<CharacterEntity*>(HitEntity))
+				{
+					CharEntity->Damage(40, this);
+				}
+			}
 		}
 	}
 

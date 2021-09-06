@@ -2,6 +2,7 @@
 #include <ECS/GameEntity.h>
 #include <ECS/GameWeakObjectPointer.h>
 #include <Input/InputManager.h>
+#include "../Character/CharacterEntity.h"
 
 enum class EMovementState
 {
@@ -10,7 +11,7 @@ enum class EMovementState
 	MS_Attacking,
 };
 
-class PlayerCharacterEntity : public GameEntity
+class PlayerCharacterEntity : public CharacterEntity
 {
 public:
 	PlayerCharacterEntity() {}
