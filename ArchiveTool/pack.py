@@ -24,19 +24,19 @@ current_size = 0
 class Descriptor():
     def __init__(self, name, uncompressed_size, size, data):
         self.name = name
-        self.offset = len(header) + ((path_limit + 8 + 28) *
-                                     number_of_files) + current_size
+        self.offset = len(header) + ((path_limit + 36) * number_of_files)
+        self.offset += current_size
         self.size = size
         self.uncompressed_size = uncompressed_size
         self.is_compressed = 1
         self.data = data
 
 
-print(f"Packing {len(file_list)} files into archive!")
-
+print(f"Packing {len(file_list)} files into archive\n")
+compress_ratio = 0;
 for file in file_list:
     with open(file, "rb") as f:
-        print(f"Adding file {file}...")
+        print(f"Adding and Compressing file {file}...")
         data = f.read()
         data_uncompressed_size = len(data)
         data = zlib.compress(data, 9)
@@ -44,11 +44,13 @@ for file in file_list:
         fdesc = Descriptor(
             bytearray(file, "ASCII"), data_uncompressed_size, data_size, data)
         file_descriptors.append(fdesc)
+        compress_ratio += (data_size / data_uncompressed_size) * 100
         f.close()
         current_size += data_size
 
 descriptor_data = bytearray()
 archive_data = bytearray()
+print(f"\nBuilding archive {argv[2]} ({len(file_list)} files)")
 for fd in file_descriptors:
     if len(fd.name) > path_limit:
         print(f"error file name too long! - {fd.name}")
@@ -64,3 +66,5 @@ archive = header + descriptor_data + archive_data
 with open(argv[2], "wb") as f:
     f.write(archive)
     f.close()
+print(f"Done! Archive {argv[2]} is written to file")
+print(f"Compression Ratio Average {compress_ratio / len(file_list)}%\n")
