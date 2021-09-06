@@ -37,6 +37,9 @@ public:
 	void AttachTo(GameEntity* Entity);
 	void SetDirtyMatrixCache();
 
+	// Update the position without doing any fancy stuff
+	void RigidbodySetPosition(b2Vec2 NewPosition);
+
 private:
 	glm::vec3 Position = glm::vec3(0, 0, 0);
 	glm::quat Rotation = glm::quat(1.0, 0.0, 0.0, 0.0);

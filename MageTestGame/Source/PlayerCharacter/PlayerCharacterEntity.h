@@ -25,6 +25,8 @@ public:
 
 	float MovementSpeed = 350;
 
+	glm::vec4 Bounds = glm::vec4(-25, -25, 25, 25);
+
 private:
 	float AttackMovementSpeed = 200;
 	float DefaultMovementSpeed = 350;

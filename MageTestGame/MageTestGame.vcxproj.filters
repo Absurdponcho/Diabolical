@@ -21,9 +21,21 @@
     <ClCompile Include="Source\PlayerCharacter\PlayerCharacterEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PlayerCharacter\PlayerTrackerEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy\EnemyEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PlayerCharacter\PlayerCharacterEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerCharacter\PlayerTrackerEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy\EnemyEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

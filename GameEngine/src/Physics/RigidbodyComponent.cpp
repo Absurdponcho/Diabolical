@@ -46,7 +46,7 @@ void RigidbodyComponent::OnPostPhysics(float FixedDeltaTime)
 	
 	GameEntity* Parent = GetParentEntity();
 	b2Vec2 BodyPos = Body->GetPosition();
-	Parent->GetTransform().SetPosition(glm::vec3(BodyPos.x + Offset.x, BodyPos.y + Offset.y, Parent->GetTransform().GetPosition().z));
+	Parent->GetTransform().RigidbodySetPosition(b2Vec2(BodyPos.x + Offset.x, BodyPos.y + Offset.y));
 	glm::vec3 Euler = Parent->GetTransform().GetEulerRotation();
 	Parent->GetTransform().SetEulerRotation(glm::vec3(Euler.x, Euler.y, Body->GetAngle() / 0.0174533f));
 
@@ -165,4 +165,18 @@ void RigidbodyComponent::SetUsesGravity(bool bGravity)
 	{
 		Body->SetGravityScale(bUsesGravity ? 1.f : 0.f);
 	}
+}
+
+void RigidbodyComponent::SetPosition(b2Vec2 Position)
+{
+	Check(bSpawned); // need to fix so that we can set position before spawned
+
+	Check(Body);
+
+	Body->SetTransform(Position, Body->GetAngle());
+}
+
+glm::vec2 RigidbodyComponent::GetOffset()
+{
+	return Offset;
 }

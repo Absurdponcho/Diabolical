@@ -22,9 +22,11 @@ public:
 	void SetHorizonalDamping(float Damping);
 	void SetVelocity(b2Vec2 Velocity);
 	void SetUsesGravity(bool bGravity);
+	void SetPosition(b2Vec2 Position);
 	b2Vec2 GetVelocity();
 
 	void SetOffset(glm::vec2 NewOffset);
+	glm::vec2 GetOffset();
 
 	b2Body* GetBody();
 

@@ -8,6 +8,9 @@
 #include <Physics/ColliderComponent.h>
 #include <Rendering/SpriteRendererComponent.h>
 #include <Rendering/Camera.h>
+#include "PlayerCharacter/PlayerTrackerEntity.h"
+#include <Audio/GameAudio.h>
+#include "Enemy/EnemyEntity.h"
 
 #undef main
 
@@ -32,13 +35,17 @@ int main(int argc, char** argv)
     InputManager::AddMouseButtonMapping("AttackSecondary", SDL_BUTTON_RIGHT);
 
     GameAssetSoftPointer<TextureAsset> PlayerTexturePointer("GameAssetFiles/FixedMage.png");
-    glBindTexture(GL_TEXTURE_2D, PlayerTexturePointer.LoadSynchronous()->GetTexture());
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    GameAssetSoftPointer<TextureAsset> GroundTileTexturePointer("GameAssetFiles/GroundTile.png");
+    glBindTexture(GL_TEXTURE_2D, GroundTileTexturePointer.LoadSynchronous()->GetTexture());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    auto Music = GameAssetSoftPointer<AudioAsset>("GameAssetFiles/Music/Nightmares Inn - RKVC.wav");
+    GameAudio::PlaySound(Music, .2f, 10, true);
 
     PlayerCharacterEntity* PlayerCharacter = CreateEntity<PlayerCharacterEntity>();
     {
-        PlayerCharacter->GetTransform().SetPosition(glm::vec3(0, 0, 0));
+       // PlayerCharacter->GetTransform().SetPosition(glm::vec3(0, 0, 0));
         PlayerCharacter->GetTransform().SetScale(glm::vec3(2, 2, 2));
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(PlayerCharacter);
         Rigidbody->SetDynamic(true);
@@ -47,7 +54,7 @@ int main(int argc, char** argv)
         Rigidbody->SetOffset(glm::vec2(0, .5f));
         Rigidbody->SetUsesGravity(false);
         ColliderComponent* Collider = CreateComponent<ColliderComponent>(PlayerCharacter);
-        Collider->SetSize(b2Vec2(.2f, .5f));
+        Collider->SetSize(b2Vec2(.2f, .2f));
         Collider->SetDensity(3);
 
         SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(PlayerCharacter);
@@ -57,12 +64,55 @@ int main(int argc, char** argv)
         Sprite->bUseSpriteLoop = true;
         Sprite->SpriteLoopStart = 0;
         Sprite->SpriteLoopEnd = 4;
+        Sprite->bUseYAsDepth = true;
 
     }
 
-    GameEntity* Camera = CreateEntity<GameEntity>();
+    PlayerTrackerEntity* Camera = CreateEntity<PlayerTrackerEntity>();
     {
         CreateComponent<CameraComponent>(Camera)->SetActiveCamera();
+
+        Camera->SetTrackTarget(PlayerCharacter);
+    }
+
+    GameEntity* Background = CreateEntity<GameEntity>();
+    {
+        Background->GetTransform().SetPosition(glm::vec3(0, 0, -.99999));
+        Background->GetTransform().SetScale(glm::vec3(100, 100, 1));
+
+        SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(Background);
+        Sprite->SetTexture(GroundTileTexturePointer);
+        Sprite->SetTextureScaling(glm::vec2(100, 100));
+    }
+
+    GameAssetSoftPointer<TextureAsset> SkeletonIdleTexturePointer("GameAssetFiles/Skele/Sprite Sheets/Skeleton Idle.png");
+
+
+    EnemyEntity* Skele = CreateEntity<EnemyEntity>();
+    {
+        Skele->GetTransform().SetScale(glm::vec3(1, 1, 1));
+
+        RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(Skele);
+        Rigidbody->SetDynamic(true);
+        Rigidbody->SetRotates(false);
+        Rigidbody->SetHorizonalDamping(0);
+        Rigidbody->SetOffset(glm::vec2(0, .5f));
+        Rigidbody->SetUsesGravity(false);
+        Rigidbody->SetLinearDamping(12.f);
+
+        ColliderComponent* Collider = CreateComponent<ColliderComponent>(Skele);
+        Collider->SetSize(b2Vec2(.2f, .2f));
+        Collider->SetDensity(3);
+
+        SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(Skele);
+        Sprite->SetTexture(SkeletonIdleTexturePointer);
+        Sprite->bUseSpriteLoop = true;
+        Sprite->SpriteLoopStart = 0;
+        Sprite->SpriteLoopEnd = 11;
+        Sprite->SpriteSheetSize = glm::ivec2(11, 1);
+        Sprite->SpriteSheetProgressionSpeed = 12;
+        Sprite->bUseYAsDepth = true;
+
     }
 
     RunEngineLoop();

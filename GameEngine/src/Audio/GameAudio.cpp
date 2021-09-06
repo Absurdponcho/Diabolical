@@ -6,7 +6,7 @@
 
 AudioChannel GameAudio::AudioChannels[8]{};
 
-int GameAudio::PlaySound(GameAssetSoftPointer<AudioAsset>& AudioAssetSoftPointer, float Volume, int AudioPriority)
+int GameAudio::PlaySound(GameAssetSoftPointer<AudioAsset>& AudioAssetSoftPointer, float Volume, int AudioPriority, bool bLooping)
 {
     Check(AudioAssetSoftPointer.GetFileExtension() == ".wav");
     static bool bInitialized = false;
@@ -32,7 +32,7 @@ int GameAudio::PlaySound(GameAssetSoftPointer<AudioAsset>& AudioAssetSoftPointer
 
     int FreeChannel = GetChannel(AudioPriority);
     LOGVERBOSE("GameAudio::PlaySound()", "Playing sound on channel " + std::to_string(FreeChannel));
-    return Mix_PlayChannel(FreeChannel, Sound, 0);
+    return Mix_PlayChannel(FreeChannel, Sound, bLooping ? -1 : 0);
 }
 
 int GameAudio::GetChannel(int MaximumPriority)

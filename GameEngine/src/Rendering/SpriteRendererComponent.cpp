@@ -22,6 +22,8 @@ unsigned int SpriteRendererComponent::ElementBufferObject = 0;
 unsigned int SpriteRendererComponent::ShaderProgram = 0;
 int SpriteRendererComponent::MVPMatrixLocation = 0;
 int SpriteRendererComponent::SpriteDimensionsLocation = 0;
+int SpriteRendererComponent::TextureScaleLocation = 0;
+int SpriteRendererComponent::DepthLocation = 0;
 // Verts for a square of size 1x1
 // layout is:
 // vertices (x,y,z) then uv (x,y)
@@ -63,6 +65,8 @@ void SpriteRendererComponent::OnSpawn()
 
         MVPMatrixLocation = glGetUniformLocation(ShaderProgram, "MVP");
         SpriteDimensionsLocation = glGetUniformLocation(ShaderProgram, "SpriteDimensions");
+        TextureScaleLocation = glGetUniformLocation(ShaderProgram, "TextureScale");
+        DepthLocation = glGetUniformLocation(ShaderProgram, "Depth");
 
         // Vertex Array Object ===================================
 
@@ -177,8 +181,17 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
     
     glUniformMatrix4fv(MVPMatrixLocation, 1, GL_FALSE, glm::value_ptr(MVPMatrix));
 
-    
     glUniform4i(SpriteDimensionsLocation, SpriteSheetIndex.x, SpriteSheetIndex.y, SpriteSheetSize.x, SpriteSheetSize.y);
+    glUniform2fv(TextureScaleLocation, 1, glm::value_ptr(TextureScale));
+
+    if (bUseYAsDepth)
+    {
+        glUniform1f(DepthLocation, GetParentEntity()->GetTransform().GetPosition().y / 100000.f);
+    }
+    else
+    {
+        glUniform1f(DepthLocation, -69420); // magic number ;) for the shader
+    }
 
     glBindTexture(GL_TEXTURE_2D, OpenGLTexture);
     // draw elements, we have 6 elements so specify 6. For meshes we would
@@ -197,4 +210,9 @@ void SpriteRendererComponent::Render(CameraComponent& Camera)
 void SpriteRendererComponent::BindVertexArray()
 {
     glBindVertexArray(VertexArrayObject);
+}
+
+void SpriteRendererComponent::SetTextureScaling(glm::vec2 Scaling)
+{
+    TextureScale = Scaling;
 }

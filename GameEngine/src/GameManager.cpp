@@ -1,6 +1,5 @@
 #include "GameManager.h"
 #include "CoreEngine.h"
-#include "opengl.h"
 #include <chrono>
 #include "Audio/AudioAsset.h"
 #include "Rendering/Camera.h"

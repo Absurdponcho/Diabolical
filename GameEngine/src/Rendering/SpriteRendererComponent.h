@@ -16,6 +16,7 @@ public:
 	virtual void SelectSpriteSheetIndex(float DeltaTime);
 
 	void SetTexture(GameAssetSoftPointer<TextureAsset>& Texture);
+	void SetTextureScaling(glm::vec2 Scaling);
 
 	glm::ivec2 SpriteSheetSize = glm::ivec2(1,1);
 	float SpriteSheetProgressionSpeed = 0;
@@ -24,10 +25,13 @@ public:
 	bool bUseSpriteLoop = false;
 	int SpriteLoopStart = 0;
 	int SpriteLoopEnd = 0;
+	
+	bool bUseYAsDepth = false;
 
 	static void BindVertexArray();
 private:
 	glm::ivec2 SpriteSheetIndex = glm::ivec2(0, 0);
+	glm::vec2 TextureScale = glm::vec2(1, 1);
 	float SpriteSheetProgress = 0.f;
 
 	static bool bGLInitialized;
@@ -37,5 +41,7 @@ private:
 	static unsigned int ShaderProgram;
 	static int MVPMatrixLocation;
 	static int SpriteDimensionsLocation;
+	static int TextureScaleLocation;
+	static int DepthLocation;
 	unsigned int OpenGLTexture = 0;
 };

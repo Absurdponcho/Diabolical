@@ -49,6 +49,16 @@ void PlayerCharacterEntity::OnTick(float DeltaTime)
 		}
 	}
 
+	EntityTransform& Transform = GetTransform();
+	glm::vec3 NewPosition = Transform.GetPosition();
+
+	if (NewPosition.x < Bounds.x) NewPosition.x = Bounds.x;
+	if (NewPosition.y < Bounds.y) NewPosition.y = Bounds.y;
+	if (NewPosition.x > Bounds.z) NewPosition.x = Bounds.z;
+	if (NewPosition.y > Bounds.w) NewPosition.y = Bounds.w;
+
+	Transform.SetPosition(NewPosition);
+
 	FinishAttack();
 }
 

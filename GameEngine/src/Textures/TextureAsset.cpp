@@ -22,7 +22,7 @@ TextureAsset* TextureAsset::TryLoad(std::filesystem::path Path)
 	LoadedAsset->bDataAssigned = true;
 	LoadedAsset->FilePath = Path;
 
-	LoadedAsset->OpenGLTexture = SOIL_load_OGL_texture(Path.string().c_str(), 4, 0, SOIL_FLAG_MIPMAPS );
+	LoadedAsset->OpenGLTexture = SOIL_load_OGL_texture(Path.string().c_str(), 4, 0, 0 );
 
 	// SOIL loads the texture and sets the filter flags to be filtered (EW!!!).
 	// so we need to bind the texture and set them to have no filtering :)

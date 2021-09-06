@@ -26,7 +26,7 @@ public:
 class GameAudio
 {
 public:
-	static int PlaySound(GameAssetSoftPointer<AudioAsset>& AudioAssetSoftPointer, float Volume = 1.f, int AudioPriority = 0);
+	static int PlaySound(GameAssetSoftPointer<AudioAsset>& AudioAssetSoftPointer, float Volume = 1.f, int AudioPriority = 0, bool bLooping = false);
 private:
 	static int GetChannel(int MaximumPriority);
 	static int GetLowestPriorityChannel(int MaximumPriority);

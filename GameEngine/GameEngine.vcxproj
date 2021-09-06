@@ -161,7 +161,6 @@
     <ClCompile Include="src\Physics\ColliderComponent.cpp" />
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Physics\RigidbodyComponent.cpp" />
-    <ClCompile Include="src\Rendering\BasicRendererComponent.cpp" />
     <ClCompile Include="src\Rendering\Camera.cpp" />
     <ClCompile Include="src\Rendering\Framebuffer.cpp" />
     <ClCompile Include="src\Rendering\FreetypeFontAsset.cpp" />
@@ -171,9 +170,7 @@
     <ClCompile Include="src\Rendering\RenderPipeline.cpp" />
     <ClCompile Include="src\Rendering\ShaderCompiler.cpp" />
     <ClCompile Include="src\Rendering\SpriteRendererComponent.cpp" />
-    <ClCompile Include="src\Rendering\SquareRendererComponent.cpp" />
     <ClCompile Include="src\Rendering\TextRendererComponent.cpp" />
-    <ClCompile Include="src\Textures\SpriteComponent.cpp" />
     <ClCompile Include="src\Textures\TextureAsset.cpp" />
     <ClCompile Include="src\Utility\GameMath.cpp" />
     <ClCompile Include="src\Utility\Utility.cpp" />
@@ -196,11 +193,9 @@
     <ClInclude Include="src\EngineMain.h" />
     <ClInclude Include="src\Input\InputManager.h" />
     <ClInclude Include="src\Logging\Logging.h" />
-    <ClInclude Include="src\opengl.h" />
     <ClInclude Include="src\Physics\ColliderComponent.h" />
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Physics\RigidbodyComponent.h" />
-    <ClInclude Include="src\Rendering\BasicRendererComponent.h" />
     <ClInclude Include="src\Rendering\Camera.h" />
     <ClInclude Include="src\Rendering\Framebuffer.h" />
     <ClInclude Include="src\Rendering\FreetypeFontAsset.h" />
@@ -210,9 +205,7 @@
     <ClInclude Include="src\Rendering\RenderPipeline.h" />
     <ClInclude Include="src\Rendering\ShaderCompiler.h" />
     <ClInclude Include="src\Rendering\SpriteRendererComponent.h" />
-    <ClInclude Include="src\Rendering\SquareRendererComponent.h" />
     <ClInclude Include="src\Rendering\TextRendererComponent.h" />
-    <ClInclude Include="src\Textures\SpriteComponent.h" />
     <ClInclude Include="src\Textures\TextureAsset.h" />
     <ClInclude Include="src\Utility\GameMath.h" />
     <ClInclude Include="src\Utility\Utility.h" />

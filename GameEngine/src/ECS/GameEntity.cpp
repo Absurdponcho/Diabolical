@@ -3,6 +3,7 @@
 #include "GameComponent.h"
 #include <glm/gtx/euler_angles.hpp>
 #include "../GameManager.h"
+#include "../Physics/RigidbodyComponent.h"
 
 void GameEntity::OnTick(float DeltaTime)
 {
@@ -142,14 +143,29 @@ glm::vec3 EntityTransform::GetWorldEulerRotation()
 	return glm::eulerAngles(GetWorldRotation()) / 0.0174533f;
 }
 
+void EntityTransform::RigidbodySetPosition(b2Vec2 NewPosition)
+{
+	Position.x = NewPosition.x;
+	Position.y = NewPosition.y;
+	SetDirtyMatrixCache();
+}
+
 void EntityTransform::SetPosition(glm::vec3 NewPosition)
 {
+
+	Check(Parent);
+
+	if (RigidbodyComponent* Rigidbody = Parent->GetComponent<RigidbodyComponent>())
+	{
+		if (glm::distance(Position, NewPosition) > .001f)
+		{
+			Rigidbody->SetPosition(b2Vec2(NewPosition.x - Rigidbody->GetOffset().x, NewPosition.y - Rigidbody->GetOffset().y));
+		}
+	}
 	Position = NewPosition;
 
-	//bModelMatrixDirty = true;
-	//bXMirroredModelMatrixDirty = true;
-	//bTransRotationMatrixDirty = true;
 	SetDirtyMatrixCache();
+
 }
 glm::vec3 EntityTransform::GetWorldPosition()
 {

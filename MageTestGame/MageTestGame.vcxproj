@@ -145,8 +145,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Enemy\EnemyEntity.cpp" />
     <ClCompile Include="Source\MageGame.cpp" />
     <ClCompile Include="Source\PlayerCharacter\PlayerCharacterEntity.cpp" />
+    <ClCompile Include="Source\PlayerCharacter\PlayerTrackerEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameEngine\GameEngine.vcxproj">
@@ -154,7 +156,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Enemy\EnemyEntity.h" />
     <ClInclude Include="Source\PlayerCharacter\PlayerCharacterEntity.h" />
+    <ClInclude Include="Source\PlayerCharacter\PlayerTrackerEntity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
