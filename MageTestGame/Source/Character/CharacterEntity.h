@@ -3,7 +3,7 @@
 
 class CharacterEntity : public GameEntity
 {
-public:
+public: 
 	virtual void Die() {};
 	virtual void Damage(float DamageDealt, GameEntity* Causer);
 

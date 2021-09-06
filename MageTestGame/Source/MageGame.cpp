@@ -71,8 +71,8 @@ int main(int argc, char** argv)
     PlayerTrackerEntity* Camera = CreateEntity<PlayerTrackerEntity>();
     {
         CreateComponent<CameraComponent>(Camera)->SetActiveCamera();
-
-        Camera->SetTrackTarget(PlayerCharacter);
+         
+        Camera->SetTrackTarget(PlayerCharacter);  
     }
 
     GameEntity* Background = CreateEntity<GameEntity>();
@@ -80,18 +80,18 @@ int main(int argc, char** argv)
         Background->GetTransform().SetPosition(glm::vec3(0, 0, -.99999));
         Background->GetTransform().SetScale(glm::vec3(100, 100, 1));
 
-        SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(Background);
+        SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(Background); 
         Sprite->SetTexture(GroundTileTexturePointer);
         Sprite->SetTextureScaling(glm::vec2(100, 100));
     }
-
+     
     GameAssetSoftPointer<TextureAsset> SkeletonIdleTexturePointer("GameAssetFiles/Skele/Sprite Sheets/Skeleton Idle.png");
-
-    for (int x = -20; x < 20; x++)
+     
+    for (int x = -20; x < 20; x++) 
     {
         for (int y = -20; y < 20; y++)
-        {
-            EnemyEntity* Skele = CreateEntity<EnemyEntity>();
+        { 
+            EnemyEntity* Skele = CreateEntity<EnemyEntity>(); 
             {
                 Skele->GetTransform().SetScale(glm::vec3(1, 1, 1));
                 Skele->GetTransform().SetPosition(glm::vec3(x / 2, y / 2, 0));

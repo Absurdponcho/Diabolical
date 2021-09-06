@@ -17,7 +17,7 @@ struct ArchiveHeader {
 	int64_t VersionID;
 	int64_t NumberOfFiles;
 }; // sizeof = 12
-
+ 
 struct FileDescriptor
 {
 	char Name[260];

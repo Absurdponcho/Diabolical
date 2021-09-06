@@ -26,7 +26,8 @@ if number_of_files == 0:
 header = struct.pack("QQQ", magic, version, number_of_files)
 file_descriptors = []
 current_size = 0
-
+total_uncompressed_size = 0
+total_compressed_size = 0
 
 class Descriptor():
     def __init__(self, name, uncompressed_size, size, data, is_compressed):
@@ -46,20 +47,23 @@ for file in file_list:
         data = f.read()
         data_size = 0
         data_uncompressed_size = len(data)
+        total_uncompressed_size += data_uncompressed_size
         data_compressed = zlib.compress(data, 9)
         data_compressed_size = len(data_compressed)
         compress_ratio = (data_compressed_size / data_uncompressed_size) * 100
         is_compressed = True
         if compress_ratio < 100.0:
             compress_ratio_total += compress_ratio
-            print(f"Adding and Compressing {file}...")
+            print(f"Adding and Compressing {file} at compress ratio {compress_ratio}")
             data = data_compressed
             data_size = data_compressed_size
             number_of_compressed_files += 1
+            total_compressed_size += data_compressed_size
         else:
             print(f"Adding Uncompressed {file}...")
             data_size = data_uncompressed_size
             is_compressed = False
+            total_compressed_size += data_uncompressed_size
 
         fdesc = Descriptor(
             bytearray(file, "ASCII"), data_uncompressed_size, data_size, data, is_compressed)
@@ -90,3 +94,4 @@ with open(argv[2], "wb") as f:
     f.close()
 print(f"Done! Archive {argv[2]} is written to file")
 print(f"Compression Ratio Average {compress_ratio_total / number_of_compressed_files}%\n")
+print(f"Total Compression Ratio {total_compressed_size / total_uncompressed_size * 100}% (Saved {total_uncompressed_size - total_compressed_size} bytes)")
