@@ -6,10 +6,11 @@
 #include <cstdint>
 #include <vector>
 #include <zlib.h>
+#include <map>
 
 const int64_t ARCHIVE_VALID_MAGIC = 0xD1AB011CA1;
 
-const int64_t ARCHIVE_VER_ID = 1;
+const int64_t ARCHIVE_VER_ID = 2;
 
 struct ArchiveHeader {
 	int64_t Magic;
@@ -33,8 +34,6 @@ struct Archive
 	FileDescriptor ArcFiles[1];
 };
 
-bool GenerateArchive(std::filesystem::path Path);
-
 class ArchiveAsset : public GameAsset {
 public:
 	static ArchiveAsset* TryLoad(std::filesystem::path Path);
@@ -44,6 +43,7 @@ public:
 	const size_t GetAssetSize(int64_t index);
 	const size_t GetAssetSize(std::string AssetPath);
 protected:
+	std::map<std::string, int64_t> NameIndexMap;
 	Archive* Arc;
 	std::ifstream FileStream;
 	std::vector<FileDescriptor> Files; 
