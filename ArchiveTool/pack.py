@@ -2,6 +2,7 @@ import glob
 from sys import argv
 import zlib
 import struct
+from pathlib import Path
 
 print("Archive Packer version 0.1")
 
@@ -12,7 +13,8 @@ if len(argv) != 3:
     exit()
 
 file_list = glob.glob(argv[1], recursive=True)
-file_list = [x.replace("\\", "/") for x in file_list if x.find('.') != -1]
+file_list = [x.replace("\\", "/") for x in file_list if x.find('.')
+             != -1 and Path(x).stat().st_size != 0]
 number_of_files = len(file_list)
 
 
@@ -32,8 +34,8 @@ class Descriptor():
         self.data = data
 
 
-print(f"Packing {len(file_list)} files into archive\n")
-compress_ratio = 0;
+print(f"Packing {number_of_files} files into archive\n")
+compress_ratio = 0
 for file in file_list:
     with open(file, "rb") as f:
         print(f"Adding and Compressing file {file}...")
@@ -43,14 +45,18 @@ for file in file_list:
         data_size = len(data)
         fdesc = Descriptor(
             bytearray(file, "ASCII"), data_uncompressed_size, data_size, data)
+        if data_size == 0 or data_uncompressed_size == 0:
+            print(f"error {file} empty!")
+            exit()
         file_descriptors.append(fdesc)
+
         compress_ratio += (data_size / data_uncompressed_size) * 100
         f.close()
         current_size += data_size
 
 descriptor_data = bytearray()
 archive_data = bytearray()
-print(f"\nBuilding archive {argv[2]} ({len(file_list)} files)")
+print(f"\nBuilding archive {argv[2]} ({number_of_files} files)")
 for fd in file_descriptors:
     if len(fd.name) > path_limit:
         print(f"error file name too long! - {fd.name}")
@@ -67,4 +73,4 @@ with open(argv[2], "wb") as f:
     f.write(archive)
     f.close()
 print(f"Done! Archive {argv[2]} is written to file")
-print(f"Compression Ratio Average {compress_ratio / len(file_list)}%\n")
+print(f"Compression Ratio Average {compress_ratio / number_of_files}%\n")
