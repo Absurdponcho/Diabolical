@@ -21,7 +21,6 @@ public:
 	GameAssetSoftPointer(std::filesystem::path AssetPath) 
 	{
 		LOG("", AssetPath.string());
-		Check(std::filesystem::exists(AssetPath));
 		Internal.Path = AssetPath;
 	}
 

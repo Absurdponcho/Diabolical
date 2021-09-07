@@ -28,7 +28,7 @@ int main(int argc, char** argv)
     InputManager::AddKeyMapping("Right", SDLK_d);
     InputManager::AddKeyMapping("Right", SDLK_RIGHT);
     InputManager::AddKeyMapping("Left", SDLK_LEFT);
-    InputManager::AddKeyMapping("Left", SDLK_a);    
+    InputManager::AddKeyMapping("Left", SDLK_a);     
     InputManager::AddKeyMapping("Down", SDLK_DOWN);
     InputManager::AddKeyMapping("Down", SDLK_s);
     InputManager::AddMouseButtonMapping("AttackPrimary", SDL_BUTTON_LEFT);
@@ -45,7 +45,7 @@ int main(int argc, char** argv)
 
     PlayerCharacterEntity* PlayerCharacter = CreateEntity<PlayerCharacterEntity>();
     {
-       // PlayerCharacter->GetTransform().SetPosition(glm::vec3(0, 0, 0));
+       // PlayerCharacter->GetTransform().SetPosition(glm::vec3(0, 0, 0)); 
         PlayerCharacter->GetTransform().SetScale(glm::vec3(2, 2, 2));
         RigidbodyComponent* Rigidbody = CreateComponent<RigidbodyComponent>(PlayerCharacter);
         Rigidbody->SetDynamic(true);
@@ -71,18 +71,18 @@ int main(int argc, char** argv)
     PlayerTrackerEntity* Camera = CreateEntity<PlayerTrackerEntity>();
     {
         CreateComponent<CameraComponent>(Camera)->SetActiveCamera();
-         
-        Camera->SetTrackTarget(PlayerCharacter);  
+          
+        Camera->SetTrackTarget(PlayerCharacter);   
     }
-
+      
     GameEntity* Background = CreateEntity<GameEntity>();
-    {
-        Background->GetTransform().SetPosition(glm::vec3(0, 0, -.99999));
+    { 
+        Background->GetTransform().SetPosition(glm::vec3(0, 0, -.99999)); 
         Background->GetTransform().SetScale(glm::vec3(100, 100, 1));
-
+         
         SpriteRendererComponent* Sprite = CreateComponent<SpriteRendererComponent>(Background); 
-        Sprite->SetTexture(GroundTileTexturePointer);
-        Sprite->SetTextureScaling(glm::vec2(100, 100));
+        Sprite->SetTexture(GroundTileTexturePointer);  
+        Sprite->SetTextureScaling(glm::vec2(100, 100));   
     }
      
     GameAssetSoftPointer<TextureAsset> SkeletonIdleTexturePointer("GameAssetFiles/Skele/Sprite Sheets/Skeleton Idle.png");

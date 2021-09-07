@@ -48,8 +48,8 @@ void ParticleManager::RenderParticles(CameraComponent& Camera, float DeltaTime)
 void ParticleManager::Initialize()
 {
     ShaderProgram = ShaderCompiler::CompileShaderProgram(
-        GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParticleVertex.glsl"),
-        GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParticleFragment.glsl"));
+        GameAssetSoftPointer<TextAsset>("EngineAssetFiles.arc/Shaders/ParticleVertex.glsl"),
+        GameAssetSoftPointer<TextAsset>("EngineAssetFiles.arc/Shaders/ParticleFragment.glsl"));
     Check(ShaderProgram);
 
     MVPMatrixLocation = glGetUniformLocation(ShaderProgram, "MVP");

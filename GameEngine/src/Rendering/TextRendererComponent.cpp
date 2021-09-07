@@ -32,8 +32,8 @@ TextRendererComponent::TextRendererComponent()
 
         
         ShaderProgram = ShaderCompiler::CompileShaderProgram(
-            GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/TextVertex.glsl"), 
-            GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/TextFragment.glsl"));
+            GameAssetSoftPointer<TextAsset>("EngineAssetFiles.arc/Shaders/TextVertex.glsl"), 
+            GameAssetSoftPointer<TextAsset>("EngineAssetFiles.arc/Shaders/TextFragment.glsl"));
         Check(ShaderProgram);
 
         TextColorLocation = glGetUniformLocation(ShaderProgram, "textColor");

@@ -1,4 +1,5 @@
 #include "ArchiveAsset.h"
+#include "../Logging/Logging.h"
 
 ArchiveAsset* ArchiveAsset::TryLoad(std::filesystem::path Path)
 {
@@ -65,7 +66,7 @@ const uint8_t* ArchiveAsset::GetAssetData(int64_t index)
 			free(DataInflated);
 			return nullptr;
 		};
-		inflateEnd(&InflateStream);
+		inflateEnd(&InflateStream); 
 		free(Data);
 		return DataInflated;
 	}

@@ -59,8 +59,8 @@ void SpriteRendererComponent::OnSpawn()
         bGLInitialized = true;
 
         ShaderProgram = ShaderCompiler::CompileShaderProgram(
-            GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/SpriteVertex.glsl"),
-            GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/SpriteFragment.glsl"));
+            GameAssetSoftPointer<TextAsset>("EngineAssetFiles.arc/Shaders/SpriteVertex.glsl"),
+            GameAssetSoftPointer<TextAsset>("EngineAssetFiles.arc/Shaders/SpriteFragment.glsl"));
         Check(ShaderProgram);
 
         MVPMatrixLocation = glGetUniformLocation(ShaderProgram, "MVP");

@@ -5,6 +5,7 @@ class Framebuffer
 {
 public:
 	Framebuffer(int NewWidth, int NewHeight);
+	~Framebuffer();
 	void Bind();
 
 	// Draws this framebuffer's contents on to the bound framebuffer

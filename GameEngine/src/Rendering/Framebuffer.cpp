@@ -63,9 +63,23 @@ void Framebuffer::Draw()
 
 }
 
+Framebuffer::~Framebuffer()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glDeleteFramebuffers(1, &FramebufferName);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDeleteTextures(1, &RenderedTexture);
+
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glDeleteRenderbuffers(1, &DepthRenderBuffer);
+}
+
 Framebuffer::Framebuffer(int NewWidth, int NewHeight) 
 	: Width(NewWidth), Height(NewHeight)
 {
+    if (NewWidth == 0 || NewHeight == 0) return;
+
 	glGenFramebuffers(1, &FramebufferName);
 	glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
 
@@ -108,8 +122,8 @@ void Framebuffer::Initialize()
 	bInitialized = true;
 
     ShaderProgram = ShaderCompiler::CompileShaderProgram(
-        GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/SimpleTextureVertex.glsl"),
-        GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/FXAAFragment.glsl"));
+        GameAssetSoftPointer<TextAsset>("EngineAssetFiles.arc/Shaders/SimpleTextureVertex.glsl"),
+        GameAssetSoftPointer<TextAsset>("EngineAssetFiles.arc/Shaders/FXAAFragment.glsl"));
     Check(ShaderProgram);
 	
     TimeLocation = glGetUniformLocation(ShaderProgram, "Time");

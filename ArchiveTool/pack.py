@@ -9,7 +9,7 @@ print("\nArchive Packer version 0.2\n")
 magic = 0xD1AB011CA1
 version = 2
 path_limit = 260
-if len(argv) != 3:
+if len(argv) != 4:
     print("\nArguments are : pack.py \\folder\\**\\*.* [output.extension]\n")
     exit()
 
@@ -66,7 +66,7 @@ for file in file_list:
             total_compressed_size += data_uncompressed_size
 
         fdesc = Descriptor(
-            bytearray(file, "ASCII"), data_uncompressed_size, data_size, data, is_compressed)
+            bytearray(file[-(len(file)-len(argv[3])):], "ASCII"), data_uncompressed_size, data_size, data, is_compressed)
         if data_size == 0 or data_uncompressed_size == 0:
             print(f"error {file} empty!")
             exit()
@@ -93,5 +93,5 @@ with open(argv[2], "wb") as f:
     f.write(archive)
     f.close()
 print(f"Done! Archive {argv[2]} is written to file")
-print(f"Compression Ratio Average {compress_ratio_total / number_of_compressed_files}%\n")
+print(f"Compression Ratio Average {compress_ratio_total / number_of_compressed_files}%")
 print(f"Total Compression Ratio {total_compressed_size / total_uncompressed_size * 100}% (Saved {total_uncompressed_size - total_compressed_size} bytes)")

@@ -122,8 +122,8 @@ void ParallaxBackground::InitializeShader()
 	bShaderInitialized = true;
 
     ShaderProgram = ShaderCompiler::CompileShaderProgram(
-        GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParallaxVertex.glsl"),
-        GameAssetSoftPointer<TextAsset>("GameAssetFiles/Shaders/ParallaxFragment.glsl"));
+        GameAssetSoftPointer<TextAsset>("EngineAssetFiles.arc/Shaders/ParallaxVertex.glsl"),
+        GameAssetSoftPointer<TextAsset>("EngineAssetFiles.arc/Shaders/ParallaxFragment.glsl"));
     Check(ShaderProgram);
 
     RenderDepthLocation = glGetUniformLocation(ShaderProgram, "RenderDepth");
