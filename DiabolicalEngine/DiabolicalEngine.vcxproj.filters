@@ -30,7 +30,7 @@
     <ClCompile Include="src\Game\GameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Logging\Logging.cpp">
+    <ClCompile Include="DiabolicalTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,7 +50,7 @@
     <ClInclude Include="src\Game\GameManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Logging\Logging.h">
+    <ClInclude Include="DiabolicalTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
