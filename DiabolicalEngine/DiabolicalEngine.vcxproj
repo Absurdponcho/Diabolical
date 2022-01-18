@@ -19,7 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DiabolicalTypes.cpp" />
+    <ClCompile Include="src\DiabolicalTypes.cpp" />
+    <ClCompile Include="src\CommandLine\CmdLine.cpp" />
     <ClCompile Include="src\DiabolicalEngine.cpp" />
     <ClCompile Include="src\ECS\flecs-os_api-stdcpp.cpp" />
     <ClCompile Include="src\ECS\flecs.c" />
@@ -28,13 +29,15 @@
     <ClCompile Include="src\Logging\Logging.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DiabolicalTypes.h" />
+    <ClInclude Include="src\DiabolicalTypes.h" />
+    <ClInclude Include="src\CommandLine\CmdLine.h" />
     <ClInclude Include="src\DiabolicalEngine.h" />
     <ClInclude Include="src\ECS\flecs.h" />
     <ClInclude Include="src\ECS\flecs_os_api_stdcpp.h" />
     <ClInclude Include="src\Game\GameManager.h" />
     <ClInclude Include="src\Graphics\WindowManager.h" />
     <ClInclude Include="src\Logging\Logging.h" />
+    <ClInclude Include="src\Types\DString.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
