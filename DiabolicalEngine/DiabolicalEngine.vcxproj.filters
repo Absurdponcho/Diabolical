@@ -39,6 +39,9 @@
     <ClCompile Include="src\Logging\Logging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Logging\Logging.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Utility\Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -63,6 +66,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Filesystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Logging\Logging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Types\DString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Logging\Logging.h">
