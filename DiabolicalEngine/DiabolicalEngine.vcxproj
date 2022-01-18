@@ -19,18 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DiabolicalTypes.cpp" />
+    <ClCompile Include="src\DiabolicalTypes.cpp" />
     <ClCompile Include="src\DiabolicalEngine.cpp" />
     <ClCompile Include="src\ECS\flecs-os_api-stdcpp.cpp" />
     <ClCompile Include="src\ECS\flecs.c" />
+    <ClCompile Include="src\Filesystem.cpp" />
     <ClCompile Include="src\Game\GameManager.cpp" />
     <ClCompile Include="src\Graphics\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DiabolicalTypes.h" />
+    <ClInclude Include="src\DiabolicalTypes.h" />
     <ClInclude Include="src\DiabolicalEngine.h" />
     <ClInclude Include="src\ECS\flecs.h" />
     <ClInclude Include="src\ECS\flecs_os_api_stdcpp.h" />
+    <ClInclude Include="src\Filesystem.h" />
     <ClInclude Include="src\Game\GameManager.h" />
     <ClInclude Include="src\Graphics\WindowManager.h" />
   </ItemGroup>
@@ -59,7 +61,7 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
