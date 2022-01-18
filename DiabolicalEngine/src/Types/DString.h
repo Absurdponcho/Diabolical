@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <vector>
 #include "../Check.h"
+#include <algorithm>
 
 class DString : private std::string
 {
@@ -101,4 +102,19 @@ public:
 	{
 		return c_str();
 	}
+
+	// Remove "Count" characters from the end of the string
+	inline DString ChopRight(size_t Count)
+	{
+		Check (Count < Length());
+		if (Count >= Length()) return DString();
+		DString OutStr = DString(substr(0, Length()-Count));
+		return OutStr;
+	}
+
+	inline void Replace(char Char, char Replacement) 
+	{
+		std::replace(begin(), end(), Char, Replacement);
+	}
+
 };

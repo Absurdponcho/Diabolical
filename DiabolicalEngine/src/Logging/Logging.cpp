@@ -4,6 +4,8 @@
 #include "../DiabolicalEngine.h"
 #include "../Filesystem/Filesystem.h"
 #include "../Check.h"
+#include <chrono>
+#include <ctime>
 
 #ifdef PLATFORM_WINDOWS
 #include <windows.h>
@@ -36,9 +38,22 @@ void Logging::LogString(DString Prefix, DString Func, int Line, DString String, 
 {
 	DString LogStr = DString::Format("%s: %s(%i): %s\n", *Prefix, *Func, Line, *String);
 
+	std::time_t time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+	char Buffer[1024];
+	ctime_s(Buffer, 1024, &time);
+	DString TimeString(Buffer);
+
+	// Remove the \n with a chopright
+	TimeString = TimeString.ChopRight(1);
+
+	DString FilePath = DString("Log/Log-").Append(TimeString).Append(".txt");
+
+	FilePath.Replace(':','-');
+
 	if (!LogFile.is_open())
 	{
-		if (!diabolical::FileCreate(DString("Log/Log-").Append("a").Append(".txt"), LogFile))
+		if (!diabolical::FileCreate(FilePath, LogFile))
 		{
 			std::cout << "Could not create log file" << std::endl;
 			Check(false);
