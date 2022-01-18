@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Types/DString.h"
 #include <string>
 #include <vector>
 // programming for windows first, since I cant test on other platforms rn
@@ -9,13 +10,13 @@
 #include <fstream>
 namespace diabolical
 {
-	bool DirCreate(const std::string& dir);
-	bool DirCopy(const std::string& src, const std::string& dest);
-	bool PathExists(const std::string& path);
-	bool PathDelete(const std::string& path);
+	bool DirCreate(const DString& dir);
+	bool DirCopy(const DString& src, const DString& dest);
+	bool PathExists(const DString& path);
+	bool PathDelete(const DString& path);
 
-	bool FileCreate(const std::string& file);
-	bool FileCopy(const std::string& src, const std::string& dest);
-	std::vector <const std::filesystem::path> FilesIn(const std::string& dir, bool recursive = false);
+	bool FileCreate(const DString& file, std::ofstream& stream);
+	bool FileCopy(const DString& src, const DString& dest);
+	std::vector <std::filesystem::path> FilesIn(const DString& dir, bool recursive = false);
 
 }

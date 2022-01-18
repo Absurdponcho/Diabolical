@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "../Types/DString.h"
 
 #define LOG(x) Logging::LogString("LOG", __FUNCTION__, __LINE__, x, 15)
 #define LOG_WARN(x) Logging::LogString("WARNING", __FUNCTION__, __LINE__, x, 14)
@@ -7,5 +8,5 @@
 
 namespace Logging
 {
-	void LogString(std::string Prefix, std::string Func, int Line, std::string String, int Color);
+	void LogString(DString Prefix, DString Func, int Line, DString String, int Color);
 }

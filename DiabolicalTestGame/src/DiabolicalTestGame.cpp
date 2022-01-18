@@ -4,9 +4,9 @@ int main (int argc, char *argv[])
 {
 	DEngine::Init(argc, argv);
 
-	for (auto& Tuple : DCommandLine::Get().GetKeyValuePairs())
+	if (const DString* Value = DCommandLine::Get().GetValue("123"))
 	{
-		std::cout << std::get<0>(Tuple) << " : " << std::get<1>(Tuple) << std::endl;
+		std::cout << *Value;
 	}
 
 	DEngine::Run();

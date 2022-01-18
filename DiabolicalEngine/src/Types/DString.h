@@ -2,11 +2,18 @@
 #include <string>
 #include <assert.h>
 #include <iostream>
+#include <stdarg.h>
 
 class DString : private std::string
 {
 public:
 	using std::string::string;
+	using std::string::c_str;
+
+	DString(int Val)
+	{
+		Append(DString(std::to_string(Val)));
+	}
 
 	inline const int Find(const DString& String) const
 	{
@@ -46,10 +53,31 @@ public:
 		return *this == Other;
 	}
 
+	inline DString& Append(const DString& Other)
+	{
+		append(Other);	
+		return *this;
+	}
+
 	inline friend std::ostream& operator<<(std::ostream& os, const DString& String)
 	{
 		os << String.c_str();
 		return os;
 	}
 
+	template<typename... Args>
+	static DString Format(DString Format, Args... args)
+	{
+		const int BufferSize = 4096 * 2;
+		char Buffer[BufferSize];
+
+		snprintf(Buffer, BufferSize, Format.c_str(), args...);
+
+		return DString(Buffer);
+	}
+
+	inline const char* operator*() const
+	{
+		return c_str();
+	}
 };
