@@ -40,8 +40,8 @@ void Logging::LogString(DString Prefix, DString Func, int Line, DString String, 
 
 	std::time_t time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-	char Buffer[1024];
-	ctime_s(Buffer, 1024, &time);
+	char Buffer[128];
+	ctime_s(Buffer, 128, &time);
 	DString TimeString(Buffer);
 
 	// Remove the \n with a chopright
