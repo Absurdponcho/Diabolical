@@ -25,4 +25,6 @@ void Logging::LogString(std::string Prefix, std::string Func, int Line, std::str
 {
 	SetLogColor(Color);
 	std::cout << Prefix << ": " << Func << "(" << Line << "): " << String << std::endl;
+	SetLogColor(15);
+
 }
