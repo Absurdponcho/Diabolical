@@ -3,9 +3,12 @@
 #include <iostream>
 #include <string>
 
-namespace DEngine
+class DEngine
 {
-	void Init(int argc, char *argv[]);
-	void Run();
+public:
+	static void Init(int argc, char *argv[]);
+	static void Run();
 
-}
+private:
+	static class DGameManager* GameManager;
+};

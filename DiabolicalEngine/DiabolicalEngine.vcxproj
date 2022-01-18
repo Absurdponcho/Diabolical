@@ -22,11 +22,15 @@
     <ClCompile Include="src\DiabolicalEngine.cpp" />
     <ClCompile Include="src\ECS\flecs-os_api-stdcpp.cpp" />
     <ClCompile Include="src\ECS\flecs.c" />
+    <ClCompile Include="src\Game\GameManager.cpp" />
+    <ClCompile Include="src\Graphics\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DiabolicalEngine.h" />
     <ClInclude Include="src\ECS\flecs.h" />
     <ClInclude Include="src\ECS\flecs_os_api_stdcpp.h" />
+    <ClInclude Include="src\Game\GameManager.h" />
+    <ClInclude Include="src\Graphics\WindowManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
