@@ -4,10 +4,20 @@
 #include "../Graphics/WindowManager.h"
 #include <gl/glew.h>
 #include <gl/GL.h>
+#include "../Audio/AudioSource.h"
+#include "../Audio/WAVFile.h"
 
+DAudioSource* AudioSource;
 void DGameManager::MainGameLoop()
 {
 	//LOGVERBOSE("GameManager::MainGameLoop()", "Main game loop started");
+
+	AudioSource = new DAudioSource();
+	{
+		std::shared_ptr<DWAVFile> WavFile = DWAVFile::Load("Assets/Sussy Baka.wav");
+		AudioSource->SetAudioFile(WavFile);
+		AudioSource->Play();
+	}
 
 	// do the first tick before showing the window to prevent icky sticky white window
 	EventTick();
@@ -33,7 +43,9 @@ void DGameManager::EventTick()
 		switch (Event.type) {
 
 		case SDL_KEYDOWN:
+			break;
 		case SDL_KEYUP:
+			//if (Event.key.keysym.sym )
 			//InputManager::HandleKeyboardEvent(Event.key);
 			break;
 		case SDL_MOUSEBUTTONDOWN:

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Audio\AudioSource.cpp" />
     <ClCompile Include="src\Check.cpp" />
     <ClCompile Include="src\CommandLine\CmdLine.cpp" />
     <ClCompile Include="src\Utility\Random.cpp" />
@@ -30,8 +31,11 @@
     <ClCompile Include="src\Game\GameManager.cpp" />
     <ClCompile Include="src\Graphics\WindowManager.cpp" />
     <ClCompile Include="src\Logging\Logging.cpp" />
+    <ClCompile Include="src\Audio\WavFile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Audio\AudioSource.h" />
+    <ClInclude Include="src\Audio\AudioUtility.h" />
     <ClInclude Include="src\Check.h" />
     <ClInclude Include="src\CommandLine\CmdLine.h" />
     <ClInclude Include="src\Utility\Random.h" />
@@ -44,6 +48,7 @@
     <ClInclude Include="src\Graphics\WindowManager.h" />
     <ClInclude Include="src\Logging\Logging.h" />
     <ClInclude Include="src\Types\DString.h" />
+    <ClInclude Include="src\Audio\WavFile.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
