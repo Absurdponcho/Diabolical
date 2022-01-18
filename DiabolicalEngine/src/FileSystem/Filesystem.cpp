@@ -21,10 +21,21 @@ bool diabolical::PathExists(const DString& path)
 	return std::filesystem::exists(*path);
 }
 
-bool diabolical::FileCreate(const DString& file, std::ofstream& stream)
+bool diabolical::FileCreate(const DString& file, std::ofstream& stream, bool bOverwrite)
 {
-	if (PathExists(file))
+	if (!bOverwrite && PathExists(file))
 		return false;
+
+	int LastSlash = file.FindLast("/");
+
+	if (LastSlash == -1)
+		return false;
+
+	DString Path, File;
+	file.Split(LastSlash, Path, File);
+
+	std::filesystem::create_directories(*Path);
+
 	stream = std::ofstream(*file);
 	return true;
 }

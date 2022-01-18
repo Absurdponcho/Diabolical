@@ -1,5 +1,5 @@
 #include "CmdLine.h"
-#include <assert.h>
+#include "../Check.h"
 
 DCommandLine* CommandLine = nullptr;
 
@@ -12,7 +12,7 @@ DCommandLine::DCommandLine(int argc, char* argv[])
 
 	for (const DString& String : GetArguments())
 	{
-		int Index = String.Find("=");
+		int Index = String.FindFirst("=");
 		if (Index == -1) continue;
 		DString Left, Right;
 		String.Split(Index, Left, Right);
@@ -50,7 +50,7 @@ void DCommandLine::Init(int argc, char* argv[])
 
 DCommandLine& DCommandLine::Get()
 {
-	assert(CommandLine);
+	Check(CommandLine);
 	return *CommandLine;
 }
 

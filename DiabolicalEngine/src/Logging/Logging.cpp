@@ -2,7 +2,8 @@
 #include <iostream>
 #include <assert.h>
 #include "../DiabolicalEngine.h"
-#include "../Filesystem.h"
+#include "../Filesystem/Filesystem.h"
+#include "../Check.h"
 
 #ifdef PLATFORM_WINDOWS
 #include <windows.h>
@@ -11,17 +12,25 @@
 uint8_t LogColor = 15;
 std::ofstream LogFile;
 
-void SetLogColor(uint8_t Color)
+void Logging::SetLogColor(uint8_t Color)
 {
 	LogColor = Color;
 #ifdef PLATFORM_WINDOWS
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole, Color);
 #else
-	assert(false);
+	Check(false);
 #endif
 }
 
+void Logging::LogPlain(DString String, int Color)
+{
+	LogFile.write(*String, String.Length());
+
+	SetLogColor(Color);
+	std::cout << String;
+	SetLogColor(15);
+}
 
 void Logging::LogString(DString Prefix, DString Func, int Line, DString String, int Color)
 {
@@ -29,10 +38,10 @@ void Logging::LogString(DString Prefix, DString Func, int Line, DString String, 
 
 	if (!LogFile.is_open())
 	{
-		if (!diabolical::FileCreate(DString("Log-").Append("a").Append(".txt"), LogFile))
+		if (!diabolical::FileCreate(DString("Log/Log-").Append("a").Append(".txt"), LogFile))
 		{
 			std::cout << "Could not create log file" << std::endl;
-			assert(false);
+			Check(false);
 		}
 	}
 	
@@ -42,4 +51,13 @@ void Logging::LogString(DString Prefix, DString Func, int Line, DString String, 
 	std::cout << LogStr;
 	SetLogColor(15);
 
+}
+
+void Logging::CloseLogFile()
+{
+	if (LogFile.is_open())
+	{
+		LogFile.flush();
+		LogFile.close();
+	}
 }

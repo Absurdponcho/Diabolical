@@ -8,12 +8,13 @@
 #define PLATFORM_WINDOWS
 #endif
 
+
 class DEngine
 {
 public:
 	static void Init(int argc, char *argv[]);
 	static void Run();
-
+	static void AtExit();
 private:
 	static class DGameManager* GameManager;
 };

@@ -19,25 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Check.cpp" />
     <ClCompile Include="src\CommandLine\CmdLine.cpp" />
     <ClCompile Include="src\Utility\Random.cpp" />
     <ClCompile Include="src\DiabolicalTypes.cpp" />
     <ClCompile Include="src\DiabolicalEngine.cpp" />
     <ClCompile Include="src\ECS\flecs-os_api-stdcpp.cpp" />
     <ClCompile Include="src\ECS\flecs.c" />
-    <ClCompile Include="src\Filesystem.cpp" />
+    <ClCompile Include="src\FileSystem\Filesystem.cpp" />
     <ClCompile Include="src\Game\GameManager.cpp" />
     <ClCompile Include="src\Graphics\WindowManager.cpp" />
     <ClCompile Include="src\Logging\Logging.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Check.h" />
     <ClInclude Include="src\CommandLine\CmdLine.h" />
     <ClInclude Include="src\Utility\Random.h" />
     <ClInclude Include="src\DiabolicalTypes.h" />
     <ClInclude Include="src\DiabolicalEngine.h" />
     <ClInclude Include="src\ECS\flecs.h" />
     <ClInclude Include="src\ECS\flecs_os_api_stdcpp.h" />
-    <ClInclude Include="src\Filesystem.h" />
+    <ClInclude Include="src\FileSystem\Filesystem.h" />
     <ClInclude Include="src\Game\GameManager.h" />
     <ClInclude Include="src\Graphics\WindowManager.h" />
     <ClInclude Include="src\Logging\Logging.h" />

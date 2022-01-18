@@ -33,7 +33,7 @@
     <ClCompile Include="src\DiabolicalTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Filesystem.cpp">
+    <ClCompile Include="src\FileSystem\Filesystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Logging\Logging.cpp">
@@ -46,6 +46,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CommandLine\CmdLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Check.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,7 +71,7 @@
     <ClInclude Include="src\DiabolicalTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Filesystem.h">
+    <ClInclude Include="src\FileSystem\Filesystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Logging\Logging.h">
@@ -84,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\CommandLine\CmdLine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Check.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

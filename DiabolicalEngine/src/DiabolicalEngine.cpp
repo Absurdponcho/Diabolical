@@ -3,11 +3,13 @@
 #include "Game/GameManager.h"
 #include "Logging/Logging.h"
 #include "CommandLine/CmdLine.h"
+#include "Check.h"
 
 DGameManager* DEngine::GameManager = nullptr;
 
 void DEngine::Init(int argc, char* argv[])
 {
+	atexit(AtExit);
 	DCommandLine::Init(argc, argv);
 
 	LOG("Test");
@@ -18,6 +20,11 @@ void DEngine::Init(int argc, char* argv[])
 
 void DEngine::Run()
 {
-	assert(GameManager);
+	Check(GameManager);
 	GameManager->MainGameLoop();
+}
+
+void DEngine::AtExit()
+{
+	Logging::CloseLogFile();
 }
