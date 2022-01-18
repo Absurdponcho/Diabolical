@@ -37,6 +37,7 @@
     <ClInclude Include="src\Game\GameManager.h" />
     <ClInclude Include="src\Graphics\WindowManager.h" />
     <ClInclude Include="src\Logging\Logging.h" />
+    <ClInclude Include="src\Types\DString.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
