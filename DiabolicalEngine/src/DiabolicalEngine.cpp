@@ -1,6 +1,7 @@
 #include "DiabolicalEngine.h"
 #include "Graphics/WindowManager.h"
 #include "Game/GameManager.h"
+#include "Logging/Logging.h"
 
 DGameManager* DEngine::GameManager = nullptr;
 

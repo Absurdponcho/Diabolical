@@ -26,6 +26,7 @@
     <ClCompile Include="src\Filesystem.cpp" />
     <ClCompile Include="src\Game\GameManager.cpp" />
     <ClCompile Include="src\Graphics\WindowManager.cpp" />
+    <ClCompile Include="src\Logging\Logging.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DiabolicalTypes.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="src\Filesystem.h" />
     <ClInclude Include="src\Game\GameManager.h" />
     <ClInclude Include="src\Graphics\WindowManager.h" />
+    <ClInclude Include="src\Logging\Logging.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
