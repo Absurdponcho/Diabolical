@@ -29,6 +29,7 @@ bool ImGui_OpenGL::ShutdownBackend()
 {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
+    SDL_GL_DeleteContext(gl_context);
     ImGui::DestroyContext();
 }
 
