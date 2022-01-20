@@ -33,8 +33,7 @@ namespace types
 		Vec4(Float32 x_, Float32 y_, Float32 z_, Float32 w_)
 			:x(x_), y(y_), z(z_), w(w_) {};
 	};
-	typedef std::string string;
-	typedef std::wstring wstring;
+
 	typedef Vec2 vec2;
 	typedef Vec3 vec3;
 	typedef Vec4 vec4;
