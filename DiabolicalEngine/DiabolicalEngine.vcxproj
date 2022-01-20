@@ -19,9 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ImGui\backends\imgui_impl_sdl.cpp" />
+    <ClCompile Include="src\ImGui\ImGui_OpenGL.cpp" />
     <ClCompile Include="src\Audio\AudioSource.cpp" />
     <ClCompile Include="src\Check.cpp" />
     <ClCompile Include="src\CommandLine\CmdLine.cpp" />
+    <ClCompile Include="src\ImGui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\ImGui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="src\ImGui\imgui.cpp" />
     <ClCompile Include="src\Utility\Random.cpp" />
     <ClCompile Include="src\DiabolicalTypes.cpp" />
     <ClCompile Include="src\DiabolicalEngine.cpp" />
@@ -34,10 +39,16 @@
     <ClCompile Include="src\Audio\WavFile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ImGui\backends\imgui_impl_sdl.h" />
+    <ClInclude Include="src\ImGui\ImGui_OpenGL.h" />
     <ClInclude Include="src\Audio\AudioSource.h" />
     <ClInclude Include="src\Audio\AudioUtility.h" />
     <ClInclude Include="src\Check.h" />
     <ClInclude Include="src\CommandLine\CmdLine.h" />
+    <ClInclude Include="src\ImGui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\ImGui\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="src\ImGui\backends\imgui_impl_win32.h" />
+    <ClInclude Include="src\ImGui\imgui.h" />
     <ClInclude Include="src\Utility\Random.h" />
     <ClInclude Include="src\DiabolicalTypes.h" />
     <ClInclude Include="src\DiabolicalEngine.h" />
