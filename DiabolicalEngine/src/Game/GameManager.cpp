@@ -6,6 +6,36 @@
 #include <gl/GL.h>
 #include "../Audio/AudioSource.h"
 #include "../Audio/WAVFile.h"
+#include "../ImGui/imgui.h"
+#include "../ImGui/backends/imgui_impl_opengl3.h"
+#include "../ImGui/backends/imgui_impl_sdl.h"
+
+void InitImGui()
+{
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	//ImGuiIO& io = ImGui::GetIO();
+
+	ImGui_ImplOpenGL3_Init("#version 330");
+	ImGui_ImplSDL2_InitForOpenGL(DWindowManager::GetSDLWindow(), DWindowManager::GetGLContext());
+
+	ImGui::StyleColorsDark();
+}
+
+void ImGuiTick()
+{
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
+
+	ImGui::Begin("Demo window");
+	ImGui::Button("Hello!");
+	ImGui::End();
+
+	ImGui::EndFrame();
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
 
 DAudioSource* AudioSource;
 void DGameManager::MainGameLoop()
@@ -19,6 +49,8 @@ void DGameManager::MainGameLoop()
 		AudioSource->Play();
 	}
 
+	InitImGui();
+
 	// do the first tick before showing the window to prevent icky sticky white window
 	EventTick();
 	SDL_ShowWindow(DWindowManager::GetSDLWindow());
@@ -26,7 +58,15 @@ void DGameManager::MainGameLoop()
 	while (bMainLoopRunning)
 	{
 		EventTick();
+
+		glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		ImGuiTick();
+
 		SDL_GL_SwapWindow(DWindowManager::GetSDLWindow());
+
+
 	}
 }
 
