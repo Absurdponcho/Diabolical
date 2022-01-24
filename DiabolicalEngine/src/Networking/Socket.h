@@ -6,13 +6,13 @@ union SocketAddressUnion
 {
 	struct
 	{
-		UINT8 b1, b2, b3, b4;
+		uint8_t b1, b2, b3, b4;
 	} UnionBytes;
 	struct
 	{
-		UINT16 w1, w2;
+		uint16_t w1, w2;
 	} UnionShorts;
-	UINT32 Address;
+	uint32_t Address;
 };
 
 struct SocketAddress
@@ -37,7 +37,7 @@ public:
 
 private:
 #ifdef PLATFORM_WINDOWS
-	UINT64 Socket = 0;
+	uint64_t Socket = 0;
 #endif
 };
 
