@@ -13,7 +13,6 @@ public:
 	virtual bool Enable();
 	virtual bool Disable();
 	static std::vector<IWindow*> WindowList;
-	static int Width, Height;
 private:
 	size_t WindowID;
 	bool bEnabled = false;

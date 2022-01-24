@@ -10,6 +10,7 @@
 #include "../ImGui/backends/imgui_impl_opengl3.h"
 #include "../ImGui/backends/imgui_impl_sdl.h"
 #include "../GUI/IWindow.h"
+#include "../GUI/TestWindow.h"
 
 void InitImGui()
 {
@@ -19,8 +20,12 @@ void InitImGui()
 
 	ImGui_ImplOpenGL3_Init("#version 330");
 	ImGui_ImplSDL2_InitForOpenGL(DWindowManager::GetSDLWindow(), DWindowManager::GetGLContext());
+	
+	static TestWindow testWindow = TestWindow();
+	testWindow.Enable();
 
 	ImGui::StyleColorsDark();
+
 }
 
 void ImGuiTick()
@@ -45,7 +50,7 @@ void DGameManager::MainGameLoop()
 
 	AudioSource = new DAudioSource();
 	{
-		std::shared_ptr<DWAVFile> WavFile = DWAVFile::Load("Assets/Sussy Baka.wav");
+		std::shared_ptr<DWAVFile> WavFile = DWAVFile::Load("Assets/Sussy Baka.wav"); // Hey dude, you're being quite sussy
 		AudioSource->SetAudioFile(WavFile);
 		AudioSource->Play();
 	}

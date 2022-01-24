@@ -22,6 +22,7 @@
     <ClCompile Include="src\Audio\AudioSource.cpp" />
     <ClCompile Include="src\Check.cpp" />
     <ClCompile Include="src\CommandLine\CmdLine.cpp" />
+    <ClCompile Include="src\GUI\TestWindow.cpp" />
     <ClCompile Include="src\ImGui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\ImGui\backends\imgui_impl_sdl.cpp" />
     <ClCompile Include="src\ImGui\backends\imgui_impl_win32.cpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="src\Audio\WavFile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\GUI\TestWindow.h" />
     <ClInclude Include="src\ImGui\backends\imgui_impl_sdl.h" />
     <ClInclude Include="src\ImGui\imconfig.h" />
     <ClInclude Include="src\ImGui\imgui_internal.h" />
