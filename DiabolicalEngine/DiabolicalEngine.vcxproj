@@ -30,6 +30,7 @@
     <ClCompile Include="src\ImGui\imgui_draw.cpp" />
     <ClCompile Include="src\ImGui\imgui_tables.cpp" />
     <ClCompile Include="src\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="src\GUI\IWindow.cpp" />
     <ClCompile Include="src\Utility\Random.cpp" />
     <ClCompile Include="src\DiabolicalTypes.cpp" />
     <ClCompile Include="src\DiabolicalEngine.cpp" />
@@ -56,6 +57,7 @@
     <ClInclude Include="src\ImGui\imstb_rectpack.h" />
     <ClInclude Include="src\ImGui\imstb_textedit.h" />
     <ClInclude Include="src\ImGui\imstb_truetype.h" />
+    <ClInclude Include="src\GUI\IWindow.h" />
     <ClInclude Include="src\Utility\Random.h" />
     <ClInclude Include="src\DiabolicalTypes.h" />
     <ClInclude Include="src\DiabolicalEngine.h" />
