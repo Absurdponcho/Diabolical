@@ -1,9 +1,6 @@
 #include "IWindow.h"
 std::vector<IWindow*> IWindow::WindowList;
 
-int IWindow::Height;
-int IWindow::Width;
-
 IWindow::IWindow()
 {
     bEnabled = true;
