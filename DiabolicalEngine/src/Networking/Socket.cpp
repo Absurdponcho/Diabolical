@@ -47,7 +47,7 @@ bool DSocket::CreateUDP()
 bool DSocket::Connect(DString Address, int Port)
 {
 #ifdef PLATFORM_WINDOWS
-	SocketAddressIn Server;
+	SocketAddress Server;
 	Server.InAddress.Address = inet_addr(*Address);
 	Server.Family = AF_INET;
 	Server.Port = htons(Port);

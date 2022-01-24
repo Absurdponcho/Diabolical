@@ -15,19 +15,12 @@ union SocketAddressUnion
 	uint32_t Address;
 };
 
-
-struct SocketAddressIn
+struct SocketAddress
 {
 	short Family;
 	unsigned short Port;
 	SocketAddressUnion InAddress;
 	char Zero[8];
-};
-
-struct SocketAddress
-{
-	unsigned short Family;
-	char Data[14];
 };
 
 class DSocket
