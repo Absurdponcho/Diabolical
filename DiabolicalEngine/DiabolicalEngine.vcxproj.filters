@@ -81,7 +81,7 @@
     <ClCompile Include="src\ImGui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\IWindow.cpp">
+    <ClCompile Include="src\Networking\Socket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\GUI\TestWindow.cpp">
@@ -167,7 +167,7 @@
     <ClInclude Include="src\ImGui\imstb_truetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\GUI\IWindow.h">
+    <ClInclude Include="src\Networking\Socket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\TestWindow.h">

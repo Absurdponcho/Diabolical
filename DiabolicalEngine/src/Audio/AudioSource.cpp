@@ -2,6 +2,13 @@
 #include <AL/AL.h>
 #include <AL/ALC.h>
 
+/*AudioSource = new DAudioSource();
+{
+	std::shared_ptr<DWAVFile> WavFile = DWAVFile::Load("Assets/Sussy Baka.wav");
+	AudioSource->SetAudioFile(WavFile);
+	AudioSource->Play();
+}*/
+
 DAudioSource::~DAudioSource()
 {
 	LOG("Audio source destroyed");
