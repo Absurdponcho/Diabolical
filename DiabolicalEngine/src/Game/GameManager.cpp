@@ -9,6 +9,7 @@
 #include "../ImGui/imgui.h"
 #include "../ImGui/backends/imgui_impl_opengl3.h"
 #include "../ImGui/backends/imgui_impl_sdl.h"
+#include "../GUI/IWindow.h"
 
 void InitImGui()
 {
@@ -28,9 +29,9 @@ void ImGuiTick()
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::Begin("Demo window");
-	ImGui::Button("Hello!");
-	ImGui::End();
+	for (IWindow* window : IWindow::WindowList) {
+		window->Tick();
+	}
 
 	ImGui::EndFrame();
 	ImGui::Render();
