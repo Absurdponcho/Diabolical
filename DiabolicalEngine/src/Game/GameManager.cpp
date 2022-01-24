@@ -40,15 +40,6 @@ void ImGuiTick()
 DAudioSource* AudioSource;
 void DGameManager::MainGameLoop()
 {
-	//LOGVERBOSE("GameManager::MainGameLoop()", "Main game loop started");
-
-	AudioSource = new DAudioSource();
-	{
-		std::shared_ptr<DWAVFile> WavFile = DWAVFile::Load("Assets/Sussy Baka.wav");
-		AudioSource->SetAudioFile(WavFile);
-		AudioSource->Play();
-	}
-
 	InitImGui();
 
 	// do the first tick before showing the window to prevent icky sticky white window

@@ -4,11 +4,14 @@
 #include "Logging/Logging.h"
 #include "CommandLine/CmdLine.h"
 #include "Check.h"
+#include "Networking/Socket.h"
 
 DGameManager* DEngine::GameManager = nullptr;
 
 void DEngine::Init(int argc, char* argv[])
 {
+	DSocket::InitSockets();
+
 	atexit(AtExit);
 	DCommandLine::Init(argc, argv);
 
