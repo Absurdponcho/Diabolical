@@ -1,18 +1,18 @@
 #pragma once
 #include "../DiabolicalEngine.h"
-
+#include "../DiabolicalTypes.h"
 
 union SocketAddressUnion
 {
 	struct
 	{
-		uint8_t b1, b2, b3, b4;
+		UINT8 b1, b2, b3, b4;
 	} UnionBytes;
 	struct
 	{
-		uint16_t w1, w2;
+		UINT16 w1, w2;
 	} UnionShorts;
-	uint32_t Address;
+	UINT32 Address;
 };
 
 struct SocketAddress
@@ -37,7 +37,7 @@ public:
 
 private:
 #ifdef PLATFORM_WINDOWS
-	uint64_t Socket = 0;
+	UINT64 Socket = 0;
 #endif
 };
 
