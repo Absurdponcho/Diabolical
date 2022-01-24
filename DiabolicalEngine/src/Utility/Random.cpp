@@ -2,7 +2,7 @@
 
 DRand::FastRandom32::FastRandom32()
 {
-    types::UInt32 seed = 1;
+    UInt32 seed = 1;
 
     if (DRand::bAlwaysRandomizeSeed) {
         srand(_time32(nullptr));
@@ -12,42 +12,42 @@ DRand::FastRandom32::FastRandom32()
     rand32.seed(seed);
 }
 
-DRand::FastRandom32::FastRandom32(types::UInt32 seed)
+DRand::FastRandom32::FastRandom32(UInt32 seed)
 {
     rand32.seed(seed);
 }
 
-types::UInt32 DRand::FastRandom32::RandomUInt()
+UInt32 DRand::FastRandom32::RandomUInt()
 {
-    return (types::UInt32) rand32();
+    return (UInt32) rand32();
 }
 
-types::UInt32 DRand::FastRandom32::RandomUInt(types::UInt32 min, types::UInt32 max)
+UInt32 DRand::FastRandom32::RandomUInt(UInt32 min, UInt32 max)
 {
-    return (types::UInt32) rand32() % (max - min) + min;
+    return (UInt32) rand32() % (max - min) + min;
 }
 
-types::Int32 DRand::FastRandom32::RandomInt()
+Int32 DRand::FastRandom32::RandomInt()
 {
-    return (types::Int32) rand32();
+    return (Int32) rand32();
 }
 
-types::Int32 DRand::FastRandom32::RandomInt(types::Int32 min, types::Int32 max)
+Int32 DRand::FastRandom32::RandomInt(Int32 min, Int32 max)
 {
-    return (types::Int32) rand32() % (max - min) + min;
+    return (Int32) rand32() % (max - min) + min;
 }
 
-types::Float32 DRand::FastRandom32::RandomFloat()
+Float32 DRand::FastRandom32::RandomFloat()
 {
     return RandomFloat(0, 1);
 }
 
-types::Float32 DRand::FastRandom32::RandomFloat(types::Float32 min, types::Float32 max)
+Float32 DRand::FastRandom32::RandomFloat(Float32 min, Float32 max)
 {
-    return min + ((max - min) * ((types::Float32) rand32() / (types::Float32)RAND_MAX));
+    return min + ((max - min) * ((Float32) rand32() / (Float32)RAND_MAX));
 }
 
-void DRand::FastRandom32::DiscardRandom(types::UInt32 nTimes)
+void DRand::FastRandom32::DiscardRandom(UInt32 nTimes)
 {
     int q = 0;
     for (auto i = 0u; i < nTimes; i++)
@@ -56,7 +56,7 @@ void DRand::FastRandom32::DiscardRandom(types::UInt32 nTimes)
 
 DRand::MersenneRandom64::MersenneRandom64()
 {
-    types::UInt64 seed = rand64.default_seed;
+    UInt64 seed = rand64.default_seed;
 
     if (DRand::bAlwaysRandomizeSeed) {
         srand(_time32(nullptr));
@@ -66,42 +66,42 @@ DRand::MersenneRandom64::MersenneRandom64()
     rand64.seed(seed);
 }
 
-DRand::MersenneRandom64::MersenneRandom64(types::UInt64 seed)
+DRand::MersenneRandom64::MersenneRandom64(UInt64 seed)
 {
     rand64.seed(seed);
 }
 
-types::UInt64 DRand::MersenneRandom64::RandomUInt()
+UInt64 DRand::MersenneRandom64::RandomUInt()
 {
-    return (types::UInt64) rand64();
+    return (UInt64) rand64();
 }
 
-types::UInt64 DRand::MersenneRandom64::RandomUInt(types::UInt64 min, types::UInt64 max)
+UInt64 DRand::MersenneRandom64::RandomUInt(UInt64 min, UInt64 max)
 {
-    return (types::UInt64) rand64() % (max - min) + min;
+    return (UInt64) rand64() % (max - min) + min;
 }
 
-types::Int64 DRand::MersenneRandom64::RandomInt()
+Int64 DRand::MersenneRandom64::RandomInt()
 {
-    return (types::Int64) rand64();
+    return (Int64) rand64();
 }
 
-types::Int64 DRand::MersenneRandom64::RandomInt(types::Int64 min, types::Int64 max)
+Int64 DRand::MersenneRandom64::RandomInt(Int64 min, Int64 max)
 {
-    return (types::Int64) rand64() % (max - min) + min;
+    return (Int64) rand64() % (max - min) + min;
 }
 
-types::Float64 DRand::MersenneRandom64::RandomFloat()
+Float64 DRand::MersenneRandom64::RandomFloat()
 {
     return RandomFloat(0, 1);
 }
 
-types::Float64 DRand::MersenneRandom64::RandomFloat(types::Float64 min, types::Float64 max)
+Float64 DRand::MersenneRandom64::RandomFloat(Float64 min, Float64 max)
 {
-    return min + ((max - min) * ((types::Float64)rand64() / (types::Float64)RAND_MAX));
+    return min + ((max - min) * ((Float64)rand64() / (Float64)RAND_MAX));
 }
 
-void DRand::MersenneRandom64::DiscardRandom(types::UInt64 nTimes)
+void DRand::MersenneRandom64::DiscardRandom(UInt64 nTimes)
 {
     {
         int q = 0;

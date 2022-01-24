@@ -8,36 +8,36 @@ namespace DRand
 	class FastRandom32
 	{
 		FastRandom32();
-		FastRandom32(types::UInt32 seed);
+		FastRandom32(UInt32 seed);
 
-		types::UInt32 RandomUInt();
-		types::UInt32 RandomUInt(types::UInt32 min, types::UInt32 max);
+		UInt32 RandomUInt();
+		UInt32 RandomUInt(UInt32 min, UInt32 max);
 
-		types::Int32 RandomInt();
-		types::Int32 RandomInt(types::Int32 min, types::Int32 max);
+		Int32 RandomInt();
+		Int32 RandomInt(Int32 min, Int32 max);
 
-		types::Float32 RandomFloat();
-		types::Float32 RandomFloat(types::Float32 min, types::Float32 max);
+		Float32 RandomFloat();
+		Float32 RandomFloat(Float32 min, Float32 max);
 
-		void DiscardRandom(types::UInt32 nTimes);
+		void DiscardRandom(UInt32 nTimes);
 		std::minstd_rand rand32;
 	};
 
 	class MersenneRandom64
 	{
 		MersenneRandom64();
-		MersenneRandom64(types::UInt64 seed);
+		MersenneRandom64(UInt64 seed);
 
-		types::UInt64 RandomUInt();
-		types::UInt64 RandomUInt(types::UInt64 min, types::UInt64 max);
+		UInt64 RandomUInt();
+		UInt64 RandomUInt(UInt64 min, UInt64 max);
 
-		types::Int64 RandomInt();
-		types::Int64 RandomInt(types::Int64 min, types::Int64 max);
+		Int64 RandomInt();
+		Int64 RandomInt(Int64 min, Int64 max);
 
-		types::Float64 RandomFloat();
-		types::Float64 RandomFloat(types::Float64 min, types::Float64 max);
+		Float64 RandomFloat();
+		Float64 RandomFloat(Float64 min, Float64 max);
 
-		void DiscardRandom(types::UInt64 nTimes);
+		void DiscardRandom(UInt64 nTimes);
 		std::mt19937_64 rand64;
 	};
 };
