@@ -24,7 +24,7 @@ UInt32 FastRandom32::RandomUInt()
 
 UInt32 FastRandom32::RandomUInt(UInt32 min, UInt32 max)
 {
-    return (UInt32) rand32() % (max - min) + min;
+    return (UInt32) rand32() % ((max - min)+1) + min;
 }
 
 Int32 FastRandom32::RandomInt()
@@ -34,7 +34,7 @@ Int32 FastRandom32::RandomInt()
 
 Int32 FastRandom32::RandomInt(Int32 min, Int32 max)
 {
-    return (Int32) rand32() % (max - min) + min;
+    return (Int32) rand32() % ((max - min)+1) + min;
 }
 
 Float32 FastRandom32::RandomFloat()
@@ -78,7 +78,7 @@ UInt64 MersenneRandom64::RandomUInt()
 
 UInt64 MersenneRandom64::RandomUInt(UInt64 min, UInt64 max)
 {
-    return (UInt64) rand64() % (max - min) + min;
+    return (UInt64) rand64() % ((max - min) + 1) + min;
 }
 
 Int64 MersenneRandom64::RandomInt()
@@ -88,7 +88,7 @@ Int64 MersenneRandom64::RandomInt()
 
 Int64 MersenneRandom64::RandomInt(Int64 min, Int64 max)
 {
-    return (Int64) rand64() % (max - min) + min;
+    return (Int64) rand64() % ((max - min) + 1) + min;
 }
 
 Float64 MersenneRandom64::RandomFloat()
