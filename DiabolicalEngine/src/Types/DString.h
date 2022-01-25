@@ -10,7 +10,7 @@ class DString : private std::string
 {
 public:
 	using std::string::string;
-	using std::string::c_str;
+
 
 	DString(int Val)
 	{

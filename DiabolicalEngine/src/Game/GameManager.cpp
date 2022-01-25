@@ -16,8 +16,8 @@ void InitImGui()
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	//ImGuiIO& io = ImGui::GetIO();
-
+	ImGuiIO& io = ImGui::GetIO();
+	
 	ImGui_ImplOpenGL3_Init("#version 330");
 	ImGui_ImplSDL2_InitForOpenGL(DWindowManager::GetSDLWindow(), DWindowManager::GetGLContext());
 	

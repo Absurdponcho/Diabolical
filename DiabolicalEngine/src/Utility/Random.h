@@ -38,4 +38,4 @@ class MersenneRandom64
 	void DiscardRandom(UInt64 nTimes);
 	std::mt19937_64 rand64;
 };
-};
+
