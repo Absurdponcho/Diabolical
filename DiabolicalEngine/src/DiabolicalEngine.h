@@ -15,6 +15,8 @@ public:
 	static void Init(int argc, char *argv[]);
 	static void Run();
 	static void AtExit();
+
+	static void RunAllTests();
 private:
 	static class DGameManager* GameManager;
 };

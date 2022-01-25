@@ -28,6 +28,8 @@ class DSocket
 public:
 	static void NetworkTest();
 	static void InitSockets();
+	void SetRecieveTimeoutMillis(uint32_t Millis);
+	void SetSendTimeoutMillis(uint32_t Millis);
 	bool CreateTCP();
 	bool CreateUDP();
 	bool Connect(DString Address, int Port);

@@ -1,5 +1,7 @@
 #include "WindowManager.h"
 #include <gl/glew.h>
+#include "../Logging/Logging.h"
+#include "../DiabolicalEngine.h"
 
 #ifdef PLATFORM_WINDOWS
 #include <Windows.h>
@@ -16,15 +18,15 @@ DWindowManager::DWindowManager(const char* title, int x, int y, int w, int h, Ui
 	FixWindowsHighDPIScaling();
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-		//LOGERROR("WindowManager::WindowManager()", "SDL_Init() failed!");
+		LOG_ERR("SDL_Init() failed!");
 		bWindowValid = false;
 	}
-	//LOG("WindowManager::WindowManager()", "SDL_Init() success");
+	LOG("SDL_Init() success");
 
 	GameWindow = SDL_CreateWindow(title, x, y, w, h, flags | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
 	GameGLContext = SDL_GL_CreateContext(GameWindow);
 	if (!GameGLContext) {
-		//LOGERROR("WindowManager::WindowManager()", "SDL_Init() failed!");
+		LOG_ERR("SDL_Init() failed!");
 		bWindowValid = false;
 	}
 	glewInit();
@@ -37,7 +39,7 @@ void DWindowManager::Initialize(const char* WindowTitle, int x, int y, int w, in
 {
 	static bool bInitialized = false;
 
-	assert(!bInitialized);
+	Check(!bInitialized);
 	bInitialized = true;
 	Singleton = new DWindowManager(WindowTitle, x, y, w, h, WindowFlags);
 }
@@ -91,13 +93,13 @@ DWindowManager::~DWindowManager()
 
 SDL_Window* DWindowManager::GetSDLWindow()
 {
-	assert(GameWindow);
+	Check(GameWindow);
 	return GameWindow;
 }
 
 SDL_GLContext DWindowManager::GetGLContext()
 {
-	assert(GameGLContext);
+	Check(GameGLContext);
 	return GameGLContext;
 }
 
@@ -138,7 +140,7 @@ glm::vec3 DWindowManager::ScreenSpaceToPixelCoord(const glm::vec2& ScreenSpace)
 
 DWindowManager& DWindowManager::Get()
 {
-	assert(Singleton);
+	Check(Singleton);
 	return *Singleton;
 }
 

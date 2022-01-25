@@ -4,7 +4,9 @@
 #include "Logging/Logging.h"
 #include "CommandLine/CmdLine.h"
 #include "Check.h"
-#include "Networking/Socket.h"
+#include "Networking/Socket.h" 
+#include "Thread/Thread.h"
+#include "Thread/GameThread.h"
 
 DGameManager* DEngine::GameManager = nullptr;
 
@@ -18,7 +20,7 @@ void DEngine::Init(int argc, char* argv[])
 	GameManager = new DGameManager();
 	DWindowManager::Initialize("Diabolical", 128, 128, 800, 600, SDL_WINDOW_HIDDEN);
 
-	DSocket::NetworkTest();
+	RunAllTests();
 }
 
 void DEngine::Run()
@@ -30,4 +32,15 @@ void DEngine::Run()
 void DEngine::AtExit()
 {
 	Logging::CloseLogFile();
+}
+
+void DEngine::RunAllTests()
+{
+	LOG("==================== Testing Threads ====================");
+	DThread::TestThreadFunctions();
+	LOG("==================== Threads Complete ===================");
+
+	LOG("==================== Testing Sockets ====================");
+	DSocket::NetworkTest();
+	LOG("==================== Sockets Complete ===================");
 }

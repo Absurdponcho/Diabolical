@@ -11,6 +11,7 @@
 #include <windows.h>
 #endif
 
+DMutexHandle Mutex;
 uint8_t LogColor = 15;
 std::ofstream LogFile;
 
@@ -27,6 +28,7 @@ void Logging::SetLogColor(uint8_t Color)
 
 void Logging::LogPlain(DString String, int Color)
 {
+	DScopedMutex ScopedMutex(Mutex);
 	LogFile.write(*String, String.Length());
 
 	SetLogColor(Color);
@@ -51,6 +53,7 @@ void Logging::LogString(DString Prefix, DString Func, int Line, DString String, 
 
 	FilePath.Replace(':','-');
 
+	DScopedMutex ScopedMutex(Mutex);
 	if (!LogFile.is_open())
 	{
 		if (!diabolical::FileCreate(FilePath, LogFile))
@@ -70,6 +73,7 @@ void Logging::LogString(DString Prefix, DString Func, int Line, DString String, 
 
 void Logging::CloseLogFile()
 {
+	DScopedMutex ScopedMutex(Mutex);
 	if (LogFile.is_open())
 	{
 		LogFile.flush();

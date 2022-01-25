@@ -15,6 +15,7 @@ int DSocket::Close()
 	Status = shutdown(Socket, SD_BOTH);
 	if (Status == 0) { Status = closesocket(Socket); }
 #endif
+	Socket = 0;
 	return Status;
 }
 
@@ -49,6 +50,21 @@ bool DSocket::Connect(DString Address, int Port)
 #ifdef PLATFORM_WINDOWS
 	SocketAddress Server;
 	Server.InAddress.Address = inet_addr(*Address);
+	if (Server.InAddress.Address == INADDR_NONE)
+	{
+		struct hostent* remoteHost = gethostbyname(*Address);
+		if (!remoteHost) 
+		{
+			LOG_ERR(DString::Format("Could not resolve remote host (%s)", *Address));
+			return false;
+		}
+		if (remoteHost->h_addrtype != AF_INET)
+		{
+			LOG_ERR(DString::Format("Tried to connect to remote host (%s) which is non-IPv4", *Address));
+			return false;
+		}
+		Server.InAddress.Address = *(uint32_t*) remoteHost->h_addr_list[0];
+	}
 	Server.Family = AF_INET;
 	Server.Port = htons(Port);
 
@@ -103,26 +119,41 @@ bool DSocket::Receive(char* Buffer, int BufferLength, int& RecievedBytes)
 	return false;
 }
 
+void DSocket::SetRecieveTimeoutMillis(uint32_t Millis)
+{
+	setsockopt(Socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&Millis,sizeof(int));
+}
+
+void DSocket::SetSendTimeoutMillis(uint32_t Millis)
+{
+	setsockopt(Socket, SOL_SOCKET, SO_SNDTIMEO, (char*)&Millis, sizeof(int));
+}
+
 void DSocket::NetworkTest()
 {
 	DSocket Socket;
 	Socket.CreateTCP();
-	if (Socket.Connect("142.250.70.174", 80))
+	Socket.SetRecieveTimeoutMillis(1000);
+	if (Socket.Connect("www.google.com", 80))
 	{
-		LOG("Successfully connected to your mum");
+		LOG("Successfully connected to www.google.com");
 	}
 	else
 	{
-		LOG("Failed to connect to your mum");
+		LOG("Failed to connect to www.google.com");
+		return;
 	}
 	const char* Message = "GET / HTTP/1.1\r\n\r\n";
 	Socket.Send(Message, (int)strlen(Message));
 	char Response[4096];
-	int ReceivedBytes = 0;
-	if (Socket.Receive(Response, 4095, ReceivedBytes))
+	int ReceivedBytes = 1;
+
+	while (ReceivedBytes > 0)
 	{
-		Response[ReceivedBytes] = 0;
-		LOG(Response);
+		if (Socket.Receive(Response, 4096, ReceivedBytes))
+		{
+			LOG(DString::Format("Recieved response of size %i", ReceivedBytes));
+		}
 	}
 
 	Socket.Close();

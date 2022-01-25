@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Thread\ScopedMutex.cpp" />
+    <ClCompile Include="src\Thread\GameThread.cpp" />
     <ClCompile Include="src\Networking\Socket.cpp" />
     <ClCompile Include="src\Audio\AudioSource.cpp" />
     <ClCompile Include="src\Check.cpp" />
@@ -43,8 +45,11 @@
     <ClCompile Include="src\Graphics\WindowManager.cpp" />
     <ClCompile Include="src\Logging\Logging.cpp" />
     <ClCompile Include="src\Audio\WavFile.cpp" />
+    <ClCompile Include="src\Thread\Thread.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Thread\ScopedMutex.h" />
+    <ClInclude Include="src\Thread\GameThread.h" />
     <ClInclude Include="src\Networking\Socket.h" />
     <ClInclude Include="src\GUI\TestWindow.h" />
     <ClInclude Include="src\ImGui\backends\imgui_impl_sdl.h" />
@@ -73,6 +78,7 @@
     <ClInclude Include="src\Logging\Logging.h" />
     <ClInclude Include="src\Types\DString.h" />
     <ClInclude Include="src\Audio\WavFile.h" />
+    <ClInclude Include="src\Thread\Thread.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

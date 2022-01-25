@@ -11,6 +11,8 @@
 #include "../ImGui/backends/imgui_impl_sdl.h"
 #include "../GUI/IWindow.h"
 #include "../GUI/TestWindow.h"
+#include "../Thread/GameThread.h"
+#include "../Thread/Thread.h"
 
 void InitImGui()
 {
@@ -72,7 +74,8 @@ void DGameManager::MainGameLoop()
 
 		SDL_GL_SwapWindow(DWindowManager::GetSDLWindow());
 
-
+		DThread::CheckManagedThreads();
+		DGameThread::RunInvokedFunctions();
 	}
 }
 
