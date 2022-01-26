@@ -35,6 +35,8 @@ void DDevConsole::Draw()
 		ImGui::BeginChildFrame(FrameId++, {(float)DWindowManager::Get().GetScreenSize().x, Height - 40});
 		{
 			ImGui::Text(*Logging::GetLogRecap());
+
+			ImGui::SetScrollHereY(1);
 		}
 		ImGui::EndChildFrame();
 
