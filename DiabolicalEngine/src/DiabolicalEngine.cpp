@@ -31,6 +31,7 @@ void DEngine::Run()
 
 void DEngine::AtExit()
 {
+	LOG("Exiting");
 	Logging::CloseLogFile();
 }
 
