@@ -104,6 +104,65 @@ int DGameManager::GetGameFPS()
 	return (int)0;
 }
 
+void HandleSDLDown(SDL_Event& Event)
+{
+	if (ImGui::GetIO().WantTextInput)
+	{
+		ImGui::GetIO().KeysDown[Event.key.keysym.scancode] = true;
+
+		if (Event.key.keysym.scancode == SDL_SCANCODE_LSHIFT ||
+			Event.key.keysym.scancode == SDL_SCANCODE_RSHIFT)
+		{
+			ImGui::GetIO().KeyShift = true;
+		}
+
+		if (Event.key.keysym.scancode == SDL_SCANCODE_LCTRL ||
+			Event.key.keysym.scancode == SDL_SCANCODE_RCTRL)
+		{
+			ImGui::GetIO().KeyCtrl = true;
+		}
+
+		if (Event.key.keysym.scancode == SDL_SCANCODE_LALT ||
+			Event.key.keysym.scancode == SDL_SCANCODE_RALT)
+		{
+			ImGui::GetIO().KeyAlt = true;
+		}
+	}
+	else
+	{
+		if (Event.key.keysym.scancode == SDL_SCANCODE_GRAVE)
+		{
+			if (DevConsole.get())
+			{
+				DevConsole->Toggle();
+			}
+		}
+	}
+}
+
+void HandleSDLUp(SDL_Event& Event)
+{
+	ImGui::GetIO().KeysDown[Event.key.keysym.scancode] = false;
+
+	if (Event.key.keysym.scancode == SDL_SCANCODE_LSHIFT ||
+		Event.key.keysym.scancode == SDL_SCANCODE_RSHIFT)
+	{
+		ImGui::GetIO().KeyShift = false;
+	}
+
+	if (Event.key.keysym.scancode == SDL_SCANCODE_LCTRL ||
+		Event.key.keysym.scancode == SDL_SCANCODE_RCTRL)
+	{
+		ImGui::GetIO().KeyCtrl = false;
+	}
+
+	if (Event.key.keysym.scancode == SDL_SCANCODE_LALT ||
+		Event.key.keysym.scancode == SDL_SCANCODE_RALT)
+	{
+		ImGui::GetIO().KeyAlt = false;
+	}
+}
+
 void DGameManager::EventTick()
 {
 	SDL_Event Event;
@@ -112,85 +171,28 @@ void DGameManager::EventTick()
 		switch (Event.type) {
 
 		case SDL_KEYDOWN:
-		if (ImGui::GetIO().WantTextInput)
-		{
-			ImGui::GetIO().KeysDown[Event.key.keysym.scancode] = true;
-
-			if (Event.key.keysym.scancode == SDL_SCANCODE_LSHIFT || 
-				Event.key.keysym.scancode == SDL_SCANCODE_RSHIFT)
-			{
-				ImGui::GetIO().KeyShift = true;
-			}
-
-			if (Event.key.keysym.scancode == SDL_SCANCODE_LCTRL ||
-				Event.key.keysym.scancode == SDL_SCANCODE_RCTRL)
-			{
-				ImGui::GetIO().KeyCtrl = true;
-			}
-
-			if (Event.key.keysym.scancode == SDL_SCANCODE_LALT ||
-				Event.key.keysym.scancode == SDL_SCANCODE_RALT)
-			{
-				ImGui::GetIO().KeyAlt = true;
-			}
-		}
-		else
-		{
-			if (Event.key.keysym.scancode == SDL_SCANCODE_GRAVE)
-			{
-				if (DevConsole.get())
-				{
-					DevConsole->Toggle();
-				}
-			}
-		}
-		
+			HandleSDLDown(Event);
 			break;
 		case SDL_KEYUP:
-			ImGui::GetIO().KeysDown[Event.key.keysym.scancode] = false;
-
-			if (Event.key.keysym.scancode == SDL_SCANCODE_LSHIFT ||
-				Event.key.keysym.scancode == SDL_SCANCODE_RSHIFT)
-			{
-				ImGui::GetIO().KeyShift = false;
-			}
-
-			if (Event.key.keysym.scancode == SDL_SCANCODE_LCTRL ||
-				Event.key.keysym.scancode == SDL_SCANCODE_RCTRL)
-			{
-				ImGui::GetIO().KeyCtrl = false;
-			}
-
-			if (Event.key.keysym.scancode == SDL_SCANCODE_LALT ||
-				Event.key.keysym.scancode == SDL_SCANCODE_RALT)
-			{
-				ImGui::GetIO().KeyAlt = false;
-			}
-
+			HandleSDLUp(Event);
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
-
 			break;
 		case SDL_MOUSEWHEEL:
-			//InputManager::HandleMouseWheelEvent(Event.wheel);
 			break;
-
 		case SDL_QUIT:
 			bMainLoopRunning = false;
 			break;
-
 		case SDL_WINDOWEVENT: // screen resize thing
 			if (Event.window.event != SDL_WINDOWEVENT_SIZE_CHANGED) break;
-			
 			glViewport(0, 0, DWindowManager::Get().GetScreenSize().x, DWindowManager::Get().GetScreenSize().y);
 			break;
-
 		case SDL_TEXTINPUT:
-		if (ImGui::GetIO().WantTextInput)
-		{
-			ImGui::GetIO().AddInputCharactersUTF8(Event.text.text);
-		}
+			if (ImGui::GetIO().WantTextInput)
+			{
+				ImGui::GetIO().AddInputCharactersUTF8(Event.text.text);
+			}
 		default:
 			break;
 		}
