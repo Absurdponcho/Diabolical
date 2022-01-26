@@ -1,3 +1,3 @@
-"../ArchiveTool/pack.py" GameAssetFiles/**/*.* GameAssetFiles.arc GameAssetFiles/
-"../ArchiveTool/pack.py" ../GameEngine/EngineAssetFiles/**/*.* EngineAssetFiles.arc ../GameEngine/EngineAssetFiles/
+"../ArchiveTool/pack.py" Assets/**/*.* Assets.arc Assets/
+"../ArchiveTool/pack.py" ../DiabolicalEngine/Assets/**/*.* Assets.arc ../DiabolicalEngine/Assets/
 pause
