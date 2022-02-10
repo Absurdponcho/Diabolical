@@ -12,6 +12,8 @@ public:
 	virtual bool IsShown();
 	virtual bool Enable();
 	virtual bool Disable();
+	virtual void Toggle();
+
 	static std::vector<IWindow*> WindowList;
 private:
 	size_t WindowID;

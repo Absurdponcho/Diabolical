@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\GUI\DevConsole\DevConsole.cpp" />
+    <ClCompile Include="src\ImGui\imgui_stdlib.cpp" />
     <ClCompile Include="src\Thread\ScopedMutex.cpp" />
     <ClCompile Include="src\Thread\GameThread.cpp" />
     <ClCompile Include="src\Networking\Socket.cpp" />
@@ -48,6 +50,8 @@
     <ClCompile Include="src\Thread\Thread.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\GUI\DevConsole\DevConsole.h" />
+    <ClInclude Include="src\ImGui\imgui_stdlib.h" />
     <ClInclude Include="src\Thread\ScopedMutex.h" />
     <ClInclude Include="src\Thread\GameThread.h" />
     <ClInclude Include="src\Networking\Socket.h" />

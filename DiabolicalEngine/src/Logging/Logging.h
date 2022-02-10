@@ -13,5 +13,5 @@ namespace Logging
 	void LogString(DString Prefix, DString Func, int Line, DString String, int Color);
 	void LogPlain(DString String, int Color);
 	void CloseLogFile();
-
+	const DString& GetLogRecap();
 }

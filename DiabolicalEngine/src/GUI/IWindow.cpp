@@ -3,7 +3,6 @@ std::vector<IWindow*> IWindow::WindowList;
 
 IWindow::IWindow()
 {
-    bEnabled = true;
     static size_t WindowIDCount = 0;
     WindowID = WindowIDCount++;
     IWindow::WindowList.push_back(this);
@@ -46,4 +45,10 @@ bool IWindow::Disable()
 {
     bEnabled = false;
     return false;
+}
+
+void IWindow::Toggle()
+{
+    if (bEnabled) Disable();
+    else Enable();
 }

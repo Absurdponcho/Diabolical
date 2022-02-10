@@ -28,7 +28,7 @@ void DEngine::Init(int argc, char* argv[])
 	GameManager = new DGameManager();
 	DWindowManager::Initialize("Diabolical", 128, 128, 800, 600, SDL_WINDOW_HIDDEN);
 
-	RunAllTests();
+	//RunAllTests();
 }
 
 void DEngine::Run()

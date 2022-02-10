@@ -14,6 +14,7 @@
 DMutexHandle Mutex;
 uint8_t LogColor = 15;
 std::ofstream LogFile;
+DString LogRecap = "";
 
 void Logging::SetLogColor(uint8_t Color)
 {
@@ -30,6 +31,7 @@ void Logging::LogPlain(DString String, int Color)
 {
 	DScopedMutex ScopedMutex(Mutex);
 	LogFile.write(*String, String.Length());
+	LogRecap.Append(String);
 
 	SetLogColor(Color);
 	std::cout << String;
@@ -65,6 +67,7 @@ void Logging::LogString(DString Prefix, DString Func, int Line, DString String, 
 	}
 	
 	LogFile.write(*LogStr, LogStr.Length());
+	LogRecap.Append(LogStr);
 
 	SetLogColor(Color);
 	std::cout << LogStr;
@@ -80,4 +83,9 @@ void Logging::CloseLogFile()
 		LogFile.flush();
 		LogFile.close();
 	}
+}
+
+const DString& Logging::GetLogRecap()
+{
+	return LogRecap;
 }

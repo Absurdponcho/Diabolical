@@ -6,6 +6,6 @@ class TestWindow :
 public:
     TestWindow();
     void Draw() override;
-    static unsigned int Tex;
+    uint32_t Tex = 0;
 };
 
