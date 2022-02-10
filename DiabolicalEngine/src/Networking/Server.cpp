@@ -57,10 +57,13 @@ void DServer::TCPRun()
 		}
 		else
 		{
-			DSocket NewConnection;
-			if (TCPSocket->AcceptConnection(NewConnection))
+			std::unique_ptr<DSocket> NewConnection;
+			DString IncomingIP = "";
+			if (TCPSocket->AcceptConnection(NewConnection, &IncomingIP))
 			{
-				LOG(DString::Format("Connection Accepted"));
+
+				ClientConnections.push_back(std::make_unique<DTCPConnection>(NewConnection, IncomingIP));
+				OnConnection.Invoke(ClientConnections[ClientConnections.size() - 1].get());
 			}
 		}
 	}

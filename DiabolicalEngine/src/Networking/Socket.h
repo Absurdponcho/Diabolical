@@ -34,6 +34,8 @@ public:
 	DSocket(uint64_t EstablishedConnection) : Socket(EstablishedConnection) {}
 #endif
 
+	virtual ~DSocket() { Close(); }
+
 	void SetRecieveTimeoutMillis(uint32_t Millis);
 	void SetSendTimeoutMillis(uint32_t Millis);
 	bool CreateTCP();
@@ -44,7 +46,7 @@ public:
 	bool Receive(char* Buffer, int BufferLength, int& RecievedBytes);
 	bool StartListening();
 	bool Bind(DString LocalAddress, int Port);
-	bool AcceptConnection(DSocket& NewSocket);
+	bool AcceptConnection(std::unique_ptr<DSocket>& NewSocket, DString* IncomingAddress = nullptr);
 
 private:
 

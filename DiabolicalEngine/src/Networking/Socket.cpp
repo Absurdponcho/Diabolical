@@ -10,6 +10,7 @@
 
 int DSocket::Close()
 {
+	LOG("Socket closed");
 	int Status = 0;
 #ifdef PLATFORM_WINDOWS
 	Status = shutdown(Socket, SD_BOTH);
@@ -205,17 +206,28 @@ bool DSocket::Bind(DString LocalAddress, int Port)
 	return false;
 }
 
-bool DSocket::AcceptConnection(DSocket& NewSocket)
+bool DSocket::AcceptConnection(std::unique_ptr<DSocket>& NewSocket, DString* IncomingAddress)
 {
 #ifdef PLATFORM_WINDOWS
-	uint64_t NewConnection = accept(Socket, nullptr, nullptr);
+	SocketAddress SAddress;
+	int AddrSize = sizeof(SAddress);
+	uint64_t NewConnection = accept(Socket, (struct sockaddr *)&SAddress, &AddrSize);
 
 	if (NewConnection == INVALID_SOCKET)
 	{
 		return false;
 	}
 
-	NewSocket = DSocket(NewConnection);
+	NewSocket = std::make_unique<DSocket>(NewConnection);
+
+	if (IncomingAddress)
+	{
+		char *ip = inet_ntoa(*(in_addr*)&SAddress.InAddress);
+		if (ip)
+		{
+			*IncomingAddress = DString(ip);
+		}
+	}
 
 	return true;
 #endif

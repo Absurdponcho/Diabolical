@@ -1,6 +1,8 @@
 #pragma once
 #include "../Thread/Thread.h"
 #include "../Thread/GameThread.h"
+#include "Socket.h"
+#include "TCPConnection.h"
 
 class DSocket;
 
@@ -12,7 +14,12 @@ public:
 
 	void AsyncListen(const DString& LocalAddress, int Port);
 
+	// Callback on non-game thread
+	DAction<DTCPConnection*> OnConnection; // DSocket = new socket, DString = incoming IP
+
 protected:
+	std::vector<std::unique_ptr<class DTCPConnection>> ClientConnections;
+
 	void TCPRun();
 
 	bool bMustClose = false;
@@ -25,4 +32,3 @@ protected:
 	std::unique_ptr<DSocket> TCPSocket;
 	std::unique_ptr<DThread> TCPThread;
 };
-

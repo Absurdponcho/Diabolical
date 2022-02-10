@@ -15,6 +15,7 @@ public:
 	DAction<bool> OnConnect; // bool = success
 
 protected:
+	std::unique_ptr<class DTCPConnection> TCPConnection;
 	void TCPRun();
 
 	bool bMustClose = false;

@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "Socket.h"
 #include "../Check.h"
+#include "TCPConnection.h"
 
 DClient::DClient()
 	:	TCPSocket(std::make_unique<DSocket>()),
@@ -30,34 +31,30 @@ void DClient::AsyncConnect(const DString& Address, int Port)
 
 void DClient::TCPRun()
 {
-	while (!bMustClose)
+
+	if (!bIsConnected)
 	{
+		if (bPendingConnect)
+		{
+			if (TCPSocket->Connect(PendingAddress, PendingPort))
+			{
+				bPendingConnect = false;
+				bIsConnected = true;
+				TCPConnection = std::make_unique<DTCPConnection>(TCPSocket, PendingAddress);
+				OnConnect.Invoke(true);
+			}
+			else
+			{
+				bPendingConnect = false;
+				OnConnect.Invoke(false);
+			}
+		}
+
 		if (!bIsConnected)
 		{
-			if (bPendingConnect)
-			{
-				if (TCPSocket->Connect(PendingAddress, PendingPort))
-				{
-					bPendingConnect = false;
-					bIsConnected = true;
-					OnConnect.Invoke(true);
-				}
-				else
-				{
-					bPendingConnect = false;
-					OnConnect.Invoke(false);
-				}
-			}
-
-			if (!bIsConnected)
-			{
-				// wait for connection
-				DThread::Sleep(100);
-			}
-		}
-		else
-		{
-
+			// wait for connection
+			DThread::Sleep(100);
 		}
 	}
+	
 }

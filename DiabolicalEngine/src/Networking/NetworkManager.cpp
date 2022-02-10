@@ -45,6 +45,16 @@ void DNetworkManager::TryListen(const DString& ListenString)
 	LOG(DString::Format("Hosting %s", *ListenString));
 	if (DServer* NewServer = StartServer())
 	{
+		NewServer->OnConnection = DAction<DTCPConnection*>([](DTCPConnection* Connection)
+		{
+			Check(Connection);
+			LOG(DString::Format("Connection recieved from %s", *(Connection->GetIP())));
+
+			std::unique_ptr<NetBuffer> Buffer = std::make_unique<NetBuffer>(128);
+			const char* TestMessage = "Test Network Message";
+			strcpy_s(Buffer->Buffer, 21, TestMessage);
+			Connection->QueueTCPSendBuffer(Buffer);
+		});
 		NewServer->AsyncListen(IP, Port);
 	}
 
