@@ -7,6 +7,7 @@
 #include "Networking/Socket.h" 
 #include "Thread/Thread.h"
 #include "Thread/GameThread.h"
+#include "Networking/NetworkManager.h"
 
 #ifdef PLATFORM_WINDOWS
 #include <Windows.h>
@@ -20,10 +21,11 @@ void DEngine::Init(int argc, char* argv[])
 #ifdef PLATFORM_WINDOWS
     SetUnhandledExceptionFilter(MinidumpExceptionFilter);
 #endif
-	DSocket::InitSockets();
-
 	atexit(AtExit);
+
 	DCommandLine::Init(argc, argv);
+	DSocket::InitSockets();
+	DNetworkManager::Initialize();
 
 	GameManager = new DGameManager();
 	DWindowManager::Initialize("Diabolical", 128, 128, 800, 600, SDL_WINDOW_HIDDEN);

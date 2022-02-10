@@ -10,7 +10,7 @@ DCommandLine::DCommandLine(int argc, char* argv[])
 		Arguments.push_back(DString(argv[Index]));
 	}
 
-	for (const DString& String : GetArguments())
+	for (const DString& String : Arguments)
 	{
 		int Index = String.FindFirst("=");
 		if (Index == -1) continue;
@@ -20,19 +20,31 @@ DCommandLine::DCommandLine(int argc, char* argv[])
 	}
 }
 
-const std::vector<DString>& DCommandLine::GetArguments() const
+const bool DCommandLine::HasArgument(const DString& Argument)
 {
-	return Arguments;
+	for (const DString& String : Get().GetArguments())
+	{
+		if (String == Argument)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
-const std::vector<std::tuple<DString, DString>>& DCommandLine::GetKeyValuePairs() const
+const std::vector<DString>& DCommandLine::GetArguments()
 {
-	return KeyValuePairs;
+	return Get().Arguments;
 }
 
-const DString* DCommandLine::GetValue(const DString& Key) const
+const std::vector<std::tuple<DString, DString>>& DCommandLine::GetKeyValuePairs()
 {
-	for (auto& Tuple : GetKeyValuePairs())
+	return Get().KeyValuePairs;
+}
+
+const DString* DCommandLine::GetValue(const DString& Key)
+{
+	for (auto& Tuple : Get().GetKeyValuePairs())
 	{
 		if (std::get<0>(Tuple).Equals(Key))
 		{
@@ -48,7 +60,7 @@ void DCommandLine::Init(int argc, char* argv[])
 	CommandLine = new DCommandLine(argc, argv);
 }
 
-DCommandLine& DCommandLine::Get()
+const DCommandLine& DCommandLine::Get()
 {
 	Check(CommandLine);
 	return *CommandLine;

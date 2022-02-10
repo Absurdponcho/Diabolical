@@ -6,6 +6,19 @@
 #include "../Check.h"
 #include <algorithm>
 
+#include <limits>
+#include <stdint.h>
+
+
+template <typename T, typename U>
+bool CanTypeFitValue(const U value) {
+	constexpr intmax_t botT = intmax_t(std::numeric_limits<T>::min());
+	constexpr intmax_t botU = intmax_t(std::numeric_limits<U>::min());
+	constexpr uintmax_t topT = uintmax_t(std::numeric_limits<T>::max());
+	constexpr uintmax_t topU = uintmax_t(std::numeric_limits<U>::max());
+	return !((botT > botU && value < static_cast<U> (botT)) || (topT < topU&& value > static_cast<U> (topT)));
+}
+
 class DString : private std::string
 {
 public:
@@ -15,6 +28,64 @@ public:
 	DString(int Val)
 	{
 		Append(DString(std::to_string(Val)));
+	}
+
+	inline const bool TryParseLong(long& Value) const
+	{
+		char* end;
+		long NewValue = strtol(**this, &end, 10);
+		if (end == **this || *end != '\0' || errno == ERANGE)
+		{
+			return false;
+		}
+
+		Value = NewValue;
+		return true;
+	}
+
+	inline const bool TryParseInt(int& Value) const
+	{
+		long TestValue = 0;
+		if (TryParseLong(TestValue))
+		{
+			if (CanTypeFitValue<int>(TestValue))
+			{
+				Value = (int)TestValue;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	inline const bool TryParseShort(short& Value) const
+	{
+		long TestValue = 0;
+		if (TryParseLong(TestValue))
+		{
+			if (CanTypeFitValue<short>(TestValue))
+			{
+				Value = (short)TestValue;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	inline const bool TryParseByte(char& Value) const
+	{
+		long TestValue = 0;
+		if (TryParseLong(TestValue))
+		{
+			if (CanTypeFitValue<char>(TestValue))
+			{
+				Value = (char)TestValue;
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	inline const int FindFirst(const DString& String) const
@@ -79,6 +150,16 @@ public:
 	{
 		append(Other);	
 		return *this;
+	}
+
+	inline friend bool operator==(const DString& LHS, const DString& RHS)
+	{
+		return LHS._Equal(*RHS);
+	}
+
+	inline friend bool operator!=(const DString& LHS, const DString& RHS)
+	{
+		return !LHS._Equal(*RHS);
 	}
 
 	inline friend std::ostream& operator<<(std::ostream& os, const DString& String)

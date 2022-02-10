@@ -22,14 +22,55 @@ public:
 	virtual ~DActionBase() {};
 } ;
 
+template <typename retval, typename... Args>
+class DCallback : public DActionBase
+{
+protected:
+	std::function<retval(Args...)> f;
+	std::tuple<Args...> args;
+public:
+	DCallback() {};
+
+	template <typename F, typename... Args>
+	DCallback(F&& func, Args&&... args)
+		: f(std::forward<F>(func)),
+		args(std::forward<Args>(args)...)
+	{}
+
+	template <typename... Args, int... Is>
+	void func(std::tuple<Args...>& tup, SeqHelper::index<Is...>)
+	{
+		f(std::get<Is>(tup)...);
+	}
+
+	template <typename... Args>
+	void func(std::tuple<Args...>& tup)
+	{
+		func(tup, SeqHelper::gen_seq<sizeof...(Args)>{});
+	}
+
+public:
+	virtual retval Run() override
+	{
+		return func(args);
+	}
+
+	template <typename... Args>
+	retval Invoke(Args&&... params)
+	{
+		std::tuple<Args...> NewArgs(std::forward<Args>(params)...);
+		return func(NewArgs);
+	}
+};
+
 template <typename... Args>
 class DAction : public DActionBase
 {
-private:
+protected:
 	std::function<void(Args...)> f;
 	std::tuple<Args...> args;
 public:
-	DAction(){};
+	DAction() {};
 
 	template <typename F, typename... Args>
 	DAction(F&& func, Args&&... args)
@@ -54,7 +95,16 @@ public:
 	{
 		func(args);
 	}
+
+	template <typename... Args>
+	void Invoke(Args&&... params)
+	{
+		std::tuple<Args...> NewArgs(std::forward<Args>(params)...);
+		func(NewArgs);
+	}
 };
+
+
 class DGameThread
 {
 public:

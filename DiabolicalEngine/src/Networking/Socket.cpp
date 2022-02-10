@@ -121,12 +121,16 @@ bool DSocket::Receive(char* Buffer, int BufferLength, int& RecievedBytes)
 
 void DSocket::SetRecieveTimeoutMillis(uint32_t Millis)
 {
-	setsockopt(Socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&Millis,sizeof(int));
+#ifdef PLATFORM_WINDOWS
+	setsockopt(Socket, SOL_SOCKET, SO_RCVTIMEO, (char*)&Millis, sizeof(int));
+#endif
 }
 
 void DSocket::SetSendTimeoutMillis(uint32_t Millis)
 {
+#ifdef PLATFORM_WINDOWS
 	setsockopt(Socket, SOL_SOCKET, SO_SNDTIMEO, (char*)&Millis, sizeof(int));
+#endif
 }
 
 void DSocket::NetworkTest()
@@ -157,4 +161,64 @@ void DSocket::NetworkTest()
 	}
 
 	Socket.Close();
+}
+
+bool DSocket::StartListening()
+{
+#ifdef PLATFORM_WINDOWS
+	if (listen(Socket, SOMAXCONN) == 0)
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
+#endif
+
+	return false;
+}
+
+bool DSocket::Bind(DString LocalAddress, int Port)
+{
+#ifdef PLATFORM_WINDOWS
+	SocketAddress Server;
+	Server.InAddress.Address = inet_addr(*LocalAddress);
+	if (Server.InAddress.Address == INADDR_NONE)
+	{
+		LOG_ERR(DString::Format("Could not bind to local address %s", *LocalAddress));
+		return false;
+	}
+	Server.Family = AF_INET;
+	Server.Port = htons(Port);
+
+	if (bind(Socket, (struct sockaddr *)&Server, sizeof(Server)) == 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+#endif
+
+	return false;
+}
+
+bool DSocket::AcceptConnection(DSocket& NewSocket)
+{
+#ifdef PLATFORM_WINDOWS
+	uint64_t NewConnection = accept(Socket, nullptr, nullptr);
+
+	if (NewConnection == INVALID_SOCKET)
+	{
+		return false;
+	}
+
+	NewSocket = DSocket(NewConnection);
+
+	return true;
+#endif
+
+	return false;
 }

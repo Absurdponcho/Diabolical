@@ -5,12 +5,13 @@
 class DCommandLine
 {
 public:
-	static DCommandLine& Get();
+	static const DCommandLine& Get();
 	static void Init(int argc, char* argv[]);
 
-	const std::vector<DString>& GetArguments() const;
-	const std::vector<std::tuple<DString, DString>>& GetKeyValuePairs() const;
-	const DString* GetValue(const DString& Key) const;
+	static const bool HasArgument(const DString& Argument);
+	static const std::vector<DString>& GetArguments();
+	static const std::vector<std::tuple<DString, DString>>& GetKeyValuePairs();
+	static const DString* GetValue(const DString& Key);
 private:
 	DCommandLine(int argc, char* argv[]);
 	std::vector<DString> Arguments;
