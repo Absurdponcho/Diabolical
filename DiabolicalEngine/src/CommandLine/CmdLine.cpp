@@ -7,7 +7,7 @@ DCommandLine::DCommandLine(int argc, char* argv[])
 {
 	for (int Index = 0; Index < argc; Index++)
 	{
-		Arguments.push_back(DString(argv[Index]));
+		Arguments.PushBack(DString(argv[Index]));
 	}
 
 	for (const DString& String : Arguments)
@@ -16,7 +16,7 @@ DCommandLine::DCommandLine(int argc, char* argv[])
 		if (Index == -1) continue;
 		DString Left, Right;
 		String.Split(Index, Left, Right);
-		KeyValuePairs.push_back(std::make_tuple(Left, Right));
+		KeyValuePairs.PushBack(std::make_tuple(Left, Right));
 	}
 }
 
@@ -32,12 +32,12 @@ const bool DCommandLine::HasArgument(const DString& Argument)
 	return false;
 }
 
-const std::vector<DString>& DCommandLine::GetArguments()
+const DVector<DString>& DCommandLine::GetArguments()
 {
 	return Get().Arguments;
 }
 
-const std::vector<std::tuple<DString, DString>>& DCommandLine::GetKeyValuePairs()
+const DVector<std::tuple<DString, DString>>& DCommandLine::GetKeyValuePairs()
 {
 	return Get().KeyValuePairs;
 }

@@ -57,15 +57,15 @@ void DTCPConnection::TCPReceive()
 void DTCPConnection::QueueTCPSendBuffer(std::unique_ptr<NetBuffer>& Buffer)
 {
 	DScopedMutex _(TCPSendMutex);
-	TCPSendBuffers.push_back(std::unique_ptr<NetBuffer>(Buffer.release()));
+	TCPSendBuffers.PushBack(std::unique_ptr<NetBuffer>(Buffer.release()));
 }
 
 bool DTCPConnection::PopTCPSendBuffer(std::unique_ptr<NetBuffer>& Buffer)
 {
 	DScopedMutex _(TCPSendMutex);
-	if (TCPSendBuffers.size() == 0) return false;
+	if (TCPSendBuffers.Size() == 0) return false;
 	Buffer.swap(TCPSendBuffers[0]);
-	TCPSendBuffers.erase(TCPSendBuffers.begin());
+	TCPSendBuffers.RemoveAt(0);
 	return true;
 }
 

@@ -56,18 +56,18 @@ bool diabolical::PathDelete(const DString& path)
 	return false;
 }
 
-std::vector <std::filesystem::path> diabolical::FilesIn(const DString& dir, bool recursive)
+DVector <std::filesystem::path> diabolical::FilesIn(const DString& dir, bool recursive)
 {
-	std::vector <std::filesystem::path> filesFound;
+	DVector <std::filesystem::path> filesFound;
 	if (!recursive)
 	{
 		for (const auto& entry : std::filesystem::directory_iterator(*dir))
-			filesFound.push_back(entry.path());
+			filesFound.PushBack(entry.path());
 	}
 	else
 	{
 		for (const auto& entry : std::filesystem::recursive_directory_iterator(*dir))
-			filesFound.push_back(entry.path());
+			filesFound.PushBack(entry.path());
 	}
 	return filesFound;
 }

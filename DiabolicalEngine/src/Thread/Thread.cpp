@@ -1,22 +1,22 @@
 #include "Thread.h"
 #include "../Logging/Logging.h"
 
-std::vector<DThread*> DThread::ManagedThreads;
+DVector<DThread*> DThread::ManagedThreads;
 
 void DThread::CheckManagedThreads()
 {
-	for (int Index = (int)ManagedThreads.size() - 1; Index >= 0; Index--)
+	for (int Index = (int)ManagedThreads.Size() - 1; Index >= 0; Index--)
 	{
 		if (!ManagedThreads[Index])
 		{
-			ManagedThreads.erase(ManagedThreads.begin() + Index);
+			ManagedThreads.RemoveAt(Index);
 			continue;
 		}
 		if (ManagedThreads[Index]->IsComplete())
 		{
 			ManagedThreads[Index]->Join();
 			delete(ManagedThreads[Index]);
-			ManagedThreads.erase(ManagedThreads.begin() + Index);
+			ManagedThreads.RemoveAt(Index);
 			LOG("Managed DThread ended successfully");
 		}
 	}

@@ -100,7 +100,7 @@ bool DSocket::Send(const char* Buffer, int Count)
 {
 #ifdef PLATFORM_WINDOWS
 	int SendVal = send(Socket, Buffer, Count, 0);
-	if (SendVal == 0) return true;
+	if (SendVal != SOCKET_ERROR) return true;
 #endif
 	 
 	return false;

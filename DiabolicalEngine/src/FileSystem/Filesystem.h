@@ -17,6 +17,6 @@ namespace diabolical
 
 	bool FileCreate(const DString& file, std::ofstream& stream, bool bOverwrite = true);
 	bool FileCopy(const DString& src, const DString& dest);
-	std::vector <std::filesystem::path> FilesIn(const DString& dir, bool recursive = false);
+	DVector <std::filesystem::path> FilesIn(const DString& dir, bool recursive = false);
 
 }

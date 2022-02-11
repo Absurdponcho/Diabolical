@@ -1,19 +1,19 @@
 #include "IWindow.h"
-std::vector<IWindow*> IWindow::WindowList;
+DVector<IWindow*> IWindow::WindowList;
 
 IWindow::IWindow()
 {
     static size_t WindowIDCount = 0;
     WindowID = WindowIDCount++;
-    IWindow::WindowList.push_back(this);
+    IWindow::WindowList.PushBack(this);
 }
 
 IWindow::~IWindow() {
-    for (size_t i = 0; i < IWindow::WindowList.size(); i++)
+    for (size_t i = 0; i < IWindow::WindowList.Size(); i++)
     {
         if (IWindow::WindowList[i] == this)
         {
-            IWindow::WindowList.erase(IWindow::WindowList.begin() + i);
+            IWindow::WindowList.RemoveAt(i);
         };
     }
 }

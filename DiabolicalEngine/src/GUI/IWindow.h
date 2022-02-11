@@ -1,6 +1,8 @@
 #pragma once
 #include "..\ImGui\imgui.h"
 #include <vector>
+#include "../Types/DVector.h"
+
 class IWindow
 {
 public:
@@ -14,7 +16,7 @@ public:
 	virtual bool Disable();
 	virtual void Toggle();
 
-	static std::vector<IWindow*> WindowList;
+	static DVector<IWindow*> WindowList;
 private:
 	size_t WindowID;
 	bool bEnabled = false;

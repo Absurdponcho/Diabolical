@@ -2,6 +2,7 @@
 #include <functional>
 #include "ScopedMutex.h"
 #include "../Logging/Logging.h"
+#include "../Types/DVector.h"
 
 namespace SeqHelper
 {
@@ -173,13 +174,13 @@ public:
 			delete (Func);
 		}
 
-		LaterFuncs.clear();
+		LaterFuncs.Clear();
 
 	}
 
 private:
 	static DMutexHandle Mutex;
-	static std::vector<DActionBase*> LaterFuncs;
+	static DVector<DActionBase*> LaterFuncs;
 
 };
 

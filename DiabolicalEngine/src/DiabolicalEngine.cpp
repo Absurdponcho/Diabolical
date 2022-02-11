@@ -14,6 +14,8 @@
 #include <Dbghelp.h>
 #endif
 
+#include "Types/DVector.h"
+
 DGameManager* DEngine::GameManager = nullptr;
 
 void DEngine::Init(int argc, char* argv[])

@@ -3,6 +3,7 @@
 #include "../Thread/GameThread.h"
 #include "Socket.h"
 #include "TCPConnection.h"
+#include "../Types/DVector.h"
 
 class DSocket;
 
@@ -18,7 +19,7 @@ public:
 	DAction<DTCPConnection*> OnConnection; // DSocket = new socket, DString = incoming IP
 
 protected:
-	std::vector<std::unique_ptr<class DTCPConnection>> ClientConnections;
+	DVector<std::unique_ptr<class DTCPConnection>> ClientConnections;
 
 	void TCPRun();
 

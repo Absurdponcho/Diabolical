@@ -62,8 +62,8 @@ void DServer::TCPRun()
 			if (TCPSocket->AcceptConnection(NewConnection, &IncomingIP))
 			{
 
-				ClientConnections.push_back(std::make_unique<DTCPConnection>(NewConnection, IncomingIP));
-				OnConnection.Invoke(ClientConnections[ClientConnections.size() - 1].get());
+				ClientConnections.PushBack(std::make_unique<DTCPConnection>(NewConnection, IncomingIP));
+				OnConnection.Invoke(ClientConnections[ClientConnections.Size() - 1].get());
 			}
 		}
 	}

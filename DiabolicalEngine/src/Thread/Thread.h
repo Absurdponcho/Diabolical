@@ -12,7 +12,7 @@ public:
 	static DThread& MakeManagedThread(F&& Func, Args... Arguments)
 	{
 		DThread* Thread = new DThread(Func, Arguments...);
-		ManagedThreads.push_back(Thread);
+		ManagedThreads.PushBack(Thread);
 		return *Thread;
 	}
 
@@ -65,7 +65,7 @@ public:
 	static void TestThreadFunctions();
 
 private:
-	static std::vector<DThread*> ManagedThreads;
+	static DVector<DThread*> ManagedThreads;
 	std::thread* Thread = nullptr;
 	bool bComplete = false;
 	bool bJoined = false;

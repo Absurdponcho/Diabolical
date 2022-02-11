@@ -25,7 +25,7 @@ protected:
 
 	// Using a unique_ptr to heap allocated buffers. saves us from doing HUGE buffer copies. Thread will have full ownership.
 	// during mutex lock, only ptr needs to be swapped so its much better than copying buffers
-	std::vector<std::unique_ptr<NetBuffer>> TCPSendBuffers;
+	DVector<std::unique_ptr<NetBuffer>> TCPSendBuffers;
 
 	bool PopTCPSendBuffer(std::unique_ptr<NetBuffer>& Buffer);
 

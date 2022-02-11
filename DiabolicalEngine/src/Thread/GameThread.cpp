@@ -1,4 +1,4 @@
 #include "GameThread.h"
 
-std::vector<DActionBase*> DGameThread::LaterFuncs;
+DVector<DActionBase*> DGameThread::LaterFuncs;
 DMutexHandle DGameThread::Mutex;

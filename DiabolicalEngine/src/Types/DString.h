@@ -8,7 +8,7 @@
 
 #include <limits>
 #include <stdint.h>
-
+#include "DVector.h"
 
 template <typename T, typename U>
 bool CanTypeFitValue(const U value) {
@@ -95,13 +95,13 @@ public:
 		else return (int)Index;
 	}
 
-	inline const std::vector<size_t> FindAll(const DString& String) const
+	inline const DVector<size_t> FindAll(const DString& String) const
 	{
-		std::vector<size_t> positions;
+		DVector<size_t> positions;
 		size_t pos = find(String, 0);
 		while (pos != std::string::npos)
 		{
-			positions.push_back(pos);
+			positions.PushBack(pos);
 			pos = find(String, pos + 1);
 		}
 		return positions;
@@ -109,10 +109,10 @@ public:
 
 	inline const int FindLast(const DString& String) const
 	{
-		std::vector<size_t> positions = FindAll(String);
+		DVector<size_t> positions = FindAll(String);
 
-		if (positions.size() == 0) return -1;
-		else return (int)positions[positions.size() - 1];
+		if (positions.Size() == 0) return -1;
+		else return (int)positions[positions.Size() - 1];
 	}
 
 	inline void Split(int Index, DString& Left, DString& Right) const
