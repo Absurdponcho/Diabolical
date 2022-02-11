@@ -53,3 +53,50 @@ void DDevConsole::Draw()
 
 	ImGui::GetStyle() = OldStyle;
 }
+
+
+void DDevConsole::ParseCommandQuotations(DVector<DString>& Params)
+{
+	DVector<DString> RetVal;
+
+	bool bInQuotation = false;
+	DString CurrentBuiltString;
+
+	for (DString& Param : Params)
+	{
+		if (bInQuotation)
+		{
+			if (Param.EndsWith("\""))
+			{
+				bInQuotation = false;
+				CurrentBuiltString.Append(Param.RemoveEnd(1));
+				if (CurrentBuiltString.EndsWith(" "))
+				{
+					CurrentBuiltString = CurrentBuiltString.RemoveEnd(1);
+				}
+				RetVal.PushBack(CurrentBuiltString);
+				CurrentBuiltString = "";
+			}
+			else
+			{
+				CurrentBuiltString.Append(Param);
+				CurrentBuiltString.Append(" ");
+			}
+		}
+		else
+		{
+			if (Param.StartsWith("\""))
+			{
+				CurrentBuiltString.Append(Param.RemoveStart(1));
+				CurrentBuiltString.Append(" ");
+				bInQuotation = true;
+			}
+			else
+			{
+				RetVal.PushBack(Param);
+			}
+		}
+	}
+
+	Params = RetVal;
+}

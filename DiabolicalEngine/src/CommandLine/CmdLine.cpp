@@ -1,5 +1,6 @@
 #include "CmdLine.h"
 #include "../Check.h"
+#include "../Logging/Logging.h"
 
 DCommandLine* CommandLine = nullptr;
 
@@ -8,6 +9,7 @@ DCommandLine::DCommandLine(int argc, char* argv[])
 	for (int Index = 0; Index < argc; Index++)
 	{
 		Arguments.PushBack(DString(argv[Index]));
+		LOG(DString::Format("Arg: %s", argv[Index]));
 	}
 
 	for (const DString& String : Arguments)
@@ -65,4 +67,3 @@ const DCommandLine& DCommandLine::Get()
 	Check(CommandLine);
 	return *CommandLine;
 }
-

@@ -53,7 +53,7 @@ void Logging::LogString(DString Prefix, DString Func, int Line, DString String, 
 		DString TimeString(Buffer);
 
 		// Remove the \n with a chopright
-		TimeString = TimeString.ChopRight(1);
+		TimeString = TimeString.RemoveEnd(1);
 
 		DString FilePath = DString("Log/Log-").Append(TimeString).Append(".txt");
 

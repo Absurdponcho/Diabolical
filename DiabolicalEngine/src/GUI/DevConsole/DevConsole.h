@@ -11,5 +11,8 @@ public:
 	void Draw() override;
 	float Height = 260;
 	DString Input;
+
+	void ParseCommandQuotations(DVector<DString>& Params);
+
 };
 

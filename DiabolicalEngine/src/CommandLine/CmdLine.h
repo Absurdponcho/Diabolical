@@ -12,6 +12,7 @@ public:
 	static const DVector<DString>& GetArguments();
 	static const DVector<std::tuple<DString, DString>>& GetKeyValuePairs();
 	static const DString* GetValue(const DString& Key);
+
 private:
 	DCommandLine(int argc, char* argv[]);
 	DVector<DString> Arguments;

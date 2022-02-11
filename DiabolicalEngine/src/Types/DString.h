@@ -185,12 +185,33 @@ public:
 	}
 
 	// Remove "Count" characters from the end of the string
-	inline DString ChopRight(size_t Count)
+	inline DString RemoveEnd(size_t Count)
 	{
-		Check (Count < Length());
-		if (Count >= Length()) return DString();
-		DString OutStr = DString(substr(0, Length()-Count));
-		return OutStr;
+		return RemoveRange(Length()-Count, Count);
+	}
+
+	// Remove "Count" characters from the start of the string
+	inline DString RemoveStart(size_t Count)
+	{
+		return RemoveRange(0, Count);
+	}
+
+	inline DString RemoveRange(size_t Index, size_t Count) const 
+	{
+		Check(Count + Index < Length() + 1);
+		DString RetStr = *this;
+		RetStr.erase(Index, Count);
+		return RetStr;
+	}
+
+	inline const bool EndsWith(const DString& Str) const 
+	{
+		return FindLast(Str) == Length() - Str.Length();
+	}
+
+	inline const bool StartsWith(const DString& Str) const
+	{
+		return FindFirst(Str) == 0;
 	}
 
 	inline void Replace(char Char, char Replacement) 
