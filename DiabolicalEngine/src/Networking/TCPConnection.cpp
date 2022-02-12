@@ -56,13 +56,13 @@ void DTCPConnection::TCPReceive()
 
 void DTCPConnection::QueueTCPSendBuffer(std::unique_ptr<NetBuffer>& Buffer)
 {
-	auto BuffersValue = TCPSendBuffers.Retreive();
+	auto BuffersValue = TCPSendBuffers.Retrieve();
 	BuffersValue->PushBack(std::unique_ptr<NetBuffer>(Buffer.release()));
 }
 
 bool DTCPConnection::PopTCPSendBuffer(std::unique_ptr<NetBuffer>& Buffer)
 {
-	auto BuffersValue = TCPSendBuffers.Retreive();
+	auto BuffersValue = TCPSendBuffers.Retrieve();
 	if (BuffersValue->Size() == 0) return false;
 	Buffer.swap(BuffersValue.Get()[0]);
 	BuffersValue->RemoveAt(0);

@@ -19,8 +19,6 @@
 
 DGameManager* DEngine::GameManager = nullptr;
 
-DThreadsafeContainer<int> TestThreadsafeContainer = DThreadsafeContainer<int>(5);
-
 void DEngine::Init(int argc, char* argv[])
 {
 #ifdef PLATFORM_WINDOWS

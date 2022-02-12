@@ -53,7 +53,7 @@ public:
 	{}
 
 	// Locks the value inside, allowing only 1 thread to access it until the returned DThreadsafeContainerValue is destroyed
-	inline DThreadsafeContainerValue<T> Retreive()
+	inline DThreadsafeContainerValue<T> Retrieve()
 	{
 		Mutex.Lock();
 		return DThreadsafeContainerValue(Mutex, Value);
