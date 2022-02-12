@@ -29,6 +29,26 @@ DWindowManager::DWindowManager(const char* title, int x, int y, int w, int h, Ui
 		LOG_ERR("SDL_Init() failed!");
 		bWindowValid = false;
 	}
+
+	int Success = SDL_GL_SetSwapInterval(-1); //try adaptive vsync
+	if (Success == 0)
+	{
+		LOG("Adaptive VSync enabled.");
+	}
+	else
+	{
+		Success = SDL_GL_SetSwapInterval(1); //try normal vsync
+		if (Success == 0)
+		{
+			LOG("VSync enabled.");
+		}
+		else
+		{
+			LOG_ERR("Failed to set VSync.");
+		}
+	}
+	
+
 	glewInit();
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
@@ -72,14 +92,14 @@ void DWindowManager::FixWindowsHighDPIScaling()
 	if (SetProcessDpiAwareness) {
 		/* Try Windows 8.1+ version */
 		HRESULT result = SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
-		SDL_Log("called SetProcessDpiAwareness: %d", (result == S_OK) ? 1 : 0);
+		LOG(DString::Format("called SetProcessDpiAwareness: %d", (result == S_OK) ? 1 : 0));
 	}
 	else if (SetProcessDPIAware) {
 		/* Try Vista - Windows 8 version.
 		This has a constant scale factor for all monitors.
 		*/
 		BOOL success = SetProcessDPIAware();
-		SDL_Log("called SetProcessDPIAware: %d", (int)success);
+		LOG(DString::Format("called SetProcessDPIAware: %d", (int)success));
 	}
 #endif // PLATFORM_WINDOWS
 }

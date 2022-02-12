@@ -8,15 +8,18 @@
 #include "Thread/Thread.h"
 #include "Thread/GameThread.h"
 #include "Networking/NetworkManager.h"
+#include "Thread/ThreadsafeContainer.h"
+#include "Types/DVector.h"
 
 #ifdef PLATFORM_WINDOWS
 #include <Windows.h>
 #include <Dbghelp.h>
 #endif
 
-#include "Types/DVector.h"
 
 DGameManager* DEngine::GameManager = nullptr;
+
+DThreadsafeContainer<int> TestThreadsafeContainer = DThreadsafeContainer<int>(5);
 
 void DEngine::Init(int argc, char* argv[])
 {

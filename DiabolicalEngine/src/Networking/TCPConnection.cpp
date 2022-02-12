@@ -56,16 +56,23 @@ void DTCPConnection::TCPReceive()
 
 void DTCPConnection::QueueTCPSendBuffer(std::unique_ptr<NetBuffer>& Buffer)
 {
-	DScopedMutex _(TCPSendMutex);
-	TCPSendBuffers.PushBack(std::unique_ptr<NetBuffer>(Buffer.release()));
+	auto BuffersValue = TCPSendBuffers.Retreive();
+	BuffersValue->PushBack(std::unique_ptr<NetBuffer>(Buffer.release()));
 }
 
 bool DTCPConnection::PopTCPSendBuffer(std::unique_ptr<NetBuffer>& Buffer)
 {
-	DScopedMutex _(TCPSendMutex);
-	if (TCPSendBuffers.Size() == 0) return false;
-	Buffer.swap(TCPSendBuffers[0]);
-	TCPSendBuffers.RemoveAt(0);
+	auto BuffersValue = TCPSendBuffers.Retreive();
+	if (BuffersValue->Size() == 0) return false;
+	Buffer.swap(BuffersValue.Get()[0]);
+	BuffersValue->RemoveAt(0);
 	return true;
 }
 
+void DTCPConnection::SendPing()
+{
+	std::unique_ptr<NetBuffer> Buffer = std::make_unique<NetBuffer>(5);
+	const char* TestMessage = "Ping";
+	strcpy_s(Buffer->Buffer, 5, TestMessage);
+	QueueTCPSendBuffer(Buffer);
+}

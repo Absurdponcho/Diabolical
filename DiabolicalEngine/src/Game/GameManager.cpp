@@ -82,7 +82,7 @@ void DGameManager::MainGameLoop()
 	// do the first tick before showing the window to prevent icky sticky white window
 	EventTick();
 	SDL_ShowWindow(DWindowManager::GetSDLWindow());
-	SDL_GL_SetSwapInterval(-1);
+
 	while (bMainLoopRunning)
 	{
 		EventTick();

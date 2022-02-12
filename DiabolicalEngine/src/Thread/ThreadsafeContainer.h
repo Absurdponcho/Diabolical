@@ -16,14 +16,19 @@ public:
 		MutexPtr->Unlock();
 	}
 
-	inline T* Get() const
+	inline T& Get() const
+	{
+		return *ValuePtr;
+	}
+
+	inline T* GetPtr() const
 	{
 		return ValuePtr;
 	}
 
 	inline T* operator->() const
 	{
-		return Get();
+		return GetPtr();
 	}
 
 private:
@@ -47,10 +52,9 @@ public:
 		: Value(NewValue)
 	{}
 
+	// Locks the value inside, allowing only 1 thread to access it until the returned DThreadsafeContainerValue is destroyed
 	inline DThreadsafeContainerValue<T> Retreive()
 	{
-		// Once this function is called, it will not be able to be called again
-		// until the returned DThreadsafeContainerValue has been destroyed
 		Mutex.Lock();
 		return DThreadsafeContainerValue(Mutex, Value);
 	}
