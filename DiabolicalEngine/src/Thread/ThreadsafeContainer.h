@@ -16,12 +16,12 @@ public:
 		MutexPtr->Unlock();
 	}
 
-	T* Get() const
+	inline T* Get() const
 	{
 		return ValuePtr;
 	}
 
-	T* operator->() const
+	inline T* operator->() const
 	{
 		return Get();
 	}
