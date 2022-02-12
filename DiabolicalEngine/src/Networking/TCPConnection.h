@@ -2,15 +2,7 @@
 #include "../Thread/Thread.h"
 #include "../Thread/GameThread.h"
 #include "Socket.h"
-
-class NetBuffer
-{
-public:
-	NetBuffer(int NewSize) { Buffer = new char[NewSize]; Size = NewSize; }
-	~NetBuffer() { delete[] Buffer; }
-	int Size = 0;
-	char* Buffer = nullptr;
-};
+#include "NetTypes.h"
 
 class DTCPConnection
 {
