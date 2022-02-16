@@ -10,6 +10,7 @@
 #include <stdint.h>
 #include "DVector.h"
 
+
 template <typename T, typename U>
 bool CanTypeFitValue(const U value) {
 	constexpr intmax_t botT = intmax_t(std::numeric_limits<T>::min());
@@ -28,6 +29,11 @@ public:
 	DString(int Val)
 	{
 		Append(DString(std::to_string(Val)));
+	}
+
+	inline std::string ToSTLString() const
+	{
+		return std::string(**this);
 	}
 
 	inline const bool TryParseLong(long& Value) const
@@ -220,3 +226,18 @@ public:
 	}
 
 };
+
+namespace std {
+
+	template <>
+	struct hash<DString>
+	{
+		std::size_t operator()(const DString& k) const
+		{
+			// use std::string hash
+			std::hash<std::string> ha; 
+			return ha.operator()(k.ToSTLString());			
+		}
+	};
+
+}

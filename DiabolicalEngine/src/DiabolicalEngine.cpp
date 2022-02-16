@@ -10,6 +10,7 @@
 #include "Networking/NetworkManager.h"
 #include "Thread/ThreadsafeContainer.h"
 #include "Types/DVector.h"
+#include "AssetManager/AssetManager.h"
 
 #ifdef PLATFORM_WINDOWS
 #include <Windows.h>
@@ -29,6 +30,7 @@ void DEngine::Init(int argc, char* argv[])
 	DCommandLine::Init(argc, argv);
 	DSocket::InitSockets();
 	DNetworkManager::Initialize();
+    DAssetManager::Initialize();
 
 	GameManager = new DGameManager();
 	DWindowManager::Initialize("Diabolical", 128, 128, 800, 600, SDL_WINDOW_HIDDEN);
