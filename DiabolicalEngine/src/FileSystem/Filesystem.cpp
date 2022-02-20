@@ -1,5 +1,5 @@
 #include "Filesystem.h"
-bool diabolical::DirCreate(const DString& dir)
+bool DFileSystem::DirCreate(const DString& dir)
 {
 	if (PathExists(dir))
 		return false;
@@ -7,7 +7,7 @@ bool diabolical::DirCreate(const DString& dir)
 	return std::filesystem::create_directories(*dir);
 }
 
-bool diabolical::DirCopy(const DString& src, const DString& dest)
+bool DFileSystem::DirCopy(const DString& src, const DString& dest)
 {
 	if (PathExists(src)) {
 		std::filesystem::copy(*src, *dest);
@@ -16,12 +16,12 @@ bool diabolical::DirCopy(const DString& src, const DString& dest)
 	return false;
 }
 
-bool diabolical::PathExists(const DString& path)
+bool DFileSystem::PathExists(const DString& path)
 {
 	return std::filesystem::exists(*path);
 }
 
-bool diabolical::FileCreate(const DString& file, std::ofstream& stream, bool bOverwrite)
+bool DFileSystem::FileCreate(const DString& file, std::ofstream& stream, bool bOverwrite)
 {
 	if (!bOverwrite && PathExists(file))
 		return false;
@@ -40,7 +40,7 @@ bool diabolical::FileCreate(const DString& file, std::ofstream& stream, bool bOv
 	return true;
 }
 
-bool diabolical::FileCopy(const DString& src, const DString& dest)
+bool DFileSystem::FileCopy(const DString& src, const DString& dest)
 {
 	if (PathExists(src)) {
 		return std::filesystem::copy_file(*src, *dest);
@@ -48,7 +48,7 @@ bool diabolical::FileCopy(const DString& src, const DString& dest)
 	return false;
 }
 
-bool diabolical::PathDelete(const DString& path)
+bool DFileSystem::PathDelete(const DString& path)
 {
 	if (PathExists(path)) {
 		return std::filesystem::remove(*path);
@@ -56,7 +56,7 @@ bool diabolical::PathDelete(const DString& path)
 	return false;
 }
 
-DVector <std::filesystem::path> diabolical::FilesIn(const DString& dir, bool recursive)
+DVector <std::filesystem::path> DFileSystem::FilesIn(const DString& dir, bool recursive)
 {
 	DVector <std::filesystem::path> filesFound;
 	if (!recursive)
@@ -70,4 +70,11 @@ DVector <std::filesystem::path> diabolical::FilesIn(const DString& dir, bool rec
 			filesFound.PushBack(entry.path());
 	}
 	return filesFound;
+}
+
+uint64_t DFileSystem::FileSize(const DString& Path)
+{
+	if (!PathExists(Path)) return 0;
+
+	return (uint64_t) std::filesystem::file_size(*Path);
 }

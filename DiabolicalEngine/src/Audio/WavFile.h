@@ -2,24 +2,55 @@
 #include "AudioUtility.h"
 #include <AL/AL.h>
 #include <AL/ALC.h>
+#include "../Types/Action.h"
+
+typedef DAction<std::shared_ptr<class DWAVFile>> AAsyncWAVLoad;
+
+struct WavHeader
+{
+	char ChunkID[4];
+	uint32_t ChunkSize;
+	char Format[4];
+	char Subchunk1ID[4];
+	uint32_t Subchunk1Size;
+	uint16_t AudioFormat;
+	uint16_t NumChannels;
+	uint32_t SampleRate;
+	uint32_t ByteRate;
+	uint16_t BlockAlign;
+	uint16_t BitsPerSample;
+	uint32_t Subchunk2ID;
+	uint32_t Subchunk2Size;
+	char Data;
+};
 
 class DWAVFile : public DAudioFile
 {
 public:
 	virtual ~DWAVFile();
 
-	static std::shared_ptr<DWAVFile> Load(DString filename);
+	DWAVFile() {}
+	DWAVFile(std::shared_ptr<class DRawAsset> Asset)
+		: AssetRef(Asset)
+	{}
 
-	virtual char* GetData() override;
-	virtual int GetChannels() override;
-	virtual int GetSampleRate() override;
-	virtual int GetBitsPerSample() override;
-	virtual int GetSize() override;
+	static void LoadAsync(DString filename, AAsyncWAVLoad OnLoad);
 
+	virtual const char* GetData() const override;
+	virtual int GetChannels() const override;
+	virtual int GetSampleRate() const override;
+	virtual int GetBitsPerSample() const override;
+	virtual int GetSize() const override;
+	virtual bool IsValid() const override;
+
+protected:
+
+	std::shared_ptr<class DRawAsset> AssetRef;
 private:
+	static std::shared_ptr<DWAVFile> Load(std::shared_ptr<class DRawAsset> Asset);
 	int channels = -1;
 	int sampleRate = -1;
 	int bps = -1;
 	int size = -1;
-	char* AudioData = nullptr;
+	const char* AudioData = nullptr;
 };

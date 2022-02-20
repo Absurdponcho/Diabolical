@@ -1,86 +1,85 @@
 #include "WavFile.h"
+#include "../AssetManager/AssetManager.h"
 
 DWAVFile::~DWAVFile()
 {
 	LOG_ERR("Deleted");
-	if (AudioData)
-	{
-		delete (AudioData);
-	}
 }
 
-std::shared_ptr<DWAVFile> DWAVFile::Load(DString filename)
+void DWAVFile::LoadAsync(DString filename, AAsyncWAVLoad OnLoad)
 {
-	std::shared_ptr<DWAVFile> OutWav = std::make_shared<DWAVFile>();
+	DAssetManager::Get().AsyncLoadAsset(filename, [=](std::shared_ptr<DRawAsset> Asset) mutable
+	{
+		Check(Asset.get());
+		Check(Asset->IsValid());
+		if (Asset.get() && Asset->IsValid())
+		{
+			std::shared_ptr<DWAVFile> NewDWav = DWAVFile::Load(Asset);
+			Check (NewDWav.get());
+			if (OnLoad.IsBound() && NewDWav.get())
+			{
+				OnLoad.Invoke(NewDWav);
+			}
+		}
+	});
+}
 
-	char buffer[4];
+std::shared_ptr<DWAVFile> DWAVFile::Load(std::shared_ptr<DRawAsset> Asset)
+{
+	Check(Asset.get());
+	Check(Asset->IsValid());
+	if (!Asset.get() || !Asset->IsValid())
+	{
+		LOG_ERR("!Asset.get() || !Asset->IsValid()");
+		return nullptr;
+	}
+	const char* buffer = Asset->GetData<char>();
 
-	std::ifstream in(*filename, std::ifstream::binary);
-	in.read(buffer, 4);
+	Check(buffer);
+	if (!buffer)
+	{
+		LOG_ERR("Invalid buffer");
+		return nullptr;
+	}
 
-	if (strncmp(buffer, "RIFF", 4) != 0)
+	WavHeader& Header = *(WavHeader*)buffer;
+
+	if (strncmp(Header.ChunkID, "RIFF", 4) != 0)
 	{
 		LOG_ERR("Not a valid WAV file, RIFF not found in header");
 		return nullptr;
 	}
 
-	in.read(buffer, 4);//size of file. Not used. Read it to skip over it.  
-
-	in.read(buffer, 4);//Format, should be WAVE
-
-	if (strncmp(buffer, "WAVE", 4) != 0)
+	if (strncmp(Header.Format, "WAVE", 4) != 0)
 	{
 		LOG_ERR("Not a valid WAV file, WAVE not found in header");
 		return nullptr;
 	}
 
-	in.read(buffer, 4);//Format Space Marker. should equal fmt (space)
-
-	if (strncmp(buffer, "fmt ", 4) != 0)
+	if (strncmp(Header.Subchunk1ID, "fmt ", 4) != 0)
 	{
 		LOG_ERR("Not a valid WAV file, Format Marker not found in header");
 		return nullptr;
 	}
 
-	in.read(buffer, 4);//Length of format data. Should be 16 for PCM, meaning uncompressed.
-
-	if (AudioUtility::ConvertToInt(buffer, 4) != 16)
+	if (Header.Subchunk1Size != 16)
 	{
 		LOG_ERR("Not a valid WAV file, format length wrong in header");
 		return nullptr;
 	}
 
-	in.read(buffer, 2);//Type of format, 1 = PCM
-
-	if (AudioUtility::ConvertToInt(buffer, 2) != 1)
+	if (Header.AudioFormat != 1)
 	{
 		LOG_ERR("Not a valid WAV file, file not in PCM format");
 		return nullptr;
 	}
 
-	in.read(buffer, 2);//Get number of channels. 
+	std::shared_ptr<DWAVFile> OutWav = std::make_shared<DWAVFile>(Asset);
 
-	//Assume at this point that we are dealing with a WAV file. This value is needed by OpenAL
-	OutWav->channels = AudioUtility::ConvertToInt(buffer, 2);
-
-	in.read(buffer, 4);//Get sampler rate. 
-
-	OutWav->sampleRate = AudioUtility::ConvertToInt(buffer, 4);
-
-	//Skip Byte Rate and Block Align. Maybe use later?
-	in.read(buffer, 4);//Block Align
-	in.read(buffer, 2);//ByteRate
-
-	in.read(buffer, 2);//Get Bits Per Sample
-
-	OutWav->bps = AudioUtility::ConvertToInt(buffer, 2);
-
-	//Skip character data, which marks the start of the data that we care about. 
-	in.read(buffer, 4);//"data" chunk. 
-
-	in.read(buffer, 4); //Get size of the data
-
-	OutWav->size = AudioUtility::ConvertToInt(buffer, 4);
+	OutWav->channels = Header.NumChannels;
+	OutWav->sampleRate = Header.SampleRate;
+	OutWav->bps = Header.BitsPerSample;
+	OutWav->size = Header.Subchunk2Size;
 
 	if (OutWav->size < 0)
 	{
@@ -88,40 +87,39 @@ std::shared_ptr<DWAVFile> DWAVFile::Load(DString filename)
 		return nullptr;
 	}
 
-	char* data = new char[OutWav->size];
-
-	in.read(data, OutWav->size);//Read audio data into buffer, return.
-
-	in.close();
-
-	OutWav->AudioData = data;
+	OutWav->AudioData = &Header.Data;
 
 	LOG(DString(OutWav->size));
 
 	return OutWav;
 }
 
-char* DWAVFile::GetData()
+const char* DWAVFile::GetData() const 
 {
 	return AudioData;
 }
 
-int DWAVFile::GetChannels()
+int DWAVFile::GetChannels() const 
 {
 	return channels;
 }
 
-int DWAVFile::GetSampleRate()
+int DWAVFile::GetSampleRate() const 
 {
 	return sampleRate;
 }
 
-int DWAVFile::GetBitsPerSample()
+int DWAVFile::GetBitsPerSample() const 
 {
 	return bps;
 }
 
-int DWAVFile::GetSize()
+int DWAVFile::GetSize() const 
 {
 	return size;
+}
+
+bool DWAVFile::IsValid() const
+{
+	return AssetRef.get() && AssetRef->IsValid();
 }

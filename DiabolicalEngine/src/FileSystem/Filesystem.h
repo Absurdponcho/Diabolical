@@ -8,7 +8,7 @@
 #include <Windows.h>
 #include <filesystem>
 #include <fstream>
-namespace diabolical
+namespace DFileSystem
 {
 	bool DirCreate(const DString& dir);
 	bool DirCopy(const DString& src, const DString& dest);
@@ -17,6 +17,7 @@ namespace diabolical
 
 	bool FileCreate(const DString& file, std::ofstream& stream, bool bOverwrite = true);
 	bool FileCopy(const DString& src, const DString& dest);
+	uint64_t FileSize(const DString& Path);
 	DVector <std::filesystem::path> FilesIn(const DString& dir, bool recursive = false);
 
 }

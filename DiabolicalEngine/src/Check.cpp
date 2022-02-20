@@ -4,7 +4,8 @@
 
 void CheckCrash(const char* Func, const char* Reason, int Line)
 {
-	Logging::LogPlain(DString::Format("CHECK FAILED! %s (%i): %s\n", Reason, Line, Func), 12);
+	DString ErrorMessage = DString::Format("CHECK FAILED! %s (%i): %s\n", Reason, Line, Func);
+	Logging::LogPlain(ErrorMessage, 12);
 	DEngine::AtExit();
 	abort();
 }

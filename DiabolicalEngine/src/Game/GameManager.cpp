@@ -70,12 +70,15 @@ void DGameManager::MainGameLoop()
 {
 	//LOGVERBOSE("GameManager::MainGameLoop()", "Main game loop started");
 
-	//AudioSource = new DAudioSource();
-	//{
-	//	std::shared_ptr<DWAVFile> WavFile = DWAVFile::Load("Assets/Sussy Baka.wav"); // Hey dude, you're being quite sussy
-	//	AudioSource->SetAudioFile(WavFile);
-	//	AudioSource->Play();
-	//}
+	AudioSource = new DAudioSource();
+	
+	DWAVFile::LoadAsync("Assets/Sussy Baka.wav", [&](std::shared_ptr<DWAVFile> NewWav)
+	{
+		Check(NewWav.get());
+		AudioSource->SetAudioFile(NewWav);
+		AudioSource->Play();
+	}); // Hey dude, you're being quite sussy
+	
 
 	InitImGui();
 

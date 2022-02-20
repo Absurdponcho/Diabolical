@@ -59,7 +59,7 @@ void Logging::LogString(DString Prefix, DString Func, int Line, DString String, 
 
 		FilePath.Replace(':', '-');
 
-		if (!diabolical::FileCreate(FilePath, LogFile))
+		if (!DFileSystem::FileCreate(FilePath, LogFile))
 		{
 			std::cout << "Could not create log file" << std::endl;
 			Check(false);
