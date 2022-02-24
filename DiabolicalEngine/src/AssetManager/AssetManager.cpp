@@ -59,7 +59,7 @@ void DAssetManager::ThreadRun()
 		{
 			if (PendingLoad.Action.IsBound())
 			{
-				std::shared_ptr<DRawAsset> LoadedAsset = SynchronousLoadAsset(PendingLoad.Filepath);
+				std::shared_ptr<DRawAsset> LoadedAsset = Internal_SynchronousLoadAsset(PendingLoad.Filepath);
 				PendingLoad.Action.Invoke(LoadedAsset);
 			}
 		}
@@ -70,6 +70,42 @@ void DAssetManager::ThreadRun()
 
 std::shared_ptr<DRawAsset> DAssetManager::SynchronousLoadAsset(DString FilePath)
 {
+	// To ensure the async load system does not encounter race conditions with 
+	// synchronous loading, just make the synchronous load do an async load ;)
+
+	bool bLoaded = false;
+	std::shared_ptr<DRawAsset> LoadedAsset;
+	AsyncLoadAsset(FilePath, [&](std::shared_ptr<DRawAsset> Asset)
+	{ 
+		LoadedAsset = Asset; 
+		bLoaded = true; 	
+	});
+
+	while (!bLoaded)
+	{
+		DThread::Sleep(1);
+	}
+
+	return LoadedAsset;
+}
+
+std::shared_ptr<DRawAsset> DAssetManager::Internal_SynchronousLoadAsset(DString FilePath)
+{
+	auto AssetIt = LoadedAssets.find(FilePath);
+	if (AssetIt != LoadedAssets.end())
+	{
+		std::weak_ptr<DRawAsset> SavedAsset = AssetIt->second;
+		if (!SavedAsset.expired())
+		{
+			std::shared_ptr<DRawAsset> SavedAssetSharedPtr = SavedAsset.lock();
+			if (SavedAssetSharedPtr.get())
+			{
+				// asset is still valid in memory somewhere, return it
+				return SavedAssetSharedPtr;
+			}
+		}
+	}
+
 	Check (DFileSystem::PathExists(FilePath));
 	if (!DFileSystem::PathExists(FilePath))
 	{
@@ -95,6 +131,9 @@ std::shared_ptr<DRawAsset> DAssetManager::SynchronousLoadAsset(DString FilePath)
 	Check (in.is_open());
 
 	in.read((char*)Buffer, FileSize);
+
+	// store weak reference to the loaded asset
+	LoadedAssets[FilePath] = NewAsset;
 
 	return NewAsset;
 }

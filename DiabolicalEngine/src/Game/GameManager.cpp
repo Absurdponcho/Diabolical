@@ -14,6 +14,7 @@
 #include "../Thread/GameThread.h"
 #include "../Thread/Thread.h"
 #include "../GUI/DevConsole/DevConsole.h"
+#include "../AssetManager/AssetManager.h"
 
 std::shared_ptr<DDevConsole> DevConsole;
 
@@ -79,7 +80,6 @@ void DGameManager::MainGameLoop()
 		AudioSource->Play();
 	}); // Hey dude, you're being quite sussy
 	
-
 	InitImGui();
 
 	// do the first tick before showing the window to prevent icky sticky white window
