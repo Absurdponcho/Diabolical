@@ -1,22 +1,35 @@
 #pragma once
+#include "../ECS/flecs.h"
 
 class DGameManager
 {
 public:
+	DGameManager();
+
+	// called by the engine to start the game. don't call this manually
 	void MainGameLoop();
 
-	int GetGameFPS();
+	// Get frames per second
+	float GetGameFPS();
 
-	static float GetFPS();
-	static float GetTime();
-	static int GetFrame();
+	// Time since last frame
+	float GetDeltaTime();
+
+	// Total elapsed time of the game
+	float GetGameTime();
+
+	// The current frame
+	int GetFrame();
+
+	// Exits the game at the end of the current frame
+	void Exit();
 
 private:
-	void EventTick();
+	void GameTick();
+	flecs::world ECSWorld;
 
 	bool bMainLoopRunning = true;
 
-	static int Frame;
-	static float FPS;
-	static float GameTime;
+	int Frame = 0;
+	float GameTime = 0;
 };

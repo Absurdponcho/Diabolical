@@ -171,3 +171,14 @@ glm::ivec2 DWindowManager::GetScreenSize()
 	SDL_GetWindowSize(GetSDLWindow(), &Width, &Height);
 	return glm::ivec2(Width, Height);
 }
+
+void DWindowManager::SetScreenSize(glm::ivec2 Size)
+{
+	SDL_SetWindowSize(GetSDLWindow(), Size.x, Size.y);
+	RefreshViewport();
+}
+
+void DWindowManager::RefreshViewport()
+{
+	glViewport(0, 0, GetScreenSize().x, GetScreenSize().y);
+}

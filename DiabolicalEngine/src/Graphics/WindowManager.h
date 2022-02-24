@@ -21,6 +21,8 @@ public:
 	glm::vec3 ScreenSpaceToPixelCoord(const glm::vec2& ScreenSpace);
 
 	glm::ivec2 GetScreenSize();
+	void SetScreenSize(glm::ivec2 Size);
+	void RefreshViewport();
 
 private:
 	DWindowManager(const char* WindowTitle, int x, int y, int w, int h, Uint32 WindowFlags);

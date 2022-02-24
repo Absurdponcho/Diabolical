@@ -18,7 +18,9 @@ public:
 	static void Run();
 	static void AtExit();
 	static void RunAllTests();
-private:
+	static std::shared_ptr<class DDevConsole> DevConsole;
 	static class DGameManager* GameManager;
+
+private:
 };
 

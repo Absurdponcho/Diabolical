@@ -11,6 +11,8 @@
 #include "Thread/ThreadsafeContainer.h"
 #include "Types/DVector.h"
 #include "AssetManager/AssetManager.h"
+#include "GUI/GUI.h"
+#include "GUI/DevConsole/DevConsole.h"
 
 #ifdef PLATFORM_WINDOWS
 #include <Windows.h>
@@ -19,6 +21,7 @@
 
 
 DGameManager* DEngine::GameManager = nullptr;
+std::shared_ptr<DDevConsole> DEngine::DevConsole;
 
 void DEngine::Init(int argc, char* argv[])
 {
@@ -34,6 +37,11 @@ void DEngine::Init(int argc, char* argv[])
 
 	GameManager = new DGameManager();
 	DWindowManager::Initialize("Diabolical", 128, 128, 800, 600, SDL_WINDOW_HIDDEN);
+
+	InitImGui();
+	DevConsole = std::make_shared<DDevConsole>();
+
+
 
 	//RunAllTests();
 }
