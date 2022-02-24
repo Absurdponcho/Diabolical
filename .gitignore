@@ -397,7 +397,6 @@ src/.vs/GunGame/v16/Browse.VC.db
 # things
 *.arc
 imgui.ini
-*.vcxproj
 *.vcxproj.user
 Log
 *.filters
