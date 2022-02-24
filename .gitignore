@@ -392,3 +392,12 @@ src/.vs/GunGame/v16/.suo
 src/.vs/GunGame/v16/.suo
 *.db
 src/.vs/GunGame/v16/Browse.VC.db
+
+
+# things
+*.arc
+imgui.ini
+*.vcxproj.user
+Log
+*.filters
+*.user
