@@ -1,7 +1,7 @@
 #include "TestWindow.h"
 #include "SOIL/SOIL.h"
 #include "gl/glew.h"
-#include "../Check.h"
+#include "Check.h"
 
 
 TestWindow::TestWindow()

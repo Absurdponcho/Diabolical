@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
 #include <iostream>
-#include "../Logging/Logging.h"
+#include "Logging/Logging.h"
 #include <fstream>
 #include <AL/al.h>
-#include "../Types/DString.h"
+#include "Types/DString.h"
 
 class DAudioFile
 {

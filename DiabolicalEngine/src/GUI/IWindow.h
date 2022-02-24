@@ -1,7 +1,7 @@
 #pragma once
 #include "..\ImGui\imgui.h"
 #include <vector>
-#include "../Types/DVector.h"
+#include "Types/DVector.h"
 
 class IWindow
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Types/DString.h"
+#include "Types/DString.h"
 #include <string>
 #include <vector>
 // programming for windows first, since I cant test on other platforms rn

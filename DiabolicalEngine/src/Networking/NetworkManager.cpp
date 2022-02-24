@@ -1,7 +1,7 @@
 #include "NetworkManager.h"
-#include "../CommandLine/CmdLine.h"
-#include "../Logging/Logging.h"
-#include "../Check.h"
+#include "CommandLine/CmdLine.h"
+#include "Logging/Logging.h"
+#include "Check.h"
 #include "Server.h"
 #include "Client.h"
 

@@ -1,5 +1,6 @@
 #pragma once
-#include "../Check.h"
+#include "Check.h"
+#include <vector>
 
 template <typename T>
 class DVector : private std::vector<T>

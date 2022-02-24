@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
-#include "../Types/DString.h"
-#include "../Thread/ScopedMutex.h"
+#include "Types/DString.h"
+#include "Thread/ScopedMutex.h"
 
 #define LOG(x) Logging::LogString("LOG", __FUNCTION__, __LINE__, x, 15)
 #define LOG_WARN(x) Logging::LogString("WARNING", __FUNCTION__, __LINE__, x, 14)

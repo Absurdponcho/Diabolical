@@ -1,23 +1,23 @@
 #include "GameManager.h"
 #include <chrono>
 #include <SDL2/SDL.h>
-#include "../Graphics/WindowManager.h"
+#include "Graphics/WindowManager.h"
 #include <gl/glew.h>
 #include <gl/GL.h>
-#include "../Audio/AudioSource.h"
-#include "../Audio/WAVFile.h"
-#include "../ImGui/imgui.h"
-#include "../ImGui/backends/imgui_impl_opengl3.h"
-#include "../ImGui/backends/imgui_impl_sdl.h"
-#include "../GUI/IWindow.h"
-#include "../GUI/TestWindow.h"
-#include "../Thread/GameThread.h"
-#include "../Thread/Thread.h"
-#include "../AssetManager/AssetManager.h"
-#include "../ECS/flecs.h"
-#include "../GUI/GUI.h"
-#include "../Input/Input.h"
-#include "../Maths/Maths.h"
+#include "Audio/AudioSource.h"
+#include "Audio/WAVFile.h"
+#include "ImGui/imgui.h"
+#include "ImGui/backends/imgui_impl_opengl3.h"
+#include "ImGui/backends/imgui_impl_sdl.h"
+#include "GUI/IWindow.h"
+#include "GUI/TestWindow.h"
+#include "Thread/GameThread.h"
+#include "Thread/Thread.h"
+#include "AssetManager/AssetManager.h"
+#include "ECS/flecs.h"
+#include "GUI/GUI.h"
+#include "Input/Input.h"
+#include "Maths/Maths.h"
 
 struct MeshRenderer
 {
@@ -30,16 +30,21 @@ DGameManager::DGameManager()
 	testPrefab.add<MeshRenderer>();
 	testPrefab.add<Transform3D>();
 
-	ECSWorld.entity().is_a(testPrefab);
+	auto parent = ECSWorld.entity().is_a(testPrefab);
 
 	ECSWorld.system<MeshRenderer, Transform3D>("Render")
 		.kind(flecs::OnStore)
 		.each([](flecs::entity ent, MeshRenderer& Renderer, Transform3D& Transform)
 	{ 
 		LOG(DString::Format("Test %i", ent.id())); 
+		LOG(DString::Format("FPS: %f", DGameManager::Get().GetGameFPS())); 
 	});
 
-	
+	auto child = ECSWorld.entity().is_a(testPrefab);
+
+	child.child_of(parent);
+
+	parent.disable();
 }
 
 void DGameManager::Exit()
@@ -95,4 +100,10 @@ float DGameManager::GetGameTime()
 int DGameManager::GetFrame()
 {
 	return Frame;
+}
+
+DGameManager& DGameManager::Get()
+{
+	Check (DEngine::GameManager);
+	return *DEngine::GameManager;
 }

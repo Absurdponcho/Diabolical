@@ -1,9 +1,9 @@
 #pragma once
-#include "../Thread/Thread.h"
-#include "../Thread/GameThread.h"
+#include "Thread/Thread.h"
+#include "Thread/GameThread.h"
 #include "Socket.h"
 #include "TCPConnection.h"
-#include "../Types/DVector.h"
+#include "Types/DVector.h"
 
 class DSocket;
 

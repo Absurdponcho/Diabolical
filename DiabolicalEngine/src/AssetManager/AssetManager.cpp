@@ -1,8 +1,8 @@
 #include "AssetManager.h"
-#include "../Check.h"
+#include "Check.h"
 #include <iostream>
 #include <fstream>
-#include "../FileSystem/Filesystem.h"
+#include "FileSystem/Filesystem.h"
 
 DAssetManager* DAssetManager::AssetManager = nullptr;
 

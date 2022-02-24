@@ -1,6 +1,6 @@
 #include "TCPConnection.h"
 #include "Socket.h"
-#include "../Thread/Thread.h"
+#include "Thread/Thread.h"
 
 DTCPConnection::DTCPConnection(std::unique_ptr<DSocket>& NewSocket, DString IncomingIP)
 	: RemoteIP(IncomingIP),

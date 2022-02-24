@@ -1,7 +1,7 @@
 #pragma once
-#include "../IWindow.h"
+#include "GUI/IWindow.h"
 #include <array>
-#include "../../Types/DString.h"
+#include "Types/DString.h"
 
 class DDevConsole : public IWindow
 {

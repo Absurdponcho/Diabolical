@@ -1,6 +1,6 @@
 #include "Client.h"
 #include "Socket.h"
-#include "../Check.h"
+#include "Check.h"
 #include "TCPConnection.h"
 
 DClient::DClient()

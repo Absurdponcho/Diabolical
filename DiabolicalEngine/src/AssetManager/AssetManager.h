@@ -1,12 +1,12 @@
 #pragma once
-#include "../Types/DString.h"
-#include "../Thread/ThreadsafeContainer.h"
-#include "../Types/DVector.h"
+#include "Types/DString.h"
+#include "Thread/ThreadsafeContainer.h"
+#include "Types/DVector.h"
 #include <unordered_map>
-#include "../Thread/GameThread.h"
-#include "../Types/Action.h"
-#include "../Thread/Thread.h"
-#include "../Logging/Logging.h"
+#include "Thread/GameThread.h"
+#include "Types/Action.h"
+#include "Thread/Thread.h"
+#include "Logging/Logging.h"
 
 typedef DAction<std::shared_ptr<class DRawAsset>> AAsyncAssetLoad;
 

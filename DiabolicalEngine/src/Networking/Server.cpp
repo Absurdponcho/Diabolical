@@ -1,6 +1,6 @@
 #include "Server.h"
 #include "Socket.h"
-#include "../Check.h"
+#include "Check.h"
 
 DServer::DServer()
 	:	TCPSocket(std::make_unique<DSocket>()),

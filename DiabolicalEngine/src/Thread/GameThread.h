@@ -1,9 +1,9 @@
 #pragma once
 #include <functional>
 #include "ScopedMutex.h"
-#include "../Logging/Logging.h"
-#include "../Types/DVector.h"
-#include "../Types/Action.h"
+#include "Logging/Logging.h"
+#include "Types/DVector.h"
+#include "Types/Action.h"
 
 class DGameThread
 {

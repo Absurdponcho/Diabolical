@@ -1,7 +1,7 @@
 #include "WindowManager.h"
 #include <gl/glew.h>
-#include "../Logging/Logging.h"
-#include "../DiabolicalEngine.h"
+#include "Logging/Logging.h"
+#include "DiabolicalEngine.h"
 
 #ifdef PLATFORM_WINDOWS
 #include <Windows.h>

@@ -1,5 +1,5 @@
 #include "WavFile.h"
-#include "../AssetManager/AssetManager.h"
+#include "AssetManager/AssetManager.h"
 
 DWAVFile::~DWAVFile()
 {

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <stdarg.h>
 #include <vector>
-#include "../Check.h"
+#include "Check.h"
 #include <algorithm>
 
 #include <limits>

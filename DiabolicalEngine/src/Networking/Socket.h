@@ -1,6 +1,6 @@
 #pragma once
-#include "../DiabolicalEngine.h"
-#include "../DiabolicalTypes.h"
+#include "DiabolicalEngine.h"
+#include "DiabolicalTypes.h"
 
 union SocketAddressUnion
 {

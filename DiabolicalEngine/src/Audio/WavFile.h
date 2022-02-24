@@ -2,7 +2,7 @@
 #include "AudioUtility.h"
 #include <AL/AL.h>
 #include <AL/ALC.h>
-#include "../Types/Action.h"
+#include "Types/Action.h"
 
 typedef DAction<std::shared_ptr<class DWAVFile>> AAsyncWAVLoad;
 

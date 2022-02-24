@@ -19,6 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\Rendering\Mesh.cpp" />
+    <ClCompile Include="src\AssetManager\AssetManager.cpp" />
+    <ClCompile Include="src\Graphics\Rendering\MeshPrimitives.cpp" />
+    <ClCompile Include="src\GUI\GUI.cpp" />
+    <ClCompile Include="src\Input\Input.cpp" />
+    <ClCompile Include="src\Maths\Maths.cpp" />
+    <ClCompile Include="src\Networking\Client.cpp" />
+    <ClCompile Include="src\Networking\Server.cpp" />
+    <ClCompile Include="src\Networking\NetworkManager.cpp" />
     <ClCompile Include="src\GUI\DevConsole\DevConsole.cpp" />
     <ClCompile Include="src\ImGui\imgui_stdlib.cpp" />
     <ClCompile Include="src\Thread\ScopedMutex.cpp" />
@@ -48,8 +57,19 @@
     <ClCompile Include="src\Logging\Logging.cpp" />
     <ClCompile Include="src\Audio\WavFile.cpp" />
     <ClCompile Include="src\Thread\Thread.cpp" />
+    <ClCompile Include="src\Networking\TCPConnection.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Graphics\Rendering\Mesh.h" />
+    <ClInclude Include="src\AssetManager\AssetManager.h" />
+    <ClInclude Include="src\Graphics\Rendering\MeshPrimitives.h" />
+    <ClInclude Include="src\GUI\GUI.h" />
+    <ClInclude Include="src\Input\Input.h" />
+    <ClInclude Include="src\Maths\Maths.h" />
+    <ClInclude Include="src\Networking\Client.h" />
+    <ClInclude Include="src\Networking\NetTypes.h" />
+    <ClInclude Include="src\Networking\Server.h" />
+    <ClInclude Include="src\Networking\NetworkManager.h" />
     <ClInclude Include="src\GUI\DevConsole\DevConsole.h" />
     <ClInclude Include="src\ImGui\imgui_stdlib.h" />
     <ClInclude Include="src\Thread\ScopedMutex.h" />
@@ -71,6 +91,9 @@
     <ClInclude Include="src\ImGui\imstb_textedit.h" />
     <ClInclude Include="src\ImGui\imstb_truetype.h" />
     <ClInclude Include="src\GUI\IWindow.h" />
+    <ClInclude Include="src\Thread\ThreadsafeContainer.h" />
+    <ClInclude Include="src\Types\Action.h" />
+    <ClInclude Include="src\Types\DVector.h" />
     <ClInclude Include="src\Utility\Random.h" />
     <ClInclude Include="src\DiabolicalTypes.h" />
     <ClInclude Include="src\DiabolicalEngine.h" />
@@ -83,6 +106,7 @@
     <ClInclude Include="src\Types\DString.h" />
     <ClInclude Include="src\Audio\WavFile.h" />
     <ClInclude Include="src\Thread\Thread.h" />
+    <ClInclude Include="src\Networking\TCPConnection.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -184,6 +208,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

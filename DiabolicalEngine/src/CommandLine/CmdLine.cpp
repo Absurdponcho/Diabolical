@@ -1,6 +1,6 @@
 #include "CmdLine.h"
-#include "../Check.h"
-#include "../Logging/Logging.h"
+#include "Check.h"
+#include "Logging/Logging.h"
 
 DCommandLine* CommandLine = nullptr;
 

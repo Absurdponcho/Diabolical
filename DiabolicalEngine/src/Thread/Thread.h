@@ -2,8 +2,8 @@
 #include <thread>
 #include <chrono>
 #include "GameThread.h"
-#include "../Logging/Logging.h"
-#include "../Check.h"
+#include "Logging/Logging.h"
+#include "Check.h"
 
 class DThread
 {

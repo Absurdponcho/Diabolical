@@ -1,6 +1,6 @@
 #pragma once
 #include "ScopedMutex.h"
-#include "../Logging/Logging.h"
+#include "Logging/Logging.h"
 
 template <typename T>
 class DThreadsafeContainerValue

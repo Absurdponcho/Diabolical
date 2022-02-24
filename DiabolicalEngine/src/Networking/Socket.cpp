@@ -1,5 +1,5 @@
 #include "Socket.h"
-#include "../Logging/Logging.h"
+#include "Logging/Logging.h"
 
 #ifdef PLATFORM_WINDOWS
 	#define _WINSOCK_DEPRECATED_NO_WARNINGS

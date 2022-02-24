@@ -1,9 +1,9 @@
 #include "DevConsole.h"
-#include "../../Graphics/WindowManager.h"
-#include "../../Types/DString.h"
-#include "../../Logging/Logging.h"
-#include "../../ImGui/imgui_stdlib.h"
-#include "../../ImGui/imgui.h"
+#include "Graphics/WindowManager.h"
+#include "Types/DString.h"
+#include "Logging/Logging.h"
+#include "ImGui/imgui_stdlib.h"
+#include "ImGui/imgui.h"
 
 DDevConsole::DDevConsole()
 {

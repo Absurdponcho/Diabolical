@@ -1,9 +1,9 @@
 #pragma once
-#include "../Thread/Thread.h"
-#include "../Thread/GameThread.h"
+#include "Thread/Thread.h"
+#include "Thread/GameThread.h"
 #include "Socket.h"
 #include "NetTypes.h"
-#include "../Thread/ThreadsafeContainer.h"
+#include "Thread/ThreadsafeContainer.h"
 
 class DTCPConnection
 {

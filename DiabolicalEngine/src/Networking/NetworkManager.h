@@ -1,5 +1,5 @@
 #pragma once
-#include "../Types/DString.h"
+#include "Types/DString.h"
 
 class DServer;
 class DClient;

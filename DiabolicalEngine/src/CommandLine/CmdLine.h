@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "../Types/DString.h"
+#include "Types/DString.h"
 
 class DCommandLine
 {

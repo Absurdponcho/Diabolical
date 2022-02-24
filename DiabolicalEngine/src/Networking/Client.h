@@ -1,6 +1,6 @@
 #pragma once
-#include "../Thread/Thread.h"
-#include "../Thread/GameThread.h"
+#include "Thread/Thread.h"
+#include "Thread/GameThread.h"
 
 class DSocket;
 

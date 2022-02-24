@@ -1,5 +1,5 @@
 #pragma once
-#include "../ECS/flecs.h"
+#include "ECS/flecs.h"
 
 class DGameManager
 {
@@ -23,6 +23,8 @@ public:
 
 	// Exits the game at the end of the current frame
 	void Exit();
+
+	static DGameManager& Get();
 
 private:
 	void GameTick();

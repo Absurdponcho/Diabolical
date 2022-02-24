@@ -1,5 +1,5 @@
 #include "Thread.h"
-#include "../Logging/Logging.h"
+#include "Logging/Logging.h"
 
 DVector<DThread*> DThread::ManagedThreads;
 
