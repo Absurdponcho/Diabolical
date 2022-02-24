@@ -1,7 +1,9 @@
 #pragma once
 #include "Mesh.h"
+#include <memory>
 
 namespace MeshPrimitives
 {
-	const DMesh Cube;
+	extern std::shared_ptr<DMesh> Cube;
+	extern std::shared_ptr<DMesh> Triangle;
 }

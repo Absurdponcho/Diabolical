@@ -18,26 +18,56 @@
 #include "GUI/GUI.h"
 #include "Input/Input.h"
 #include "Maths/Maths.h"
+#include "Graphics/Rendering/Mesh.h"
+#include "Graphics/Rendering/MeshPrimitives.h"
+#include "Graphics/Rendering/Material.h"
 
-struct MeshRenderer
+class DMeshRenderer
 {
-	
+public:
+	std::shared_ptr<DMesh> Mesh;
+	std::shared_ptr<DMaterial> Material;
 };
 
-DGameManager::DGameManager()
+std::shared_ptr<DMaterial> TestMaterial;
+
+void DGameManager::RenderingTest()
 {
+	DString VertexShader;
+	DString FragmentShader;
+
+	VertexShader = DAssetManager::Get().SynchronousLoadAsset("Assets/simple.vert")->AsString();
+	FragmentShader = DAssetManager::Get().SynchronousLoadAsset("Assets/simple.frag")->AsString();
+
+	TestMaterial = std::make_shared<DMaterial>();
+	TestMaterial->BuildShader(VertexShader, FragmentShader);
+
 	auto testPrefab = ECSWorld.prefab();
-	testPrefab.add<MeshRenderer>();
+	testPrefab.add<DMeshRenderer>()
+		.set<DMeshRenderer>({ MeshPrimitives::Cube, TestMaterial });
 	testPrefab.add<Transform3D>();
 
 	auto parent = ECSWorld.entity().is_a(testPrefab);
 
-	ECSWorld.system<MeshRenderer, Transform3D>("Render")
+	ECSWorld.system<DMeshRenderer, Transform3D>("Render")
 		.kind(flecs::OnStore)
-		.each([](flecs::entity ent, MeshRenderer& Renderer, Transform3D& Transform)
-	{ 
-		LOG(DString::Format("Test %i", ent.id())); 
-		LOG(DString::Format("FPS: %f", DGameManager::Get().GetGameFPS())); 
+		.each([](flecs::entity ent, DMeshRenderer& Renderer, Transform3D& Transform)
+	{
+		DMesh* Mesh = Renderer.Mesh.get();
+		if (!Mesh) return;
+
+		GLuint MeshVertexArray = Mesh->GetVertexArray();
+		if (!MeshVertexArray) return;
+
+		DMaterial* Material = Renderer.Material.get();
+		if (!Material) return;
+
+		GLuint ShaderProgram = Material->GetProgram();
+		if (!ShaderProgram) return;
+
+		glUseProgram(ShaderProgram);
+		glBindVertexArray(MeshVertexArray);
+		glDrawElements(GL_TRIANGLES, Mesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
 	});
 
 	auto child = ECSWorld.entity().is_a(testPrefab);
@@ -54,8 +84,10 @@ void DGameManager::Exit()
 
 void DGameManager::MainGameLoop()
 {
+	RenderingTest();
+
 	glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
-	glClear(GL_COLOR_BUFFER_BIT); 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 	EventTick();
 	SDL_ShowWindow(DWindowManager::GetSDLWindow());
 
@@ -63,11 +95,9 @@ void DGameManager::MainGameLoop()
 	{
 		EventTick();
 		GameTick();
-
-		glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
-		glClear(GL_COLOR_BUFFER_BIT);
 		ImGuiTick();
 		SDL_GL_SwapWindow(DWindowManager::GetSDLWindow());
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		DThread::CheckManagedThreads();
 		DGameThread::RunInvokedFunctions();

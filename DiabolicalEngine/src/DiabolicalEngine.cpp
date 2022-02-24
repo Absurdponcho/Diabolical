@@ -13,6 +13,8 @@
 #include "AssetManager/AssetManager.h"
 #include "GUI/GUI.h"
 #include "GUI/DevConsole/DevConsole.h"
+#include "gl/glew.h"
+#include <gl/GL.h>
 
 #ifdef PLATFORM_WINDOWS
 #include <Windows.h>
@@ -35,6 +37,7 @@ void DEngine::Init(int argc, char* argv[])
 	DNetworkManager::Initialize();
     DAssetManager::Initialize();
 
+    glewInit();
 	GameManager = new DGameManager();
 	DWindowManager::Initialize("Diabolical", 128, 128, 800, 600, SDL_WINDOW_HIDDEN);
 

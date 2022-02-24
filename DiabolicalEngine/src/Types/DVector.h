@@ -15,6 +15,11 @@ public:
 	{
 		return std::vector<T>::size();
 	}
+		
+	const inline size_t SizeBytes() const
+	{
+		return std::vector<T>::size() * sizeof(T);
+	}
 
 	inline void PushBack(const T& Value)
 	{
@@ -147,5 +152,10 @@ public:
 	{
 		Check (IsValidIndex(Index));
 		return std::vector<T>::operator[](Index);
+	}
+
+	inline T* GetData()
+	{
+		return std::vector<T>::data();
 	}
 };

@@ -24,7 +24,7 @@ class DString : private std::string
 {
 public:
 	using std::string::string;
-
+	using std::string::operator[];
 
 	DString(int Val)
 	{
@@ -155,6 +155,12 @@ public:
 	inline DString& Append(const DString& Other)
 	{
 		append(Other);	
+		return *this;
+	}
+
+	inline DString& Append(const char* String, size_t StrLength)
+	{
+		append(String, StrLength);
 		return *this;
 	}
 

@@ -4,7 +4,9 @@
 class DGameManager
 {
 public:
-	DGameManager();
+	DGameManager() {};
+
+	void RenderingTest();
 
 	// called by the engine to start the game. don't call this manually
 	void MainGameLoop();

@@ -35,6 +35,14 @@ public:
 		return AssetSize;
 	}
 
+	DString AsString() const
+	{
+		DString RetVal = DString();
+		RetVal.Append(GetData<char>(), GetAssetSize() + 1);
+		RetVal[RetVal.Length()-1] = 0;
+		return RetVal;
+	}
+
 	DRawAsset(DString NewFilepath, void* NewData, uint64_t NewAssetSize)
 		: Filepath(NewFilepath), Data(NewData), AssetSize(NewAssetSize)
 	{
