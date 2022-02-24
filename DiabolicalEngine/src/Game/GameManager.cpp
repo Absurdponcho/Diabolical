@@ -82,8 +82,17 @@ void DGameManager::Exit()
 	bMainLoopRunning = false;
 }
 
+std::shared_ptr<DAudioSource> AudioSource = std::make_shared<DAudioSource>();
+
 void DGameManager::MainGameLoop()
 {
+	DWAVFile::LoadAsync("Assets/Sussy Baka.wav", [&](std::shared_ptr<DWAVFile> NewWav)
+	{
+		Check(NewWav.get());
+		AudioSource->SetAudioFile(NewWav);
+		AudioSource->Play();
+	}); // Hey dude, you're being quite sussy
+
 	RenderingTest();
 
 	glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
