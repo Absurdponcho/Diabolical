@@ -40,10 +40,6 @@ void DEngine::Init(int argc, char* argv[])
 
 	InitImGui();
 	DevConsole = std::make_shared<DDevConsole>();
-
-
-
-	//RunAllTests();
 }
 
 void DEngine::Run()

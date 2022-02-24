@@ -17,10 +17,29 @@
 #include "../ECS/flecs.h"
 #include "../GUI/GUI.h"
 #include "../Input/Input.h"
+#include "../Maths/Maths.h"
+
+struct MeshRenderer
+{
+	
+};
 
 DGameManager::DGameManager()
 {
+	auto testPrefab = ECSWorld.prefab();
+	testPrefab.add<MeshRenderer>();
+	testPrefab.add<Transform3D>();
 
+	ECSWorld.entity().is_a(testPrefab);
+
+	ECSWorld.system<MeshRenderer, Transform3D>("Render")
+		.kind(flecs::OnStore)
+		.each([](flecs::entity ent, MeshRenderer& Renderer, Transform3D& Transform)
+	{ 
+		LOG(DString::Format("Test %i", ent.id())); 
+	});
+
+	
 }
 
 void DGameManager::Exit()
