@@ -6,6 +6,7 @@
 #include "Check.h"
 #include <chrono>
 #include <ctime>
+#include <fstream>
 
 #ifdef PLATFORM_WINDOWS
 #include <windows.h>

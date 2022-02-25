@@ -81,10 +81,11 @@ public:
 	static void Initialize();
 	static DAssetManager& Get();
 
+
 	void AsyncLoadAsset(DString FilePath, AAsyncAssetLoad OnAssetLoad);
 	std::shared_ptr<DRawAsset> SynchronousLoadAsset(DString FilePath);
 private:
-	std::shared_ptr<DRawAsset> Internal_SynchronousLoadAsset(DString FilePath);
+	std::shared_ptr<DRawAsset> Internal_SynchronousLoadAsset(DString& FilePath);
 
 	static DAssetManager* AssetManager;
 

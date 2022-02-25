@@ -1,13 +1,6 @@
 #pragma once
-
 #include "Types/DString.h"
-#include <string>
-#include <vector>
-// programming for windows first, since I cant test on other platforms rn
-// remindme put windows macro in
-#include <Windows.h>
-#include <filesystem>
-#include <fstream>
+
 namespace DFileSystem
 {
 	bool DirCreate(const DString& dir);
@@ -18,6 +11,8 @@ namespace DFileSystem
 	bool FileCreate(const DString& file, std::ofstream& stream, bool bOverwrite = true);
 	bool FileCopy(const DString& src, const DString& dest);
 	uint64_t FileSize(const DString& Path);
-	DVector <std::filesystem::path> FilesIn(const DString& dir, bool recursive = false);
+	DVector <DString> FilesIn(const DString& dir, bool recursive = false);
+	DString NormalizeFilePath(DString& FilePath, bool bAbsolute = false);
+	DString CurrentDirectory();
 
 }

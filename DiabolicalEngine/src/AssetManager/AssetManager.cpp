@@ -32,6 +32,8 @@ DAssetManager& DAssetManager::Get()
 
 void DAssetManager::AsyncLoadAsset(DString FilePath, AAsyncAssetLoad OnAssetLoad)
 {
+	FilePath = DFileSystem::NormalizeFilePath(FilePath);
+
 	Check (OnAssetLoad.IsBound());
 	if (!OnAssetLoad.IsBound()) return;
 
@@ -72,6 +74,7 @@ std::shared_ptr<DRawAsset> DAssetManager::SynchronousLoadAsset(DString FilePath)
 {
 	// To ensure the async load system does not encounter race conditions with 
 	// synchronous loading, just make the synchronous load do an async load ;)
+	FilePath = DFileSystem::NormalizeFilePath(FilePath);
 
 	bool bLoaded = false;
 	std::shared_ptr<DRawAsset> LoadedAsset;
@@ -89,7 +92,7 @@ std::shared_ptr<DRawAsset> DAssetManager::SynchronousLoadAsset(DString FilePath)
 	return LoadedAsset;
 }
 
-std::shared_ptr<DRawAsset> DAssetManager::Internal_SynchronousLoadAsset(DString FilePath)
+std::shared_ptr<DRawAsset> DAssetManager::Internal_SynchronousLoadAsset(DString& FilePath)
 {
 	auto AssetIt = LoadedAssets.find(FilePath);
 	if (AssetIt != LoadedAssets.end())
@@ -101,23 +104,23 @@ std::shared_ptr<DRawAsset> DAssetManager::Internal_SynchronousLoadAsset(DString 
 			if (SavedAssetSharedPtr.get())
 			{
 				// asset is still valid in memory somewhere, return it
-				return SavedAssetSharedPtr;
+				return SavedAssetSharedPtr; 
 			}
 		}
 	}
 
-	Check (DFileSystem::PathExists(FilePath));
 	if (!DFileSystem::PathExists(FilePath))
-	{
-		LOG_ERR("!DFileSystem::PathExists(FilePath)");
+	{ 
+		LOG_ERR(DString::Format("FilePath does not exist: %s", *FilePath));
+		Check(false);
 		return nullptr;
 	}
 
 	uint64_t FileSize = DFileSystem::FileSize(FilePath);
-	Check (FileSize != 0);
 	if (FileSize == 0)
 	{
 		LOG_ERR("FileSize == 0");
+		Check(false);
 		return nullptr;
 	}
 

@@ -1,4 +1,8 @@
 #include "Filesystem.h"
+#include <string>
+#include <vector>
+#include <filesystem>
+#include <fstream>
 bool DFileSystem::DirCreate(const DString& dir)
 {
 	if (PathExists(dir))
@@ -56,9 +60,9 @@ bool DFileSystem::PathDelete(const DString& path)
 	return false;
 }
 
-DVector <std::filesystem::path> DFileSystem::FilesIn(const DString& dir, bool recursive)
+DVector <DString> DFileSystem::FilesIn(const DString& dir, bool recursive)
 {
-	DVector <std::filesystem::path> filesFound;
+	DVector <DString> filesFound;
 	if (!recursive)
 	{
 		for (const auto& entry : std::filesystem::directory_iterator(*dir))
@@ -77,4 +81,28 @@ uint64_t DFileSystem::FileSize(const DString& Path)
 	if (!PathExists(Path)) return 0;
 
 	return (uint64_t) std::filesystem::file_size(*Path);
+}
+
+
+DString DFileSystem::NormalizeFilePath(DString& FilePath, bool bAbsolute)
+{
+	std::error_code Error;
+	std::filesystem::path NewPath = std::filesystem::relative(std::filesystem::path(*FilePath), std::filesystem::current_path(), Error);
+	
+	if (Error)
+	{
+		return Error.message();
+	}
+
+	if (bAbsolute)
+	{
+		return DString::Format("%s\\%s", *CurrentDirectory(), NewPath.string().c_str()).CapitalizePath();
+	}
+
+	return DString(NewPath.string()).CapitalizePath();
+}
+
+DString DFileSystem::CurrentDirectory()
+{
+	return std::filesystem::current_path().string() + '\\';
 }

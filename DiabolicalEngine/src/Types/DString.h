@@ -9,7 +9,7 @@
 #include <limits>
 #include <stdint.h>
 #include "DVector.h"
-
+#include <filesystem>
 
 template <typename T, typename U>
 bool CanTypeFitValue(const U value) {
@@ -31,9 +31,25 @@ public:
 		Append(DString(std::to_string(Val)));
 	}
 
+	DString(const std::filesystem::path& Path)
+	{
+		Append(Path.string());
+	}
+
+	DString(const std::string& Str)
+	{
+		const char* CStr = Str.c_str();
+		Append(CStr, strlen(CStr));
+	}
+
 	inline std::string ToSTLString() const
 	{
 		return std::string(**this);
+	}
+
+	inline void Reserve(const size_t Size)
+	{
+		reserve(Size);
 	}
 
 	inline const bool TryParseLong(long& Value) const
@@ -169,6 +185,11 @@ public:
 		return LHS._Equal(*RHS);
 	}
 
+	inline DString operator=(const std::string& RHS)
+	{
+		return DString(RHS);
+	}
+
 	inline friend bool operator!=(const DString& LHS, const DString& RHS)
 	{
 		return !LHS._Equal(*RHS);
@@ -181,7 +202,7 @@ public:
 	}
 
 	template<typename... Args>
-	static DString Format(DString Format, Args... args)
+	static DString Format(const DString& Format, Args... args)
 	{
 		const int BufferSize = 4096 * 2;
 		char Buffer[BufferSize];
@@ -229,6 +250,56 @@ public:
 	inline void Replace(char Char, char Replacement) 
 	{
 		std::replace(begin(), end(), Char, Replacement);
+	}
+
+	inline DString& ToLower()
+	{
+		std::transform(std::string::begin(), std::string::end(), std::string::begin(),
+			[](unsigned char c) { return std::tolower(c); });
+		return *this;
+	}
+
+	inline DString& ToUpper()
+	{
+		std::transform(std::string::begin(), std::string::end(), std::string::begin(),
+			[](unsigned char c) { return std::toupper(c); });
+		return *this;
+	}
+
+	inline DString& Capitalize()
+	{
+		auto Iterator = std::string::begin();
+		auto End = std::string::end();
+		bool bLastWasSpace = true;
+		while(Iterator != End)
+		{
+			char CurrentChar = *Iterator;
+			*Iterator = bLastWasSpace ? std::toupper(CurrentChar) : std::tolower(CurrentChar);
+
+			bLastWasSpace = CurrentChar == ' ';
+			
+			Iterator++;
+		}
+
+		return *this;
+	}
+
+	inline DString& CapitalizePath()
+	{
+		auto Iterator = std::string::begin();
+		auto End = std::string::end();
+		bool bLastWasSpace = true;
+		while (Iterator != End)
+		{
+			char CurrentChar = *Iterator;
+			*Iterator = bLastWasSpace ? std::toupper(CurrentChar) : std::tolower(CurrentChar);
+
+			bLastWasSpace = CurrentChar == '/' || CurrentChar == '\\';
+
+			Iterator++;
+		}
+
+		return *this;
 	}
 
 };
