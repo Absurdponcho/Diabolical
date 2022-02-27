@@ -1,8 +1,6 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <glm/ext/quaternion_float.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <glm/ext.hpp>
 
 typedef glm::ivec2 IntVector2;
 typedef glm::ivec3 IntVector3;

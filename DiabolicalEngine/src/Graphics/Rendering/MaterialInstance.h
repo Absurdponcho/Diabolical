@@ -4,11 +4,12 @@
 #include "Types/DString.h"
 #include "Maths/Maths.h"
 
+
 class DMaterialUniformValueBase 
 {
 public:
 	DMaterialUniformValueBase(GLint NewUniformLocation, const DString& NewName) 
-	: Name(NewName) {}
+	: UniformLocation(NewUniformLocation), Name(NewName) {}
 
 
 	DString Name;
@@ -53,7 +54,10 @@ inline void DMaterialUniformValue<int>::ApplyInternal() { glUniform1i(UniformLoc
 template <>
 inline void DMaterialUniformValue<float>::ApplyInternal() { glUniform1f(UniformLocation, Value); }
 template <>
-inline void DMaterialUniformValue<Matrix4x4>::ApplyInternal() { glUniformMatrix4fv(UniformLocation, 1, GL_FALSE, glm::value_ptr(Value)); }
+inline void DMaterialUniformValue<Matrix4x4>::ApplyInternal() 
+{	
+	glUniformMatrix4fv(UniformLocation, 1, GL_FALSE, glm::value_ptr((glm::mat4x4)Value)); 
+}
 
 class DMaterialInstance
 {
@@ -81,7 +85,6 @@ public:
 		if (GLuint Program = GetProgram())
 		{
 			GLint UniformLocation = glGetUniformLocation(Program, *Name);
-			Check (UniformLocation >= 0);
 			if (UniformLocation >= 0)
 			{
 				MaterialUniformValues.Add(new DMaterialUniformValue<T>(UniformLocation, Name, Value));

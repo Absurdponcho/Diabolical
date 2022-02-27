@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "ECS/flecs.h"
 
 template <typename T>
 class DWeakPtr;
