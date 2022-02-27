@@ -133,10 +133,6 @@ public:
 
 	inline void ApplyAllUniforms()
 	{
-		if (MaterialUniformValues.Size() != 2)
-		{
-			LOG_ERR("Fail");
-		}
 		for (DMaterialUniformValueBase* Base : MaterialUniformValues)
 		{
 			Base->Apply();
