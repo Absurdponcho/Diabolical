@@ -29,14 +29,14 @@ class DMeshRenderer
 public:
 	DMeshRenderer(){};
 
-	DMeshRenderer(std::shared_ptr<DMesh> NewMesh, std::shared_ptr<DMaterial> NewMaterial)
+	DMeshRenderer(DSharedPtr<DMesh> NewMesh, DSharedPtr<DMaterial> NewMaterial)
 		: Mesh(NewMesh), MaterialInstance(std::make_unique<DMaterialInstance>(NewMaterial)) {}
 
-	std::shared_ptr<DMesh> Mesh;
-	std::unique_ptr<DMaterialInstance> MaterialInstance;
+	DSharedPtr<DMesh> Mesh;
+	DUniquePtr<DMaterialInstance> MaterialInstance;
 };
 
-std::shared_ptr<DMaterial> TestMaterial;
+DSharedPtr<DMaterial> TestMaterial;
 
 void DGameManager::RenderingTest()
 {
@@ -49,7 +49,7 @@ void DGameManager::RenderingTest()
 	TestMaterial = std::make_shared<DMaterial>();
 	TestMaterial->BuildShader(VertexShader, FragmentShader);
 
-	auto TestRenderEntity = ECSWorld.entity()
+	auto& TestRenderEntity = ECSWorld.entity()
 	.set<DMeshRenderer>({ MeshPrimitives::Cube, TestMaterial })
 	.add<Transform3D>();
 
@@ -59,10 +59,10 @@ void DGameManager::RenderingTest()
 		.kind(flecs::OnStore)
 		.each([](const flecs::entity& ent, DMeshRenderer& Renderer, Transform3D& Transform)
 	{
-		DMesh* Mesh = Renderer.Mesh.get();
+		DMesh* Mesh = Renderer.Mesh.Get();
 		if (!Mesh) return;
 
-		DMaterialInstance* MaterialInstance = Renderer.MaterialInstance.get();
+		DMaterialInstance* MaterialInstance = Renderer.MaterialInstance.Get();
 		if (!MaterialInstance) return;
 
 		MaterialInstance->Bind();
@@ -76,13 +76,13 @@ void DGameManager::Exit()
 	bMainLoopRunning = false;
 }
 
-std::shared_ptr<DAudioSource> AudioSource = std::make_shared<DAudioSource>();
+DSharedPtr<DAudioSource> AudioSource = std::make_shared<DAudioSource>();
 
 void DGameManager::MainGameLoop()
 {
-	DWAVFile::LoadAsync("Assets/Sussy Baka.wav", [&](std::shared_ptr<DWAVFile> NewWav)
+	DWAVFile::LoadAsync("Assets/Sussy Baka.wav", [&](DSharedPtr<DWAVFile> NewWav)
 	{
-		Check(NewWav.get());
+		Check(NewWav.Get());
 		AudioSource->SetAudioFile(NewWav);
 		AudioSource->Play();
 	}); // Hey dude, you're being quite sussy

@@ -58,13 +58,13 @@ inline void DMaterialUniformValue<Matrix4x4>::ApplyInternal() { glUniformMatrix4
 class DMaterialInstance
 {
 public:
-	DMaterialInstance(const std::shared_ptr<DMaterial>& Material)
+	DMaterialInstance(const DSharedPtr<DMaterial>& Material)
 		: ParentMaterial(Material) 
 	{
 		Check(Material->GetProgram() > 0); // The parent material MUST have a valid shader
 	}
 
-	inline GLuint GetProgram() { Check(ParentMaterial.get()) if (!ParentMaterial.get()) return 0; return ParentMaterial->GetProgram(); }
+	inline GLuint GetProgram() { Check(ParentMaterial.Get()) if (!ParentMaterial.Get()) return 0; return ParentMaterial->GetProgram(); }
 
 	template <typename T>
 	void SetUniform(const DString& Name, const T& Value)
@@ -128,7 +128,7 @@ public:
 	}
 
 protected:
-	std::shared_ptr<DMaterial> ParentMaterial;
+	DSharedPtr<DMaterial> ParentMaterial;
 	DVector<DMaterialUniformValueBase*> MaterialUniformValues;
 };
 

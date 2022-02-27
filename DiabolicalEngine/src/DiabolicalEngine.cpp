@@ -23,7 +23,7 @@
 
 
 DGameManager* DEngine::GameManager = nullptr;
-std::shared_ptr<DDevConsole> DEngine::DevConsole;
+DSharedPtr<DDevConsole> DEngine::DevConsole;
 
 void DEngine::Init(int argc, char* argv[])
 {

@@ -7,8 +7,9 @@
 #include "Types/Action.h"
 #include "Thread/Thread.h"
 #include "Logging/Logging.h"
+#include "Types/DMemory.h"
 
-typedef DAction<std::shared_ptr<class DRawAsset>> AAsyncAssetLoad;
+typedef DAction<DSharedPtr<class DRawAsset>> AAsyncAssetLoad;
 
 class DRawAsset
 {
@@ -83,19 +84,19 @@ public:
 
 
 	void AsyncLoadAsset(DString FilePath, AAsyncAssetLoad OnAssetLoad);
-	std::shared_ptr<DRawAsset> SynchronousLoadAsset(DString FilePath);
+	DSharedPtr<DRawAsset> SynchronousLoadAsset(DString FilePath);
 private:
-	std::shared_ptr<DRawAsset> Internal_SynchronousLoadAsset(DString& FilePath);
+	DSharedPtr<DRawAsset> Internal_SynchronousLoadAsset(DString& FilePath);
 
 	static DAssetManager* AssetManager;
 
 	DThreadsafeContainer<DVector<PendingAssetLoad>> PendingAssetLoads;
-	std::unique_ptr<DThread> IOThread;
+	DUniquePtr<DThread> IOThread;
 	void ThreadRun();
 	bool bRunning = true;
 
 	// Weak pointers to loaded assets are stored here. If they haven't gone out of memory, 
 	// the weak pointer can be given as a shared ptr. Otherwise, it will reload as needed
-	std::unordered_map<DString, std::weak_ptr<DRawAsset>> LoadedAssets;
+	std::unordered_map<DString, DWeakPtr<DRawAsset>> LoadedAssets;
 };
 

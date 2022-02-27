@@ -1,6 +1,7 @@
 #pragma once
 #include "Thread/Thread.h"
 #include "Thread/GameThread.h"
+#include "Types/DMemory.h"
 
 class DSocket;
 
@@ -15,7 +16,7 @@ public:
 	DAction<bool> OnConnect; // bool = success
 
 protected:
-	std::unique_ptr<class DTCPConnection> TCPConnection;
+	DUniquePtr<class DTCPConnection> TCPConnection;
 	void TCPRun();
 
 	bool bMustClose = false;
@@ -25,7 +26,7 @@ protected:
 	DString PendingAddress = ""; 
 	int PendingPort = 0;
 
-	std::unique_ptr<DSocket> TCPSocket;
-	std::unique_ptr<DThread> TCPThread;
+	DUniquePtr<DSocket> TCPSocket;
+	DUniquePtr<DThread> TCPThread;
 };
 

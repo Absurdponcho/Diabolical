@@ -21,8 +21,8 @@ void DClient::AsyncConnect(const DString& Address, int Port)
 {
 	Check (!bIsConnected);
 	Check (!bPendingConnect);
-	Check(TCPSocket.get());
-	Check(TCPThread.get());
+	Check(TCPSocket.Get());
+	Check(TCPThread.Get());
 
 	PendingAddress = Address;
 	PendingPort = Port;

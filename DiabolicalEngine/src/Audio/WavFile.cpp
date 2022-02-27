@@ -8,15 +8,15 @@ DWAVFile::~DWAVFile()
 
 void DWAVFile::LoadAsync(DString filename, AAsyncWAVLoad OnLoad)
 {
-	DAssetManager::Get().AsyncLoadAsset(filename, [=](std::shared_ptr<DRawAsset> Asset) mutable
+	DAssetManager::Get().AsyncLoadAsset(filename, [=](DSharedPtr<DRawAsset> Asset) mutable
 	{
-		Check(Asset.get());
+		Check(Asset.Get());
 		Check(Asset->IsValid());
-		if (Asset.get() && Asset->IsValid())
+		if (Asset.Get() && Asset->IsValid())
 		{
-			std::shared_ptr<DWAVFile> NewDWav = DWAVFile::Load(Asset);
-			Check (NewDWav.get());
-			if (OnLoad.IsBound() && NewDWav.get())
+			DSharedPtr<DWAVFile> NewDWav = DWAVFile::Load(Asset);
+			Check (NewDWav.Get());
+			if (OnLoad.IsBound() && NewDWav.Get())
 			{
 				OnLoad.Invoke(NewDWav);
 			}
@@ -24,13 +24,13 @@ void DWAVFile::LoadAsync(DString filename, AAsyncWAVLoad OnLoad)
 	});
 }
 
-std::shared_ptr<DWAVFile> DWAVFile::Load(std::shared_ptr<DRawAsset> Asset)
+DSharedPtr<DWAVFile> DWAVFile::Load(DSharedPtr<DRawAsset> Asset)
 {
-	Check(Asset.get());
+	Check(Asset.Get());
 	Check(Asset->IsValid());
-	if (!Asset.get() || !Asset->IsValid())
+	if (!Asset.Get() || !Asset->IsValid())
 	{
-		LOG_ERR("!Asset.get() || !Asset->IsValid()");
+		LOG_ERR("!Asset.Get() || !Asset->IsValid()");
 		return nullptr;
 	}
 	const char* buffer = Asset->GetData<char>();
@@ -74,7 +74,7 @@ std::shared_ptr<DWAVFile> DWAVFile::Load(std::shared_ptr<DRawAsset> Asset)
 		return nullptr;
 	}
 
-	std::shared_ptr<DWAVFile> OutWav = std::make_shared<DWAVFile>(Asset);
+	DSharedPtr<DWAVFile> OutWav = std::make_shared<DWAVFile>(Asset);
 
 	OutWav->channels = Header.NumChannels;
 	OutWav->sampleRate = Header.SampleRate;
@@ -121,5 +121,5 @@ int DWAVFile::GetSize() const
 
 bool DWAVFile::IsValid() const
 {
-	return AssetRef.get() && AssetRef->IsValid();
+	return AssetRef.Get() && AssetRef->IsValid();
 }

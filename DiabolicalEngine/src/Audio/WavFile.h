@@ -3,8 +3,9 @@
 #include <AL/AL.h>
 #include <AL/ALC.h>
 #include "Types/Action.h"
+#include "Types/DMemory.h"
 
-typedef DAction<std::shared_ptr<class DWAVFile>> AAsyncWAVLoad;
+typedef DAction<DSharedPtr<class DWAVFile>> AAsyncWAVLoad;
 
 struct WavHeader
 {
@@ -30,7 +31,7 @@ public:
 	virtual ~DWAVFile();
 
 	DWAVFile() {}
-	DWAVFile(std::shared_ptr<class DRawAsset> Asset)
+	DWAVFile(DSharedPtr<class DRawAsset> Asset)
 		: AssetRef(Asset)
 	{}
 
@@ -45,9 +46,9 @@ public:
 
 protected:
 
-	std::shared_ptr<class DRawAsset> AssetRef;
+	DSharedPtr<class DRawAsset> AssetRef;
 private:
-	static std::shared_ptr<DWAVFile> Load(std::shared_ptr<class DRawAsset> Asset);
+	static DSharedPtr<DWAVFile> Load(DSharedPtr<class DRawAsset> Asset);
 	int channels = -1;
 	int sampleRate = -1;
 	int bps = -1;

@@ -4,15 +4,16 @@
 #include "Socket.h"
 #include "NetTypes.h"
 #include "Thread/ThreadsafeContainer.h"
+#include "Types/DMemory.h"
 
 class DTCPConnection
 {
 public:
-	DTCPConnection(std::unique_ptr<DSocket>& NewSocket, DString IncomingIP);
+	DTCPConnection(DUniquePtr<DSocket>& NewSocket, DString IncomingIP);
 	virtual ~DTCPConnection();
 
 	const DString& GetIP() const { return RemoteIP; } 
-	void QueueTCPSendBuffer(std::unique_ptr<NetBuffer>& Buffer);
+	void QueueTCPSendBuffer(DUniquePtr<NetBuffer>& Buffer);
 
 	void SendPing();
 
@@ -20,9 +21,9 @@ protected:
 
 	// Using a unique_ptr to heap allocated buffers. saves us from doing HUGE buffer copies. Thread will have full ownership.
 	// during mutex lock, only ptr needs to be swapped so its much better than copying buffers
-	DThreadsafeContainer<DVector<std::unique_ptr<NetBuffer>>> TCPSendBuffers;
+	DThreadsafeContainer<DVector<DUniquePtr<NetBuffer>>> TCPSendBuffers;
 
-	bool PopTCPSendBuffer(std::unique_ptr<NetBuffer>& Buffer);
+	bool PopTCPSendBuffer(DUniquePtr<NetBuffer>& Buffer);
 
 	bool bMustClose = false;
 	void TCPSend();
@@ -30,7 +31,7 @@ protected:
 
 	DString RemoteIP = "";
 
-	std::unique_ptr<DSocket> TCPSocket;
-	std::unique_ptr<DThread> TCPSendThread;
-	std::unique_ptr<DThread> TCPReceiveThread;
+	DUniquePtr<DSocket> TCPSocket;
+	DUniquePtr<DThread> TCPSendThread;
+	DUniquePtr<DThread> TCPReceiveThread;
 };

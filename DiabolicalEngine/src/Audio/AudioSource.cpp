@@ -4,7 +4,7 @@
 
 /*AudioSource = new DAudioSource();
 {
-	std::shared_ptr<DWAVFile> WavFile = DWAVFile::Load("Assets/Sussy Baka.wav");
+	DSharedPtr<DWAVFile> WavFile = DWAVFile::Load("Assets/Sussy Baka.wav");
 	AudioSource->SetAudioFile(WavFile);
 	AudioSource->Play();
 }*/
@@ -15,10 +15,9 @@ DAudioSource::~DAudioSource()
 	
 }
 
-void DAudioSource::SetAudioFile(std::shared_ptr<DAudioFile> NewAudioFile)
+void DAudioSource::SetAudioFile(const DSharedPtr<DAudioFile>& NewAudioFile)
 {
 	AudioFile = NewAudioFile;
-	
 }
 
 void DAudioSource::Play()

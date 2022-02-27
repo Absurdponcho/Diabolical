@@ -61,7 +61,7 @@ void DAssetManager::ThreadRun()
 		{
 			if (PendingLoad.Action.IsBound())
 			{
-				std::shared_ptr<DRawAsset> LoadedAsset = Internal_SynchronousLoadAsset(PendingLoad.Filepath);
+				DSharedPtr<DRawAsset> LoadedAsset = Internal_SynchronousLoadAsset(PendingLoad.Filepath);
 				PendingLoad.Action.Invoke(LoadedAsset);
 			}
 		}
@@ -70,15 +70,15 @@ void DAssetManager::ThreadRun()
 	}
 }
 
-std::shared_ptr<DRawAsset> DAssetManager::SynchronousLoadAsset(DString FilePath)
+DSharedPtr<DRawAsset> DAssetManager::SynchronousLoadAsset(DString FilePath)
 {
 	// To ensure the async load system does not encounter race conditions with 
 	// synchronous loading, just make the synchronous load do an async load ;)
 	FilePath = DFileSystem::NormalizeFilePath(FilePath);
 
 	bool bLoaded = false;
-	std::shared_ptr<DRawAsset> LoadedAsset;
-	AsyncLoadAsset(FilePath, [&](std::shared_ptr<DRawAsset> Asset)
+	DSharedPtr<DRawAsset> LoadedAsset;
+	AsyncLoadAsset(FilePath, [&](DSharedPtr<DRawAsset> Asset)
 	{ 
 		LoadedAsset = Asset; 
 		bLoaded = true; 	
@@ -92,16 +92,16 @@ std::shared_ptr<DRawAsset> DAssetManager::SynchronousLoadAsset(DString FilePath)
 	return LoadedAsset;
 }
 
-std::shared_ptr<DRawAsset> DAssetManager::Internal_SynchronousLoadAsset(DString& FilePath)
+DSharedPtr<DRawAsset> DAssetManager::Internal_SynchronousLoadAsset(DString& FilePath)
 {
 	auto AssetIt = LoadedAssets.find(FilePath);
 	if (AssetIt != LoadedAssets.end())
 	{
-		std::weak_ptr<DRawAsset> SavedAsset = AssetIt->second;
-		if (!SavedAsset.expired())
+		DWeakPtr<DRawAsset> SavedAsset = AssetIt->second;
+		if (!SavedAsset.Expired())
 		{
-			std::shared_ptr<DRawAsset> SavedAssetSharedPtr = SavedAsset.lock();
-			if (SavedAssetSharedPtr.get())
+			DSharedPtr<DRawAsset> SavedAssetSharedPtr = SavedAsset.Lock();
+			if (SavedAssetSharedPtr.Get())
 			{
 				// asset is still valid in memory somewhere, return it
 				return SavedAssetSharedPtr; 
@@ -128,7 +128,7 @@ std::shared_ptr<DRawAsset> DAssetManager::Internal_SynchronousLoadAsset(DString&
 	Check(Buffer);
 
 	// DRawAsset will handle deletion of Buffer from now
-	std::shared_ptr<DRawAsset> NewAsset = std::make_shared<DRawAsset>(FilePath, Buffer, FileSize);
+	DSharedPtr<DRawAsset> NewAsset = std::make_shared<DRawAsset>(FilePath, Buffer, FileSize);
 
 	std::ifstream in = std::ifstream(*FilePath, std::ios::binary);
 	Check (in.is_open());

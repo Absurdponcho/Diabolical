@@ -2,13 +2,13 @@
 #include "Socket.h"
 #include "Thread/Thread.h"
 
-DTCPConnection::DTCPConnection(std::unique_ptr<DSocket>& NewSocket, DString IncomingIP)
+DTCPConnection::DTCPConnection(DUniquePtr<DSocket>& NewSocket, DString IncomingIP)
 	: RemoteIP(IncomingIP),
 	TCPSendThread(std::make_unique<DThread>([=]() { TCPSend(); })),
 	TCPReceiveThread(std::make_unique<DThread>([=]() { TCPReceive(); }))
 {
-	Check(NewSocket.get());
-	TCPSocket.swap(NewSocket);
+	Check(NewSocket.Get());
+	TCPSocket.Swap(NewSocket);
 }
 
 DTCPConnection::~DTCPConnection()
@@ -21,7 +21,7 @@ DTCPConnection::~DTCPConnection()
 
 void DTCPConnection::TCPSend()
 {
-	std::unique_ptr<NetBuffer> Buffer;
+	DUniquePtr<NetBuffer> Buffer;
 
 	while (!bMustClose)
 	{
@@ -54,24 +54,24 @@ void DTCPConnection::TCPReceive()
 	}
 }
 
-void DTCPConnection::QueueTCPSendBuffer(std::unique_ptr<NetBuffer>& Buffer)
+void DTCPConnection::QueueTCPSendBuffer(DUniquePtr<NetBuffer>& Buffer)
 {
 	auto BuffersValue = TCPSendBuffers.Retrieve();
-	BuffersValue->PushBack(std::unique_ptr<NetBuffer>(Buffer.release()));
+	BuffersValue->PushBack(DUniquePtr<NetBuffer>(Buffer.Release()));
 }
 
-bool DTCPConnection::PopTCPSendBuffer(std::unique_ptr<NetBuffer>& Buffer)
+bool DTCPConnection::PopTCPSendBuffer(DUniquePtr<NetBuffer>& Buffer)
 {
 	auto BuffersValue = TCPSendBuffers.Retrieve();
 	if (BuffersValue->Size() == 0) return false;
-	Buffer.swap(BuffersValue.Get()[0]);
+	Buffer.Swap(BuffersValue.Get()[0]);
 	BuffersValue->RemoveAt(0);
 	return true;
 }
 
 void DTCPConnection::SendPing()
 {
-	std::unique_ptr<NetBuffer> Buffer = std::make_unique<NetBuffer>(5);
+	DUniquePtr<NetBuffer> Buffer = std::make_unique<NetBuffer>(5);
 	const char* TestMessage = "Ping";
 	strcpy_s(Buffer->Buffer, 5, TestMessage);
 	QueueTCPSendBuffer(Buffer);

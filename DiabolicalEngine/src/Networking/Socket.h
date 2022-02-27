@@ -46,7 +46,7 @@ public:
 	bool Receive(char* Buffer, int BufferLength, int& RecievedBytes);
 	bool StartListening();
 	bool Bind(DString LocalAddress, int Port);
-	bool AcceptConnection(std::unique_ptr<DSocket>& NewSocket, DString* IncomingAddress = nullptr);
+	bool AcceptConnection(DUniquePtr<DSocket>& NewSocket, DString* IncomingAddress = nullptr);
 
 private:
 

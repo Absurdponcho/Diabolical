@@ -3,6 +3,7 @@
 #include <iostream>
 #include "CommandLine/CmdLine.h"
 #include "Logging/Logging.h"
+#include "Types/DMemory.h"
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 
@@ -18,7 +19,7 @@ public:
 	static void Run();
 	static void AtExit();
 	static void RunAllTests();
-	static std::shared_ptr<class DDevConsole> DevConsole;
+	static DSharedPtr<class DDevConsole> DevConsole;
 	static class DGameManager* GameManager;
 
 private:

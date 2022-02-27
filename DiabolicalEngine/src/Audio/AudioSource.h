@@ -1,14 +1,15 @@
 #pragma once
 #include "AudioUtility.h"
+#include "Types/DMemory.h"
 
 class DAudioSource
 {
 public:
 	~DAudioSource();
-	void SetAudioFile(std::shared_ptr<DAudioFile> NewAudioFile);
+	void SetAudioFile(const DSharedPtr<DAudioFile>& NewAudioFile);
 	void Play();
 
 private:
-	std::shared_ptr<DAudioFile> AudioFile;
+	DSharedPtr<DAudioFile> AudioFile;
 };
 

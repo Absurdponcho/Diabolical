@@ -206,7 +206,7 @@ bool DSocket::Bind(DString LocalAddress, int Port)
 	return false;
 }
 
-bool DSocket::AcceptConnection(std::unique_ptr<DSocket>& NewSocket, DString* IncomingAddress)
+bool DSocket::AcceptConnection(DUniquePtr<DSocket>& NewSocket, DString* IncomingAddress)
 {
 #ifdef PLATFORM_WINDOWS
 	SocketAddress SAddress;

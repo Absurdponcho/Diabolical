@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Graphics\Rendering\MaterialInstance.cpp" />
+    <ClCompile Include="src\Graphics\Rendering\Camera.cpp" />
     <ClCompile Include="src\Graphics\Rendering\Material.cpp" />
     <ClCompile Include="src\Graphics\Rendering\Mesh.cpp" />
     <ClCompile Include="src\AssetManager\AssetManager.cpp" />
@@ -62,6 +62,7 @@
     <ClCompile Include="src\Networking\TCPConnection.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Graphics\Rendering\Camera.h" />
     <ClInclude Include="src\Graphics\Rendering\MaterialInstance.h" />
     <ClInclude Include="src\Graphics\Rendering\Material.h" />
     <ClInclude Include="src\Graphics\Rendering\Mesh.h" />
@@ -97,6 +98,7 @@
     <ClInclude Include="src\GUI\IWindow.h" />
     <ClInclude Include="src\Thread\ThreadsafeContainer.h" />
     <ClInclude Include="src\Types\Action.h" />
+    <ClInclude Include="src\Types\DMemory.h" />
     <ClInclude Include="src\Types\DVector.h" />
     <ClInclude Include="src\Utility\Random.h" />
     <ClInclude Include="src\DiabolicalTypes.h" />

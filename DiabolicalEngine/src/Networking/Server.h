@@ -4,6 +4,7 @@
 #include "Socket.h"
 #include "TCPConnection.h"
 #include "Types/DVector.h"
+#include "Types/DMemory.h"
 
 class DSocket;
 
@@ -19,7 +20,7 @@ public:
 	DAction<DTCPConnection*> OnConnection; // DSocket = new socket, DString = incoming IP
 
 protected:
-	DVector<std::unique_ptr<class DTCPConnection>> ClientConnections;
+	DVector<DUniquePtr<class DTCPConnection>> ClientConnections;
 
 	void TCPRun();
 
@@ -30,6 +31,6 @@ protected:
 	DString PendingAddress = "";
 	int PendingPort = 0;
 
-	std::unique_ptr<DSocket> TCPSocket;
-	std::unique_ptr<DThread> TCPThread;
+	DUniquePtr<DSocket> TCPSocket;
+	DUniquePtr<DThread> TCPThread;
 };

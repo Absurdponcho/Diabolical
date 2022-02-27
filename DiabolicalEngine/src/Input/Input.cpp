@@ -28,7 +28,7 @@ void HandleSDLDown(SDL_Event& Event)
 	{
 		if (Event.key.keysym.scancode == SDL_SCANCODE_GRAVE)
 		{
-			if (DEngine::DevConsole.get())
+			if (DEngine::DevConsole.Get())
 			{
 				DEngine::DevConsole->Toggle();
 			}
