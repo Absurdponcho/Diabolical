@@ -20,8 +20,32 @@ public:
 	inline const DVector<int>& GetIndices() { return Indices; }
 	inline const DVector<Vector2>& GetUVs() { return UVs; }
 	inline const GLsizei GetIndexCount() { return (GLsizei)Indices.Size(); }
+	inline const GLsizei GetVertexCount() { return (GLsizei)Vertices.Size(); }
 
 	const GLuint GetVertexArray();
+
+	inline void Draw()
+	{
+		GLuint CurrentVertexArray = GetVertexArray();
+
+		if (!CurrentVertexArray) return;
+
+		GLsizei IndexCount = GetIndexCount();
+		GLsizei VertexCount = GetVertexCount();
+
+		if (VertexCount <= 0) return;
+
+		glBindVertexArray(CurrentVertexArray);
+
+		if (IndexCount == 0)
+		{
+			glDrawArrays(GL_TRIANGLES, 0, GetVertexCount());
+		}
+		else
+		{
+			glDrawElements(GL_TRIANGLES, IndexCount, GL_UNSIGNED_INT, 0);
+		}
+	}
 
 protected:
 	void GenerateBuffers();

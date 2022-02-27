@@ -21,13 +21,19 @@
 #include "Graphics/Rendering/Mesh.h"
 #include "Graphics/Rendering/MeshPrimitives.h"
 #include "Graphics/Rendering/Material.h"
+#include "Graphics/Rendering/MaterialInstance.h"
 #include "FileSystem/Filesystem.h"
 
 class DMeshRenderer
 {
 public:
+	DMeshRenderer(){};
+
+	DMeshRenderer(std::shared_ptr<DMesh> NewMesh, std::shared_ptr<DMaterial> NewMaterial)
+		: Mesh(NewMesh), MaterialInstance(std::make_unique<DMaterialInstance>(NewMaterial)) {}
+
 	std::shared_ptr<DMesh> Mesh;
-	std::shared_ptr<DMaterial> Material;
+	std::unique_ptr<DMaterialInstance> MaterialInstance;
 };
 
 std::shared_ptr<DMaterial> TestMaterial;
@@ -43,39 +49,26 @@ void DGameManager::RenderingTest()
 	TestMaterial = std::make_shared<DMaterial>();
 	TestMaterial->BuildShader(VertexShader, FragmentShader);
 
-	auto testPrefab = ECSWorld.prefab();
-	testPrefab.add<DMeshRenderer>()
-		.set<DMeshRenderer>({ MeshPrimitives::Cube, TestMaterial });
-	testPrefab.add<Transform3D>();
+	auto TestRenderEntity = ECSWorld.entity()
+	.set<DMeshRenderer>({ MeshPrimitives::Cube, TestMaterial })
+	.add<Transform3D>();
 
-	auto parent = ECSWorld.entity().is_a(testPrefab);
+	TestRenderEntity.get<DMeshRenderer>()->MaterialInstance->SetUniform("Color", Vector3(0, 1, 0));
 
 	ECSWorld.system<DMeshRenderer, Transform3D>("Render")
 		.kind(flecs::OnStore)
-		.each([](flecs::entity ent, DMeshRenderer& Renderer, Transform3D& Transform)
+		.each([](const flecs::entity& ent, DMeshRenderer& Renderer, Transform3D& Transform)
 	{
 		DMesh* Mesh = Renderer.Mesh.get();
 		if (!Mesh) return;
 
-		GLuint MeshVertexArray = Mesh->GetVertexArray();
-		if (!MeshVertexArray) return;
+		DMaterialInstance* MaterialInstance = Renderer.MaterialInstance.get();
+		if (!MaterialInstance) return;
 
-		DMaterial* Material = Renderer.Material.get();
-		if (!Material) return;
+		MaterialInstance->Bind();
+		Mesh->Draw();
 
-		GLuint ShaderProgram = Material->GetProgram();
-		if (!ShaderProgram) return;
-
-		glUseProgram(ShaderProgram);
-		glBindVertexArray(MeshVertexArray);
-		glDrawElements(GL_TRIANGLES, Mesh->GetIndexCount(), GL_UNSIGNED_INT, 0);
 	});
-
-	auto child = ECSWorld.entity().is_a(testPrefab);
-
-	child.child_of(parent);
-
-	parent.disable();
 }
 
 void DGameManager::Exit()

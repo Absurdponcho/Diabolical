@@ -21,6 +21,11 @@ public:
 		return std::vector<T>::size() * sizeof(T);
 	}
 
+	inline void Add(const T&& Value)
+	{
+		PushBack(Value);
+	}
+
 	inline void PushBack(const T& Value)
 	{
 		std::vector<T>::emplace_back(Value);

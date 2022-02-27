@@ -137,7 +137,7 @@ public:
 		else return (int)positions[positions.Size() - 1];
 	}
 
-	inline void Split(int Index, DString& Left, DString& Right) const
+	inline void Split(size_t Index, DString& Left, DString& Right) const
 	{
 		Check(Index > 0);
 		Check(Index < Length());
@@ -205,7 +205,7 @@ public:
 	static DString Format(const DString& Format, Args... args)
 	{
 		const int BufferSize = 4096 * 2;
-		char Buffer[BufferSize];
+		char Buffer[BufferSize] = {};
 
 		snprintf(Buffer, BufferSize, Format.c_str(), args...);
 

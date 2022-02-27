@@ -159,6 +159,10 @@
   <ItemGroup>
     <ClCompile Include="src\DiabolicalTestGame.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\simple.frag" />
+    <None Include="Assets\simple.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

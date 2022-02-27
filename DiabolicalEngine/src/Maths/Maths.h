@@ -2,9 +2,32 @@
 
 #include <glm/glm.hpp>
 #include <glm/ext/quaternion_float.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 typedef glm::ivec2 IntVector2;
 typedef glm::ivec3 IntVector3;
+typedef glm::ivec4 IntVector4;
+
+class Matrix4x4 : public glm::mat4x4
+{
+public:
+	using glm::mat4x4::mat4x4;
+	static const Matrix4x4 Identity;
+};
+
+class Matrix3x3 : public glm::mat3x3
+{
+public:
+	using glm::mat3x3::mat3x3;
+	static const Matrix3x3 Identity;
+};
+
+class Vector4 : public glm::vec4
+{
+public:
+	using glm::vec4::vec4;
+	static const Vector4 ZeroVector;
+};
 
 class Vector3 : public glm::vec3
 {

@@ -1,3 +1,5 @@
+#pragma warning( disable : 26812 26439 6385 )
+
 #define flecs_STATIC
 /**
  * @file flecs.h
@@ -9807,7 +9809,7 @@ public:
         return m_array;
     }
 private:
-    T m_array[Size];
+    T m_array[Size] = {};
 };
 
 // Specialized class for zero-sized array
@@ -15126,7 +15128,7 @@ public:
             }
 
             // Find destination table that has all components
-            ecs_table_t *prev = table, *next;
+            ecs_table_t *prev = table, *next = nullptr;
             size_t elem = 0;
             IdArray added;
 
@@ -15140,7 +15142,7 @@ public:
 
             // If table is different, move entity straight to it
             if (table != next) {
-                ecs_ids_t ids;
+                ecs_ids_t ids = 0;
                 ids.array = added.ptr();
                 ids.count = static_cast<ecs_size_t>(elem);
                 ecs_commit(world, id, r, next, &ids, NULL);

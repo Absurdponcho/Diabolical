@@ -104,7 +104,7 @@ Float64 MersenneRandom64::RandomFloat(Float64 min, Float64 max)
 void MersenneRandom64::DiscardRandom(UInt64 nTimes)
 {
     {
-        int q = 0;
+        uint64_t q = 0;
         for (auto i = 0u; i < nTimes; i++)
             q = rand64();
     }
