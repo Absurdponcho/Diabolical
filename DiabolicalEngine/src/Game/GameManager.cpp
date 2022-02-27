@@ -47,6 +47,13 @@ public:
 		return *this;
 	}
 
+	DMeshRendererComponent& operator= (const DMeshRendererComponent& Other)
+	{
+		Mesh = Other.Mesh;
+		MaterialInstance = std::make_unique<DMaterialInstance>(*Other.MaterialInstance.Get());
+		return *this;
+	}
+
 	DSharedPtr<DMesh> Mesh;
 	DUniquePtr<DMaterialInstance> MaterialInstance;
 };
@@ -70,9 +77,7 @@ void DGameManager::RenderingTest()
 
 	for (int i = 0; i < 5000; i++)
 	{
-		auto Cube = ECSWorld.entity()
-			.set<DMeshRendererComponent>({ MeshPrimitives::Cube, TestMaterial })
-			.add<Transform3D>();
+		auto Cube = ECSWorld.entity().is_a(TestRenderEntity);
 		float x = (float)(rand() % 1000) / 1000.f;
 		float y = (float)(rand() % 1000) / 1000.f;
 		float z = (float)(rand() % 1000) / 1000.f;
@@ -80,7 +85,7 @@ void DGameManager::RenderingTest()
 		float g = (float)(rand() % 100) / 100.f;
 		float b = (float)(rand() % 100) / 100.f;
 
-		Check (Cube.get_mut<DMeshRendererComponent>()->MaterialInstance->SetUniform("Color", Vector3(r, g, b)));
+		Cube.get_mut<DMeshRendererComponent>()->MaterialInstance->SetUniform("Color", Vector3(r, g, b));
 		Cube.get_mut<Transform3D>()->SetPosition(Vector3((x-.5)*20, (y-.5)*20, (z-.5)*20));
 	}
 
