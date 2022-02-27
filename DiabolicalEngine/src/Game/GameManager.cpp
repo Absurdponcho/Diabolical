@@ -24,14 +24,28 @@
 #include "Graphics/Rendering/MaterialInstance.h"
 #include "FileSystem/Filesystem.h"
 #include "Graphics/Rendering/Camera.h"
+#include "Utility/Random.h"
 
 class DMeshRendererComponent
 {
 public:
 	DMeshRendererComponent(){};
 
+	DMeshRendererComponent(const DMeshRendererComponent& Other)
+		: Mesh(Other.Mesh)
+	{
+		MaterialInstance = std::make_unique<DMaterialInstance>(*Other.MaterialInstance.Get());
+	}
+
 	DMeshRendererComponent(DSharedPtr<DMesh> NewMesh, DSharedPtr<DMaterial> NewMaterial)
 		: Mesh(NewMesh), MaterialInstance(std::make_unique<DMaterialInstance>(NewMaterial)) {}
+
+	DMeshRendererComponent& operator= (DMeshRendererComponent&& Other)
+	{
+		Mesh = Other.Mesh;
+		MaterialInstance = std::make_unique<DMaterialInstance>(*Other.MaterialInstance.Get());
+		return *this;
+	}
 
 	DSharedPtr<DMesh> Mesh;
 	DUniquePtr<DMaterialInstance> MaterialInstance;
@@ -50,11 +64,25 @@ void DGameManager::RenderingTest()
 	TestMaterial = std::make_shared<DMaterial>();
 	TestMaterial->BuildShader(VertexShader, FragmentShader);
 
-	auto& TestRenderEntity = ECSWorld.entity()
+	auto& TestRenderEntity = ECSWorld.prefab()
 	.set<DMeshRendererComponent>({ MeshPrimitives::Cube, TestMaterial })
 	.add<Transform3D>();
 
-	TestRenderEntity.get<DMeshRendererComponent>()->MaterialInstance->SetUniform("Color", Vector3(0, 1, 0));
+	for (int i = 0; i < 5000; i++)
+	{
+		auto Cube = ECSWorld.entity()
+			.set<DMeshRendererComponent>({ MeshPrimitives::Cube, TestMaterial })
+			.add<Transform3D>();
+		float x = (float)(rand() % 1000) / 1000.f;
+		float y = (float)(rand() % 1000) / 1000.f;
+		float z = (float)(rand() % 1000) / 1000.f;
+		float r = (float)(rand() % 100) / 100.f;
+		float g = (float)(rand() % 100) / 100.f;
+		float b = (float)(rand() % 100) / 100.f;
+
+		Check (Cube.get_mut<DMeshRendererComponent>()->MaterialInstance->SetUniform("Color", Vector3(r, g, b)));
+		Cube.get_mut<Transform3D>()->SetPosition(Vector3((x-.5)*20, (y-.5)*20, (z-.5)*20));
+	}
 
 	ECSWorld.system<DMeshRendererComponent, Transform3D>("Render")
 		.kind(flecs::OnStore)
@@ -74,17 +102,16 @@ void DGameManager::RenderingTest()
 		Matrix4x4 ProjectionMatrix = CameraComponent->GetPerspectiveProjectionMatrix();
 
 		Matrix4x4 ModelMatrix = glm::mat4(1.f);
-		ModelMatrix = glm::translate(ModelMatrix, Vector3(0, sin(GetGameTime()), 0));
-		ModelMatrix = glm::scale(ModelMatrix, Vector3(1, 1, 1));
+		ModelMatrix = glm::translate(ModelMatrix, Transform.GetPosition() + Vector3(0, sin(GetGameTime() * 2 + ent.raw_id()), 0));
+		ModelMatrix = glm::scale(ModelMatrix, Transform.GetScale());
 		ModelMatrix = glm::rotate(ModelMatrix, 0.f, Vector3(0, 1, 0));
 		
 		Matrix4x4 MVPMatrix =  ProjectionMatrix * ViewMatrix * ModelMatrix;
 
-		MaterialInstance->SetUniform("MVP", MVPMatrix);
+		Check (MaterialInstance->SetUniform("MVP", MVPMatrix));
 
 		MaterialInstance->Bind();
 		Mesh->Draw();
-		
 	});
 
 	ECSWorld.system<DCameraComponent>("Camera Initialize")
@@ -99,7 +126,8 @@ void DGameManager::RenderingTest()
 	.add<DCameraComponent>()
 	.add<Transform3D>();
 
-	TestCamera.get_mut<Transform3D>()->SetPosition(Vector3(1.5, 1.5, 20));
+	TestCamera.get_mut<Transform3D>()->SetPosition(Vector3(20, 20, 20));
+	TestCamera.get_mut<Transform3D>()->SetEulerRotation(Vector3(45, -45, 0));
 
 	DCameraComponent::SetActiveCamera(TestCamera);
 }

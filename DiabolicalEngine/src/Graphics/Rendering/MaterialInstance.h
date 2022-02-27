@@ -62,6 +62,12 @@ inline void DMaterialUniformValue<Matrix4x4>::ApplyInternal()
 class DMaterialInstance
 {
 public:
+	DMaterialInstance(const DMaterialInstance& Other)
+		:	ParentMaterial(Other.ParentMaterial), MaterialUniformValues(Other.MaterialUniformValues)
+	{
+		
+	}
+
 	DMaterialInstance(const DSharedPtr<DMaterial>& Material)
 		: ParentMaterial(Material) 
 	{
@@ -71,15 +77,15 @@ public:
 	inline GLuint GetProgram() { Check(ParentMaterial.Get()) if (!ParentMaterial.Get()) return 0; return ParentMaterial->GetProgram(); }
 
 	template <typename T>
-	void SetUniform(const DString& Name, const T& Value)
+	bool SetUniform(const DString& Name, const T& Value)
 	{
 		Check (Name.Length() > 0);
-		if (Name.Length() == 0) return;
+		if (Name.Length() == 0) return false;
 
 		if (DMaterialUniformValue<T>* ExistingUniform = GetUniform<T>(Name))
 		{
 			ExistingUniform->Value = Value;
-			return;
+			return true;
 		}
 
 		if (GLuint Program = GetProgram())
@@ -88,8 +94,11 @@ public:
 			if (UniformLocation >= 0)
 			{
 				MaterialUniformValues.Add(new DMaterialUniformValue<T>(UniformLocation, Name, Value));
+				return true;
 			}
 		}
+
+		return false;
 	}
 
 	template <typename T>
@@ -124,10 +133,19 @@ public:
 
 	inline void ApplyAllUniforms()
 	{
+		if (MaterialUniformValues.Size() != 2)
+		{
+			LOG_ERR("Fail");
+		}
 		for (DMaterialUniformValueBase* Base : MaterialUniformValues)
 		{
 			Base->Apply();
 		}
+	}
+
+	DSharedPtr<DMaterial> GetParentMaterial() const
+	{
+		return ParentMaterial;
 	}
 
 protected:

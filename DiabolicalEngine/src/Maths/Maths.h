@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/ext.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 typedef glm::ivec2 IntVector2;
 typedef glm::ivec3 IntVector3;
@@ -52,8 +53,9 @@ class Transform3D
 {
 public:
 	inline Vector3 GetPosition() { return Position; };
-	inline Vector3 GetScale() { return Position; };
+	inline Vector3 GetScale() { return Scale; };
 	inline Quaternion GetRotation() { return Rotation; };
+	inline Vector3 GetEulerRotation() { return glm::eulerAngles(GetRotation()); };
 
 	inline void SetPosition(Vector3 NewPosition) 
 	{ 
@@ -65,6 +67,11 @@ public:
 		Scale = NewScale; 
 	};
 
+	inline void SetEulerRotation(Vector3 NewEulerRotation) 
+	{
+		SetRotation(glm::quat(NewEulerRotation * 0.01745329251994329576923690768489f));
+	}
+
 	inline void SetRotation(Quaternion NewRotation) 
 	{ 
 		Rotation = NewRotation; 
@@ -72,6 +79,6 @@ public:
 
 private:
 	Vector3 Position = Vector3::ZeroVector;
-	Vector3 Scale = {1, 1, 1};
+	Vector3 Scale = Vector3(1, 1, 1);
 	Quaternion Rotation = Quaternion::Identity;
 };

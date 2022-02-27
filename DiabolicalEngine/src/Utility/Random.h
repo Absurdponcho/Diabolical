@@ -5,6 +5,7 @@
 static bool bAlwaysRandomizeSeed = true;
 class FastRandom32
 {
+public:
 	FastRandom32();
 	FastRandom32(UInt32 seed);
 
@@ -23,6 +24,7 @@ class FastRandom32
 
 class MersenneRandom64
 {
+public:
 	MersenneRandom64();
 	MersenneRandom64(UInt64 seed);
 

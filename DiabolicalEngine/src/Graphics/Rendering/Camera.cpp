@@ -74,9 +74,21 @@ const Matrix4x4& DCameraComponent::GetViewMatrix()
 		Transform3D* ThisTransform = (Transform3D*)ParentEntity.get<Transform3D>();
 		Check(ThisTransform);
 
-		Vector3 ForwardVector = Vector3(0, 0, -1) * ThisTransform->GetRotation();
-		Vector3 UpVector = Vector3(0, 1, 0) * ThisTransform->GetRotation();
-		ViewMatrix = glm::lookAt(ThisTransform->GetPosition(), ThisTransform->GetPosition() + ForwardVector, UpVector);
+		Vector3 EulerRotation = ThisTransform->GetEulerRotation();
+		//FPS camera:  RotationX(pitch) * RotationY(yaw)
+		glm::quat qPitch = glm::angleAxis(EulerRotation.x, glm::vec3(1, 0, 0));
+		glm::quat qYaw = glm::angleAxis(EulerRotation.y, glm::vec3(0, 1, 0));
+		glm::quat qRoll = glm::angleAxis(EulerRotation.z, glm::vec3(0, 0, 1));
+
+		//For a FPS camera we can omit roll
+		glm::quat orientation = qPitch * qYaw * qRoll;
+		orientation = glm::normalize(orientation);
+		glm::mat4 rotate = glm::mat4_cast(orientation);
+
+		glm::mat4 translate = glm::mat4(1.0f);
+		translate = glm::translate(translate, -ThisTransform->GetPosition());
+
+		ViewMatrix = rotate * translate;
 
 		bViewMatrixDirty = false;
 	}
@@ -92,7 +104,7 @@ const Matrix4x4& DCameraComponent::GetPerspectiveProjectionMatrix()
 		Check(ThisTransform);
 
 		float AspectRatio = GetAspectRatio();
-		PerspectiveProjectionMatrix = glm::perspective(50.f, AspectRatio, 0.001f, 1000.f);
+		PerspectiveProjectionMatrix = glm::perspective(glm::radians(90.f), AspectRatio, 0.001f, 1000.f);
 
 		bPerspectiveProjectionMatrixDirty = false;
 	}

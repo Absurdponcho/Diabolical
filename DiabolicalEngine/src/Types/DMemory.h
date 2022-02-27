@@ -60,6 +60,10 @@ public:
 		return std::weak_ptr<T>::get() != nullptr;
 	}
 
+	inline T* Get() const
+	{
+		return std::weak_ptr<T>::get();
+	}
 };
 
 template <typename T>
