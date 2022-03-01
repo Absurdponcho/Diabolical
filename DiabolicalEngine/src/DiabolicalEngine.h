@@ -1,5 +1,5 @@
 #pragma once
-#include "ECS/flecs.h"
+#include "ECS/ECS.h"
 #include <iostream>
 #include "CommandLine/CmdLine.h"
 #include "Logging/Logging.h"

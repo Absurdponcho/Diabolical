@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ECS\ECS.cpp" />
     <ClCompile Include="src\Graphics\Rendering\Camera.cpp" />
     <ClCompile Include="src\Graphics\Rendering\Material.cpp" />
     <ClCompile Include="src\Graphics\Rendering\Mesh.cpp" />
     <ClCompile Include="src\AssetManager\AssetManager.cpp" />
     <ClCompile Include="src\Graphics\Rendering\MeshPrimitives.cpp" />
+    <ClCompile Include="src\Graphics\Rendering\MeshRendererComponent.cpp" />
     <ClCompile Include="src\GUI\GUI.cpp" />
     <ClCompile Include="src\Input\Input.cpp" />
     <ClCompile Include="src\Maths\Maths.cpp" />
@@ -51,8 +53,8 @@
     <ClCompile Include="src\Utility\Random.cpp" />
     <ClCompile Include="src\DiabolicalTypes.cpp" />
     <ClCompile Include="src\DiabolicalEngine.cpp" />
-    <ClCompile Include="src\ECS\flecs-os_api-stdcpp.cpp" />
-    <ClCompile Include="src\ECS\flecs.c" />
+    <ClCompile Include="src\ECS\Flecs\flecs-os_api-stdcpp.cpp" />
+    <ClCompile Include="src\ECS\Flecs\flecs.c" />
     <ClCompile Include="src\FileSystem\Filesystem.cpp" />
     <ClCompile Include="src\Game\GameManager.cpp" />
     <ClCompile Include="src\Graphics\WindowManager.cpp" />
@@ -62,12 +64,14 @@
     <ClCompile Include="src\Networking\TCPConnection.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ECS\ECS.h" />
     <ClInclude Include="src\Graphics\Rendering\Camera.h" />
     <ClInclude Include="src\Graphics\Rendering\MaterialInstance.h" />
     <ClInclude Include="src\Graphics\Rendering\Material.h" />
     <ClInclude Include="src\Graphics\Rendering\Mesh.h" />
     <ClInclude Include="src\AssetManager\AssetManager.h" />
     <ClInclude Include="src\Graphics\Rendering\MeshPrimitives.h" />
+    <ClInclude Include="src\Graphics\Rendering\MeshRendererComponent.h" />
     <ClInclude Include="src\GUI\GUI.h" />
     <ClInclude Include="src\Input\Input.h" />
     <ClInclude Include="src\Maths\Maths.h" />
@@ -103,8 +107,8 @@
     <ClInclude Include="src\Utility\Random.h" />
     <ClInclude Include="src\DiabolicalTypes.h" />
     <ClInclude Include="src\DiabolicalEngine.h" />
-    <ClInclude Include="src\ECS\flecs.h" />
-    <ClInclude Include="src\ECS\flecs_os_api_stdcpp.h" />
+    <ClInclude Include="src\ECS\Flecs\flecs.h" />
+    <ClInclude Include="src\ECS\Flecs\flecs_os_api_stdcpp.h" />
     <ClInclude Include="src\FileSystem\Filesystem.h" />
     <ClInclude Include="src\Game\GameManager.h" />
     <ClInclude Include="src\Graphics\WindowManager.h" />

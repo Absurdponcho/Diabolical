@@ -1,5 +1,20 @@
 #include "Material.h"
 #include "Logging/Logging.h"
+#include "AssetManager/AssetManager.h"
+
+DSharedPtr<DMaterial> DMaterial::DefaultMaterial = nullptr;
+
+void DMaterial::InitializeDefaultMaterial()
+{
+	DString VertexShader = DAssetManager::Get().SynchronousLoadAsset("Assets/Shaders/Default.vert")->AsString();
+	DString FragmentShader = DAssetManager::Get().SynchronousLoadAsset("Assets/Shaders/Default.frag")->AsString();
+
+	Check(VertexShader.Length() > 0);
+	Check(FragmentShader.Length() > 0);
+
+	DefaultMaterial = std::make_shared<DMaterial>();
+	DefaultMaterial->BuildShader(VertexShader, FragmentShader);
+}
 
 void DMaterial::BuildShader(const DString& Vertex, const DString& Fragment)
 {

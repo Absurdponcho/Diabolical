@@ -3,7 +3,7 @@
 #include "Types/DVector.h"
 #include "Types/DString.h"
 #include "Maths/Maths.h"
-
+#include "Logging/Logging.h"
 
 class DMaterialUniformValueBase 
 {
@@ -71,10 +71,21 @@ public:
 	DMaterialInstance(const DSharedPtr<DMaterial>& Material)
 		: ParentMaterial(Material) 
 	{
-		Check(Material->GetProgram() > 0); // The parent material MUST have a valid shader
+		
 	}
 
-	inline GLuint GetProgram() { Check(ParentMaterial.Get()) if (!ParentMaterial.Get()) return 0; return ParentMaterial->GetProgram(); }
+	inline GLuint GetProgram() { 
+		if (!ParentMaterial.Get() || ParentMaterial->GetProgram() == 0)
+		{
+			Check(DMaterial::DefaultMaterial.Get());
+			if (!DMaterial::DefaultMaterial.Get())
+			{
+				LOG_ERR("Default material is not initialized!");
+			}
+			return DMaterial::DefaultMaterial->GetProgram();
+		}
+		return ParentMaterial->GetProgram(); 
+	}
 
 	template <typename T>
 	bool SetUniform(const DString& Name, const T& Value)

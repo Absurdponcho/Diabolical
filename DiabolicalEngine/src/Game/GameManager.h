@@ -1,5 +1,5 @@
 #pragma once
-#include "ECS/flecs.h"
+#include "ECS/ECS.h"
 #include "Types/DMemory.h"
 
 class DGameManager
@@ -28,6 +28,8 @@ public:
 	void Exit();
 
 	static DGameManager& Get();
+
+	flecs::world& GetECSWorld();
 
 private:
 	void GameTick();
