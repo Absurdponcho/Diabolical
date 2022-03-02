@@ -47,14 +47,16 @@ void DGameManager::Exit()
 
 DSharedPtr<DAudioSource> AudioSource = std::make_shared<DAudioSource>();
 
+void Test(DSharedPtr<DWAVFile> NewWav)
+{
+	Check(NewWav.Get());
+	AudioSource->SetAudioFile(NewWav);
+	AudioSource->Play();
+}
+
 void DGameManager::MainGameLoop()
 {
-	DWAVFile::LoadAsync("Assets/Sussy Baka.wav", [&](DSharedPtr<DWAVFile> NewWav)
-	{
-		Check(NewWav.Get());
-		AudioSource->SetAudioFile(NewWav);
-		AudioSource->Play();
-	}); // Hey dude, you're being quite sussy
+	DWAVFile::LoadAsync("Assets/Sussy Baka.wav", &Test); // Hey dude, you're being quite sussy
 
 	RenderingTest();
 
