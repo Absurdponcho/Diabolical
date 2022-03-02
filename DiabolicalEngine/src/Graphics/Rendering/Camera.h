@@ -1,6 +1,6 @@
 #pragma once
 #include "Maths/Maths.h"
-#include "ECS/flecs.h"
+#include "ECS/ECS.h"
 #include "Check.h"
 
 class DCameraComponent
@@ -23,6 +23,8 @@ public:
 	{
 		ParentEntity = NewParent;
 	}
+
+	static void InitECSSystems();
 
 protected:
 	static flecs::entity_view ActiveCameraComponent;

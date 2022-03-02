@@ -160,8 +160,10 @@
     <ClCompile Include="src\DiabolicalTestGame.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\simple.frag" />
-    <None Include="Assets\simple.vert" />
+    <None Include="Assets\Shaders\Default.frag" />
+    <None Include="Assets\Shaders\Default.vert" />
+    <None Include="Assets\Shaders\simple.frag" />
+    <None Include="Assets\Shaders\simple.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

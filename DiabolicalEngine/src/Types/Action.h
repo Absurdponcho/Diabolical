@@ -66,7 +66,7 @@ public:
 	{
 		if (!bBound)
 		{
-			LOG_WARN("Running unbound DCallback");
+			LOG_WARN("Invoking unbound DCallback");
 			return (retval)0;
 		}
 		std::tuple<Args...> NewArgs(std::forward<Args>(params)...);
@@ -125,7 +125,7 @@ public:
 	{
 		if (!bBound)
 		{
-			LOG_WARN("Invoke unbound DAction");
+			LOG_WARN("Invoking unbound DAction");
 			return;
 		}
 		std::tuple<Args...> NewArgs(std::forward<Args>(params)...);

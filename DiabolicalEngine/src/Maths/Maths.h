@@ -52,6 +52,17 @@ public:
 class Transform3D
 {
 public:
+	Transform3D() {}
+
+	Transform3D(Vector3 NewPosition, Vector3 NewScale, Quaternion NewRotation)
+		: Position(NewPosition), Scale(NewScale), Rotation(NewRotation) {}
+
+	Transform3D(Vector3 NewPosition, Vector3 NewScale, Vector3 NewEulerRotation)
+		: Position(NewPosition), Scale(NewScale)
+	{
+		SetEulerRotation(NewEulerRotation);
+	}
+
 	inline Vector3 GetPosition() { return Position; };
 	inline Vector3 GetScale() { return Scale; };
 	inline Quaternion GetRotation() { return Rotation; };

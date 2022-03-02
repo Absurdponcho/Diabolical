@@ -14,7 +14,7 @@
 #include "Thread/GameThread.h"
 #include "Thread/Thread.h"
 #include "AssetManager/AssetManager.h"
-#include "ECS/flecs.h"
+#include "ECS/ECS.h"
 #include "GUI/GUI.h"
 #include "Input/Input.h"
 #include "Maths/Maths.h"
@@ -25,114 +25,17 @@
 #include "FileSystem/Filesystem.h"
 #include "Graphics/Rendering/Camera.h"
 #include "Utility/Random.h"
-
-class DMeshRendererComponent
-{
-public:
-	DMeshRendererComponent(){};
-
-	DMeshRendererComponent(const DMeshRendererComponent& Other)
-		: Mesh(Other.Mesh)
-	{
-		MaterialInstance = std::make_unique<DMaterialInstance>(*Other.MaterialInstance.Get());
-	}
-
-	DMeshRendererComponent(DSharedPtr<DMesh> NewMesh, DSharedPtr<DMaterial> NewMaterial)
-		: Mesh(NewMesh), MaterialInstance(std::make_unique<DMaterialInstance>(NewMaterial)) {}
-
-	DMeshRendererComponent& operator= (DMeshRendererComponent&& Other)
-	{
-		Mesh = Other.Mesh;
-		MaterialInstance = std::make_unique<DMaterialInstance>(*Other.MaterialInstance.Get());
-		return *this;
-	}
-
-	DMeshRendererComponent& operator= (const DMeshRendererComponent& Other)
-	{
-		Mesh = Other.Mesh;
-		MaterialInstance = std::make_unique<DMaterialInstance>(*Other.MaterialInstance.Get());
-		return *this;
-	}
-
-	DSharedPtr<DMesh> Mesh;
-	DUniquePtr<DMaterialInstance> MaterialInstance;
-};
-
-DSharedPtr<DMaterial> TestMaterial;
+#include "Graphics/Rendering/MeshRendererComponent.h"
 
 void DGameManager::RenderingTest()
 {
-	DString VertexShader;
-	DString FragmentShader;
-
-	VertexShader = DAssetManager::Get().SynchronousLoadAsset("Assets/simple.vert")->AsString();
-	FragmentShader = DAssetManager::Get().SynchronousLoadAsset("Assets/simple.frag")->AsString();
-
-	TestMaterial = std::make_shared<DMaterial>();
-	TestMaterial->BuildShader(VertexShader, FragmentShader);
-
-	auto& TestRenderEntity = ECSWorld.prefab()
-	.set<DMeshRendererComponent>({ MeshPrimitives::Cube, TestMaterial })
-	.add<Transform3D>();
-	FastRandom32 fs;
-	for (int i = 0; i < 5000; i++)
-	{
-		auto Cube = ECSWorld.entity().is_a(TestRenderEntity);
-		float x = fs.RandomFloat();
-		float y = fs.RandomFloat();
-		float z = fs.RandomFloat();
-		float r = fs.RandomFloat();
-		float g = fs.RandomFloat();
-		float b = fs.RandomFloat();
-
-		Cube.get_mut<DMeshRendererComponent>()->MaterialInstance->SetUniform("Color", Vector3(r, g, b));
-		Cube.get_mut<Transform3D>()->SetPosition(Vector3((x-.5)*20, (y-.5)*20, (z-.5)*20));
-	}
-
-	ECSWorld.system<DMeshRendererComponent, Transform3D>("Render")
-		.kind(flecs::OnStore)
-		.each([&](const flecs::entity& ent, DMeshRendererComponent& Renderer, Transform3D& Transform)
-	{
-		DMesh* Mesh = Renderer.Mesh.Get();
-		if (!Mesh) return;
-
-		DMaterialInstance* MaterialInstance = Renderer.MaterialInstance.Get();
-		if (!MaterialInstance) return;
-
-		DCameraComponent* CameraComponent = DCameraComponent::GetActiveCamera();
-		Check (CameraComponent);
-		if (!CameraComponent) return;
-
-		Matrix4x4 ViewMatrix = CameraComponent->GetViewMatrix();
-		Matrix4x4 ProjectionMatrix = CameraComponent->GetPerspectiveProjectionMatrix();
-
-		Matrix4x4 ModelMatrix = glm::mat4(1.f);
-		ModelMatrix = glm::translate(ModelMatrix, Transform.GetPosition() + Vector3(0, sin(GetGameTime() * 2 + ent.raw_id()), 0));
-		ModelMatrix = glm::scale(ModelMatrix, Transform.GetScale());
-		ModelMatrix = glm::rotate(ModelMatrix, 0.f, Vector3(0, 1, 0));
-		
-		Matrix4x4 MVPMatrix =  ProjectionMatrix * ViewMatrix * ModelMatrix;
-
-		Check (MaterialInstance->SetUniform("MVP", MVPMatrix));
-
-		MaterialInstance->Bind();
-		Mesh->Draw();
-	});
-
-	ECSWorld.system<DCameraComponent>("Camera Initialize")
-		.kind(flecs::OnSet)
-		.kind(flecs::OnAdd)
-		.each([](const flecs::entity& ent, DCameraComponent& Camera)
-	{
-		Camera.SetParentEntity(ent);
-	});
+	auto& TestRenderEntity = ECSWorld.entity()
+		.set<DMeshRendererComponent>({ MeshPrimitives::Cube, nullptr })
+		.add<Transform3D>();
 
 	auto& TestCamera = ECSWorld.entity()
 	.add<DCameraComponent>()
-	.add<Transform3D>();
-
-	TestCamera.get_mut<Transform3D>()->SetPosition(Vector3(20, 20, 20));
-	TestCamera.get_mut<Transform3D>()->SetEulerRotation(Vector3(45, -45, 0));
+	.set<Transform3D>({Vector3(5,5,5), Vector3(1,1,1), Vector3(45,-45,0)});
 
 	DCameraComponent::SetActiveCamera(TestCamera);
 }
@@ -144,18 +47,20 @@ void DGameManager::Exit()
 
 DSharedPtr<DAudioSource> AudioSource = std::make_shared<DAudioSource>();
 
+void Test(DSharedPtr<DWAVFile> NewWav)
+{
+	Check(NewWav.Get());
+	AudioSource->SetAudioFile(NewWav);
+	AudioSource->Play();
+}
+
 void DGameManager::MainGameLoop()
 {
-	DWAVFile::LoadAsync("Assets/Sussy Baka.wav", [&](DSharedPtr<DWAVFile> NewWav)
-	{
-		Check(NewWav.Get());
-		AudioSource->SetAudioFile(NewWav);
-		AudioSource->Play();
-	}); // Hey dude, you're being quite sussy
+	DWAVFile::LoadAsync("Assets/Sussy Baka.wav", &Test); // Hey dude, you're being quite sussy
 
 	RenderingTest();
 
-	glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
+	glClearColor(0.f, 0.f, 0.f, 1.00f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 	EventTick();
 	SDL_ShowWindow(DWindowManager::GetSDLWindow());
@@ -205,4 +110,9 @@ DGameManager& DGameManager::Get()
 {
 	Check (DEngine::GameManager);
 	return *DEngine::GameManager;
+}
+
+flecs::world& DGameManager::GetECSWorld()
+{
+	return ECSWorld;
 }

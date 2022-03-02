@@ -15,6 +15,7 @@
 #include "GUI/DevConsole/DevConsole.h"
 #include "gl/glew.h"
 #include <gl/GL.h>
+#include "Graphics/Rendering/Material.h"
 
 #ifdef PLATFORM_WINDOWS
 #include <Windows.h>
@@ -38,11 +39,16 @@ void DEngine::Init(int argc, char* argv[])
     DAssetManager::Initialize();
 
     glewInit();
+
 	GameManager = new DGameManager();
 	DWindowManager::Initialize("Diabolical", 128, 128, 800, 600, SDL_WINDOW_HIDDEN);
 
 	InitImGui();
 	DevConsole = std::make_shared<DDevConsole>();
+
+	DMaterial::InitializeDefaultMaterial();
+	DUtilityECS::InitializeECSSystems();
+
 }
 
 void DEngine::Run()
