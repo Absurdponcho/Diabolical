@@ -74,16 +74,16 @@ void DGameManager::RenderingTest()
 	auto& TestRenderEntity = ECSWorld.prefab()
 	.set<DMeshRendererComponent>({ MeshPrimitives::Cube, TestMaterial })
 	.add<Transform3D>();
-
+	FastRandom32 fs;
 	for (int i = 0; i < 5000; i++)
 	{
 		auto Cube = ECSWorld.entity().is_a(TestRenderEntity);
-		float x = (float)(rand() % 1000) / 1000.f;
-		float y = (float)(rand() % 1000) / 1000.f;
-		float z = (float)(rand() % 1000) / 1000.f;
-		float r = (float)(rand() % 100) / 100.f;
-		float g = (float)(rand() % 100) / 100.f;
-		float b = (float)(rand() % 100) / 100.f;
+		float x = fs.RandomFloat();
+		float y = fs.RandomFloat();
+		float z = fs.RandomFloat();
+		float r = fs.RandomFloat();
+		float g = fs.RandomFloat();
+		float b = fs.RandomFloat();
 
 		Cube.get_mut<DMeshRendererComponent>()->MaterialInstance->SetUniform("Color", Vector3(r, g, b));
 		Cube.get_mut<Transform3D>()->SetPosition(Vector3((x-.5)*20, (y-.5)*20, (z-.5)*20));
