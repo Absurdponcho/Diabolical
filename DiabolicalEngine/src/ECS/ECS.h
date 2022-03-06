@@ -30,6 +30,7 @@ public:
 
 	DEntity() {};
 
+	// Makes this DEntity the same entity as ExistingEntity (does not clone data)
 	DEntity(const DEntity& ExistingEntity)
 	{
 		*this = ExistingEntity;
@@ -40,6 +41,10 @@ public:
 	{
 		FlecsEntity = ExistingEntity;
 	}
+
+	DString& GetName();
+
+	DEntity Clone(DString NewName = "");
 
 	// Set the parent entity of this entity.
 	// Each entity can only have 1 parent.
@@ -64,19 +69,12 @@ public:
 
 	// Inherits an existing entity. 
 	// Inheriting the entity means this entity will have all of the same components.
-	void Inherit(DEntity Parent)
-	{
-		Check(Parent.IsAlive());
-		Check(IsAlive());
-		if (!IsAlive() || Parent.IsAlive()) return;
-		FlecsEntity.is_a(Parent.GetFlecsEntity());
-
-	}
+	void Inherit(DEntity Parent);
 
 	// Check if this entity is valid or not.
 	bool IsAlive() const
 	{
-		return FlecsEntity.is_alive();
+		return FlecsEntity.is_alive() ;
 	}
 
 	DEntityData& GetEntityData() const
@@ -106,10 +104,14 @@ public:
 	template<typename T>
 	T* GetComponentMutable()
 	{
-		Check (IsAlive());
+		Check(IsAlive());
 		if (!IsAlive()) return nullptr;
+		Check (FlecsEntity.has<T>());
 		if (!FlecsEntity.has<T>()) return nullptr;
-		return FlecsEntity.get_mut<T>();
+
+		T* Comp = FlecsEntity.get_mut<T>();
+		return Comp;
+
 	}
 
 	// Gets a const pointer to the component. This shouldn't fail.

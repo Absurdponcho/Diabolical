@@ -101,3 +101,43 @@ void DEntity::DetachFromParent()
 
 	GetParent().RemoveChild(*this);
 }
+
+void DEntity::Inherit(DEntity Parent)
+{
+	LOG_ERR("DEntity::Inherit is temporarily disabled. Use DEntity::Clone().");
+	Check(false);
+	Check(Parent.IsAlive());
+	Check(IsAlive());
+	if (!IsAlive() || Parent.IsAlive()) return;
+	FlecsEntity.is_a(Parent.GetFlecsEntity());
+
+}
+
+DString& DEntity::GetName()
+{
+	return GetEntityData().Name;
+}
+
+DEntity DEntity::Clone(DString NewName)
+{
+	Check(IsAlive());
+	
+	DString Name = NewName;
+	if (Name.Length() == 0)
+	{
+		Name = DString::Format("%s_Clone", *GetName());
+	}
+
+	// create empty entity
+	DEntity NewEntity = DEntity::CreateEntity(Name);
+
+	// clone components into new entity components
+	ecs_clone(FlecsEntity.m_world, NewEntity.FlecsEntity, FlecsEntity, true);
+
+	// set name 
+	NewEntity.GetEntityData().Name = Name;
+
+	// remove possible prefab meme
+	NewEntity.FlecsEntity.remove(flecs::Prefab);
+	return NewEntity;
+}

@@ -31,7 +31,7 @@
 
 void DGameManager::RenderingTest()
 {
-	DEntity Cube = DEntity::CreateEntity("RendererPrefab");
+	DEntity Cube = DEntity::CreatePrefab("RendererPrefab");
 	Cube.Set(DMeshRendererComponent({ MeshPrimitives::Cube, nullptr }));
 	Cube.Set(Transform3D());
 
@@ -43,27 +43,15 @@ void DGameManager::RenderingTest()
 	DCameraComponent::SetActiveCamera(TestCamera);
 
 
-	DEntity TestParent = DEntity::CreateEntity("Test Parent");
-	TestParent.Inherit(Cube);
+	DEntity TestParent = Cube.Clone();
+	TestParent.GetComponentMutable<Transform3D>()->SetPosition({ -2.0f, 0, 0 });
 
-	DEntity TestChild = DEntity::CreateEntity("Test Child");
-	TestChild.Inherit(Cube);
 
-	//TestChild.SetParent(TestParent);
-	//Check(TestChild.GetParent() == TestParent);
-	//Check(TestParent.HasChild(TestChild));
+	DEntity TestChild = Cube.Clone();
+	TestChild.GetComponentMutable<Transform3D>()->SetPosition({ 3.0f, 0, 0 });
+	TestChild.GetComponentMutable<Transform3D>()->SetEulerRotation({0, 45, 0});
 
-	//TestChild.DetachFromParent();
-	//Check(TestChild.GetParent() != TestParent);
-	//Check(!TestParent.HasChild(TestChild));
 
-	//TestParent.AddChild(TestChild);
-	//Check(TestChild.GetParent() == TestParent);
-	//Check(TestParent.HasChild(TestChild));
-
-	//TestParent.RemoveChild(TestChild);
-	//Check(TestChild.GetParent() != TestParent);
-	//Check(!TestParent.HasChild(TestChild));
 }
 
 void DGameManager::Exit()

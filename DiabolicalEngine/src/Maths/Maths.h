@@ -104,6 +104,7 @@ public:
 	{
 		if (bMatrixDirty)
 		{
+			ModelMatrix = Matrix4x4::Identity;
 			ModelMatrix = glm::translate(ModelMatrix, GetPosition());
 			ModelMatrix = glm::scale(ModelMatrix, GetScale());
 			ModelMatrix *= glm::mat4_cast(GetRotation());
