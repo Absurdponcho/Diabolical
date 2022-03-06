@@ -2,6 +2,8 @@
 
 #include <glm/ext.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include "Types/DString.h"
+#include "ECS/ECS.h"
 
 typedef glm::ivec2 IntVector2;
 typedef glm::ivec3 IntVector3;
@@ -52,6 +54,8 @@ public:
 class Transform3D
 {
 public:
+	DString Name;
+
 	Transform3D() {}
 
 	Transform3D(Vector3 NewPosition, Vector3 NewScale, Quaternion NewRotation)
@@ -70,12 +74,14 @@ public:
 
 	inline void SetPosition(Vector3 NewPosition) 
 	{ 
-		Position = NewPosition; 
+		bMatrixDirty = true;
+		Position = NewPosition;
 	};
 
 	inline void SetScale(Vector3 NewScale) 
 	{ 
-		Scale = NewScale; 
+		bMatrixDirty = true;
+		Scale = NewScale;
 	};
 
 	inline void SetEulerRotation(Vector3 NewEulerRotation) 
@@ -85,11 +91,31 @@ public:
 
 	inline void SetRotation(Quaternion NewRotation) 
 	{ 
+		bMatrixDirty = true;
 		Rotation = NewRotation; 
 	};
 
+	Matrix4x4 GetWorldSpaceModelMatrix()
+	{
+		
+	}
+
+	Matrix4x4 GetModelMatrix()
+	{
+		if (bMatrixDirty)
+		{
+			ModelMatrix = glm::translate(ModelMatrix, GetPosition());
+			ModelMatrix = glm::scale(ModelMatrix, GetScale());
+			ModelMatrix *= glm::mat4_cast(GetRotation());
+		}
+		return ModelMatrix;
+	}
+
+	DEntity ThisEntity;
 private:
+	bool bMatrixDirty = true;
 	Vector3 Position = Vector3::ZeroVector;
 	Vector3 Scale = Vector3(1, 1, 1);
 	Quaternion Rotation = Quaternion::Identity;
+	Matrix4x4 ModelMatrix = glm::mat4(1.f);
 };

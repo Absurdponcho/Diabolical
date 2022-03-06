@@ -3,7 +3,7 @@
 #include "Game/GameManager.h"
 #include "ECS/ECS.h"
 
-flecs::entity_view DCameraComponent::ActiveCameraComponent;
+DEntity DCameraComponent::ActiveCameraComponent;
 
 const Matrix4x4& DCameraComponent::GetPerspectiveVPMatrix()
 {
@@ -45,7 +45,7 @@ DCameraComponent* DCameraComponent::GetActiveCamera()
 	return (DCameraComponent*)ActiveCameraComponent.get<DCameraComponent>();
 }
 
-void DCameraComponent::SetActiveCamera(const flecs::entity& CameraEntity)
+void DCameraComponent::SetActiveCamera(const DEntity& CameraEntity)
 {
 	Check(CameraEntity.is_alive());
 	if (!CameraEntity.is_alive()) return;
@@ -60,7 +60,7 @@ void DCameraComponent::SetActiveCamera(const flecs::entity& CameraEntity)
 
 void DCameraComponent::RemoveActiveCamera()
 {
-	ActiveCameraComponent = flecs::entity_view();
+	ActiveCameraComponent = DEntity();
 }
 
 float DCameraComponent::GetAspectRatio()
@@ -119,7 +119,7 @@ void DCameraComponent::InitECSSystems()
 	DUtilityECS::GetECSWorld().system<DCameraComponent>("Camera Initialize")
 		.kind(flecs::OnSet)
 		.kind(flecs::OnAdd)
-		.each([](const flecs::entity& ent, DCameraComponent& Camera)
+		.each([](const DEntity& ent, DCameraComponent& Camera)
 	{
 		Camera.SetParentEntity(ent);
 	});

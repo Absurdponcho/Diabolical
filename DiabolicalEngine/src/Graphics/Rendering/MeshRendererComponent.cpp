@@ -4,15 +4,41 @@
 #include "MeshPrimitives.h"
 #include "ECS/ECS.h"
 
+flecs::query<DMeshRendererComponent, Transform3D> DMeshRendererComponent::RendererQuery;
+
 void DMeshRendererComponent::InitECSSystems()
 {
 	
+	//{	// Create Transform Query
+	//	RendererQuery = DUtilityECS::GetECSWorld().query_builder<DMeshRendererComponent, Transform3D>()
+	//		.term(flecs::Disabled)
+	//		.oper(flecs::Not)
+	//		.arg(3)
+	//		.term<DCameraComponent>()
+	//		.oper(flecs::Optional)
+	//		.build();
+	//}
+
+	//{	// Create Scene Updater
+	//	struct SceneUpdater {};
+	//	DUtilityECS::GetECSWorld().entity("Scene Updater").add<SceneUpdater>();
+	//	DUtilityECS::GetECSWorld().system<SceneUpdater>("Scene Updater System")
+	//		.kind(flecs::PreStore)
+	//		.each([](SceneUpdater& s)
+	//	{
+	//		RendererQuery.each(&RenderTransform3D);
+	//	});
+	//}
+
+
 	DUtilityECS::GetECSWorld().system<DMeshRendererComponent, Transform3D>("Render")
 		.kind(flecs::OnStore)
 		.each(DMeshRendererComponent::RenderTransform3D);
+
+
 }
 
-void DMeshRendererComponent::RenderTransform3D(const flecs::entity& ent, DMeshRendererComponent& Renderer, Transform3D& Transform)
+void DMeshRendererComponent::RenderTransform3D(DMeshRendererComponent& Renderer, Transform3D& Transform)
 {
 	DMesh* Mesh = Renderer.Mesh.Get();
 	if (!Mesh) return;
@@ -27,10 +53,7 @@ void DMeshRendererComponent::RenderTransform3D(const flecs::entity& ent, DMeshRe
 	Matrix4x4 ViewMatrix = CameraComponent->GetViewMatrix();
 	Matrix4x4 ProjectionMatrix = CameraComponent->GetPerspectiveProjectionMatrix();
 
-	Matrix4x4 ModelMatrix = glm::mat4(1.f);
-	ModelMatrix = glm::translate(ModelMatrix, Transform.GetPosition() + Vector3(0, sin(DGameManager::Get().GetGameTime() * 2 + ent.raw_id()), 0));
-	ModelMatrix = glm::scale(ModelMatrix, Transform.GetScale());
-	ModelMatrix = glm::rotate(ModelMatrix, 0.f, Vector3(0, 1, 0));
+	Matrix4x4 ModelMatrix = Transform.GetModelMatrix();
 
 	Matrix4x4 MVPMatrix = ProjectionMatrix * ViewMatrix * ModelMatrix;
 
@@ -38,9 +61,13 @@ void DMeshRendererComponent::RenderTransform3D(const flecs::entity& ent, DMeshRe
 
 	MaterialInstance->Bind();
 	Mesh->Draw();
+
+
+	//LOG(DString::Format("%s -> %s", ParentTransform ? *ParentTransform->Name : "", Transform ? *Transform->Name : ""));
+	
 }
 
-flecs::entity DMeshRendererComponent::MakeMeshRendererEntity()
+DEntity DMeshRendererComponent::MakeMeshRendererEntity()
 {
-	return flecs::entity();
+	return DEntity();
 }

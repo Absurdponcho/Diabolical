@@ -27,18 +27,28 @@
 #include "Utility/Random.h"
 #include "Graphics/Rendering/MeshRendererComponent.h"
 #include "ECS/ECS.h"
+#include "Graphics/Rendering/Scene.h"
 
 void DGameManager::RenderingTest()
 {
-	auto& TestRenderEntity = DUtilityECS::GetECSWorld().entity()
+	auto& Cube = DUtilityECS::GetECSWorld().prefab("Renderer")
 		.set<DMeshRendererComponent>({ MeshPrimitives::Cube, nullptr })
 		.add<Transform3D>();
 
-	auto& TestCamera = DUtilityECS::GetECSWorld().entity()
+	auto TestRenderEntity = DUtilityECS::GetECSWorld().entity()
+		.is_a(Cube);
+
+
+	auto& TestCamera = DUtilityECS::GetECSWorld().entity("Camera")
+	.child_of(DScene::SceneRoot)
 	.add<DCameraComponent>()
 	.set<Transform3D>({Vector3(5,5,5), Vector3(1,1,1), Vector3(45,-45,0)});
 
+	TestCamera.get_mut<Transform3D>()->Name = "Camera";
+
 	DCameraComponent::SetActiveCamera(TestCamera);
+
+	
 }
 
 void DGameManager::Exit()

@@ -37,11 +37,12 @@ public:
 	DUniquePtr<DMaterialInstance> MaterialInstance;
 
 	static void InitECSSystems();
-	static void RenderTransform3D(const flecs::entity& ent, DMeshRendererComponent& Renderer, Transform3D& Transform);
-	static flecs::entity MakeMeshRendererEntity();
+	static void RenderTransform3D(DMeshRendererComponent& Renderer, Transform3D& Transform);
+	static DEntity MakeMeshRendererEntity();
 
 protected:
+	static flecs::query<DMeshRendererComponent, Transform3D> RendererQuery;
 
-	static flecs::entity TestRenderEntity;
+	static DEntity TestRenderEntity;
 };
 

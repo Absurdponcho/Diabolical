@@ -1,12 +1,12 @@
 #pragma once
 #include "Flecs/flecs.h"
 
+typedef flecs::entity DEntity;
+
 class DUtilityECS 
 {
 public:
 	static void InitializeECSSystems();
-	static flecs::entity SceneRoot;
-
 	static flecs::world& GetECSWorld();
 
 private:
