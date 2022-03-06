@@ -15,21 +15,23 @@ public:
 
 	static DCameraComponent* GetActiveCamera();
 
-	static void SetActiveCamera(const DEntity& CameraEntity);
+	static void SetActiveCamera(DEntity& CameraEntity);
 
 	static void RemoveActiveCamera();
 
 	void SetParentEntity(DEntity NewParent)
 	{
+		Check (NewParent.IsAlive());
 		ParentEntity = NewParent;
+		Check(ParentEntity.IsAlive());
 	}
 
 	static void InitECSSystems();
+	DEntity ParentEntity;
 
 protected:
 	static DEntity ActiveCameraComponent;
 
-	DEntity ParentEntity;
 
 	Vector3 LastCleanPosition = Vector3::ZeroVector;
 	Quaternion LastCleanRotation = Quaternion::Identity;

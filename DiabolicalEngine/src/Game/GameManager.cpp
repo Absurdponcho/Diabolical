@@ -31,20 +31,18 @@
 
 void DGameManager::RenderingTest()
 {
-	auto& Cube = DUtilityECS::GetECSWorld().prefab("Renderer")
-		.set<DMeshRendererComponent>({ MeshPrimitives::Cube, nullptr })
-		.add<Transform3D>();
+	DEntity Cube = DEntity::CreateEntity("RendererPrefab");
+	Cube.Set(DMeshRendererComponent({ MeshPrimitives::Cube, nullptr }));
+	Cube.Set(Transform3D());
 
-	auto TestRenderEntity = DUtilityECS::GetECSWorld().entity()
-		.is_a(Cube);
+	DEntity TestRenderEntity = DEntity::CreateEntity("Test Render Cube");
+	TestRenderEntity.Inherit(Cube);
 
 
-	auto& TestCamera = DUtilityECS::GetECSWorld().entity("Camera")
-	.child_of(DScene::SceneRoot)
-	.add<DCameraComponent>()
-	.set<Transform3D>({Vector3(5,5,5), Vector3(1,1,1), Vector3(45,-45,0)});
-
-	TestCamera.get_mut<Transform3D>()->Name = "Camera";
+	DEntity TestCamera = DEntity::CreateEntity("Camera");
+	TestCamera.SetParent(DScene::SceneRoot);
+	TestCamera.Set(DCameraComponent());
+	TestCamera.Set(Transform3D({Vector3(5,5,5), Vector3(1,1,1), Vector3(45,-45,0)}));
 
 	DCameraComponent::SetActiveCamera(TestCamera);
 

@@ -40,11 +40,9 @@ void DScene::InitECSSystems()
 	//}
 
 	{	// Create Scene Root
-		SceneRoot = DUtilityECS::GetECSWorld().entity("Scene")
-			.add<Transform3D>()
-			.add<DScene>();
-
-		SceneRoot.get_mut<Transform3D>()->Name = "Scene Root";
+		SceneRoot = DEntity::CreateEntity("Scene Root");
+		SceneRoot.Set(Transform3D());
+		SceneRoot.Set(DScene());
 	}
 	
 }

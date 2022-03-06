@@ -49,6 +49,7 @@ void DMeshRendererComponent::RenderTransform3D(DMeshRendererComponent& Renderer,
 	DCameraComponent* CameraComponent = DCameraComponent::GetActiveCamera();
 	Check(CameraComponent);
 	if (!CameraComponent) return;
+	Check (CameraComponent->ParentEntity.IsAlive());
 
 	Matrix4x4 ViewMatrix = CameraComponent->GetViewMatrix();
 	Matrix4x4 ProjectionMatrix = CameraComponent->GetPerspectiveProjectionMatrix();
