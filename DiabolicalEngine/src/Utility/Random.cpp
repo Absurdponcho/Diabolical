@@ -6,7 +6,7 @@ FastRandom32::FastRandom32()
 
     if (bAlwaysRandomizeSeed) {
         srand(_time32(nullptr));
-        seed = rand32() ^ 0xC;
+        seed = rand() ^ 0xC;
     }
 
     rand32.seed(seed);
@@ -44,7 +44,7 @@ Float32 FastRandom32::RandomFloat()
 
 Float32 FastRandom32::RandomFloat(Float32 min, Float32 max)
 {
-    return min + ((max - min) * ((Float32) rand32() / (Float32)RAND_MAX));
+    return min + ((max - min) * ((Float32) rand32() / (Float32)INT_MAX));
 }
 
 void FastRandom32::DiscardRandom(UInt32 nTimes)
@@ -98,7 +98,7 @@ Float64 MersenneRandom64::RandomFloat()
 
 Float64 MersenneRandom64::RandomFloat(Float64 min, Float64 max)
 {
-    return min + ((max - min) * ((Float64)rand64() / (Float64)RAND_MAX));
+    return min + ((max - min) * ((Float64)rand64() / (Float64)ULLONG_MAX));
 }
 
 void MersenneRandom64::DiscardRandom(UInt64 nTimes)

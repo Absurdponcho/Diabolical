@@ -55,6 +55,18 @@ void DDevConsole::Draw()
 }
 
 
+void DDevConsole::RegisterCommand(DString Command, DAction<DVector<DString>> function)
+{
+}
+
+void DDevConsole::UnregisterCommand(DString Command)
+{
+}
+
+void DDevConsole::ParseCommand(DString CommandString)
+{
+}
+
 void DDevConsole::ParseCommandQuotations(DVector<DString>& Params)
 {
 	DVector<DString> RetVal;
@@ -99,4 +111,8 @@ void DDevConsole::ParseCommandQuotations(DVector<DString>& Params)
 	}
 
 	Params = RetVal;
+}
+
+void DDevConsole::ExecuteCommand(DString Command, DVector<DString>& Params)
+{
 }
