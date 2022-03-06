@@ -52,16 +52,14 @@ void DCameraComponent::SetActiveCamera(DEntity& CameraEntity)
 
 	DCameraComponent* CameraComponent = CameraEntity.GetComponentMutable<DCameraComponent>();
 	Check(CameraComponent);
+	if (!CameraComponent) return;
 	CameraComponent->ParentEntity = CameraEntity;
-	//Check(CameraComponent->ParentEntity == CameraEntity);
 
 	const Transform3D* Transform = CameraEntity.GetComponent<Transform3D>();
 	Check(Transform);
-	if (CameraComponent && Transform)
-	{
-		ActiveCameraComponent = CameraEntity;
-		Check (ActiveCameraComponent.IsAlive());
-	}
+	if (!Transform) return;
+
+	ActiveCameraComponent = CameraEntity;
 }
 
 void DCameraComponent::RemoveActiveCamera()
