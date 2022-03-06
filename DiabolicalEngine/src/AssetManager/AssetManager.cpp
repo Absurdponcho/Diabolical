@@ -32,6 +32,13 @@ DAssetManager& DAssetManager::Get()
 
 void DAssetManager::AsyncLoadAsset(DString FilePath, AAsyncAssetLoad OnAssetLoad)
 {
+	if (FilePath.Length() == 0)
+	{
+		LOG_ERR("FilePath is empty!");
+		Check(false);
+		return;
+	}
+
 	FilePath = DFileSystem::NormalizeFilePath(FilePath);
 
 	Check (OnAssetLoad.IsBound());
@@ -72,13 +79,26 @@ void DAssetManager::ThreadRun()
 
 DSharedPtr<DRawAsset> DAssetManager::SynchronousLoadAsset(DString FilePath)
 {
+	if (FilePath.Length() == 0)
+	{
+		LOG_ERR("FilePath is empty!");
+		Check(false);
+		return nullptr;
+	}
 	// To ensure the async load system does not encounter race conditions with 
 	// synchronous loading, just make the synchronous load do an async load ;)
-	FilePath = DFileSystem::NormalizeFilePath(FilePath);
+	DString NormalizedFilePath = DFileSystem::NormalizeFilePath(FilePath);
+
+	if (NormalizedFilePath.Length() == 0)
+	{
+		LOG_ERR(DString::Format("NormalizedFilePath is empty! oldpath: %s", *FilePath));
+		Check(false);
+		return nullptr;
+	}
 
 	bool bLoaded = false;
 	DSharedPtr<DRawAsset> LoadedAsset;
-	AsyncLoadAsset(FilePath, [&](DSharedPtr<DRawAsset> Asset)
+	AsyncLoadAsset(NormalizedFilePath, [&](DSharedPtr<DRawAsset> Asset)
 	{ 
 		LoadedAsset = Asset; 
 		bLoaded = true; 	
@@ -94,6 +114,13 @@ DSharedPtr<DRawAsset> DAssetManager::SynchronousLoadAsset(DString FilePath)
 
 DSharedPtr<DRawAsset> DAssetManager::Internal_SynchronousLoadAsset(DString& FilePath)
 {
+	if (FilePath.Length() == 0)
+	{
+		LOG_ERR("FilePath is empty!");
+		Check(false);
+		return nullptr;
+	}
+
 	auto AssetIt = LoadedAssets.find(FilePath);
 	if (AssetIt != LoadedAssets.end())
 	{
