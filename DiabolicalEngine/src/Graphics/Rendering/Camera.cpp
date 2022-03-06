@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "Graphics/WindowManager.h"
 #include "Game/GameManager.h"
+#include "ECS/ECS.h"
 
 flecs::entity_view DCameraComponent::ActiveCameraComponent;
 
@@ -115,7 +116,7 @@ const Matrix4x4& DCameraComponent::GetPerspectiveProjectionMatrix()
 
 void DCameraComponent::InitECSSystems()
 {
-	DGameManager::Get().GetECSWorld().system<DCameraComponent>("Camera Initialize")
+	DUtilityECS::GetECSWorld().system<DCameraComponent>("Camera Initialize")
 		.kind(flecs::OnSet)
 		.kind(flecs::OnAdd)
 		.each([](const flecs::entity& ent, DCameraComponent& Camera)

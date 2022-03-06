@@ -7,3 +7,8 @@ void DUtilityECS::InitializeECSSystems()
 	DMeshRendererComponent::InitECSSystems();
 	DCameraComponent::InitECSSystems();
 }
+
+flecs::world& DUtilityECS::GetECSWorld()
+{
+	return ECSWorld;
+}

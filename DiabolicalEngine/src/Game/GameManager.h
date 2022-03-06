@@ -29,11 +29,9 @@ public:
 
 	static DGameManager& Get();
 
-	flecs::world& GetECSWorld();
 
 private:
 	void GameTick();
-	flecs::world ECSWorld;
 
 	bool bMainLoopRunning = true;
 

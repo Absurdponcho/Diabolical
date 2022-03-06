@@ -2,11 +2,12 @@
 #include "Camera.h"
 #include "Game/GameManager.h"
 #include "MeshPrimitives.h"
+#include "ECS/ECS.h"
 
 void DMeshRendererComponent::InitECSSystems()
 {
 	
-	DGameManager::Get().GetECSWorld().system<DMeshRendererComponent, Transform3D>("Render")
+	DUtilityECS::GetECSWorld().system<DMeshRendererComponent, Transform3D>("Render")
 		.kind(flecs::OnStore)
 		.each(DMeshRendererComponent::RenderTransform3D);
 }

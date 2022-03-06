@@ -26,14 +26,15 @@
 #include "Graphics/Rendering/Camera.h"
 #include "Utility/Random.h"
 #include "Graphics/Rendering/MeshRendererComponent.h"
+#include "ECS/ECS.h"
 
 void DGameManager::RenderingTest()
 {
-	auto& TestRenderEntity = ECSWorld.entity()
+	auto& TestRenderEntity = DUtilityECS::GetECSWorld().entity()
 		.set<DMeshRendererComponent>({ MeshPrimitives::Cube, nullptr })
 		.add<Transform3D>();
 
-	auto& TestCamera = ECSWorld.entity()
+	auto& TestCamera = DUtilityECS::GetECSWorld().entity()
 	.add<DCameraComponent>()
 	.set<Transform3D>({Vector3(5,5,5), Vector3(1,1,1), Vector3(45,-45,0)});
 
@@ -77,23 +78,23 @@ void DGameManager::MainGameLoop()
 		DGameThread::RunInvokedFunctions();
 
 		Frame++;
-		GameTime += ECSWorld.delta_time();
+		GameTime += DUtilityECS::GetECSWorld().delta_time();
 	}
 }
 
 void DGameManager::GameTick()
 {
-	ECSWorld.progress();
+	DUtilityECS::GetECSWorld().progress();
 }
 
 float DGameManager::GetDeltaTime()
 {
-	return ECSWorld.delta_time();
+	return DUtilityECS::GetECSWorld().delta_time();
 }
 
 float DGameManager::GetGameFPS()
 {
-	return 1/ECSWorld.delta_time();
+	return 1/DUtilityECS::GetECSWorld().delta_time();
 }
 
 float DGameManager::GetGameTime()
@@ -110,9 +111,4 @@ DGameManager& DGameManager::Get()
 {
 	Check (DEngine::GameManager);
 	return *DEngine::GameManager;
-}
-
-flecs::world& DGameManager::GetECSWorld()
-{
-	return ECSWorld;
 }

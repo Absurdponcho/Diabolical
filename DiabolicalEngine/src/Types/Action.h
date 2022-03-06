@@ -1,4 +1,5 @@
 #pragma once
+#include "Logging/Logging.h"
 #include <functional>
 
 namespace SeqHelper
