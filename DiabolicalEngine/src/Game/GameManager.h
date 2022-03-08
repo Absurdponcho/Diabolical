@@ -6,16 +6,33 @@
 
 class TestReflectedClass
 {
-	GENERATE_CLASS_META(TestReflectedClass);
+	GENERATE_CLASS_META(TestReflectedClass)
 public:
 	TestReflectedClass() {}
+
+	PROPERTYDEF(int, TestInt, 69)
+	PROPERTY(int, TestInt2)
+	PROPERTY(int, TestInt3)
+
+	int NormalInt = 3;
+
+	float Float = 69.3f;
+
+	PROPERTY(Vector3, TestVector3)
+	PROPERTY(Vector3*, TestVectorPtr)
+	PROPERTYDEF(Vector3*, TestVectorPtr2, nullptr)
+};
+class TestReflectedClass2
+{
+	GENERATE_CLASS_META(TestReflectedClass2);
+public:
+	TestReflectedClass2() {}
 
 	PROPERTY(int, TestInt)
 	PROPERTY(int, TestInt2)
 	PROPERTY(int, TestInt3)
 
 	int NormalInt = 3;
-
 	float Float = 69.3f;
 
 	PROPERTY(Vector3, TestVector3)

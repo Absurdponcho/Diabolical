@@ -28,10 +28,15 @@ public:
 class DClassMetaDataBase 
 {
 public:
+	DClassMetaDataBase();
 	int64_t Identifier = ClassMetaId;
 
 	virtual const char* GetClassName() { return nullptr; };
 	virtual size_t GetClassSize() { return 0; };
+	void RegisterMetaProperty(class DPropertyMetaDataBase* NewProperty);
+
+private:
+	void* RegisteredProperties = nullptr; // DVector<DPropertyMetaDataBase*>*
 };
 
 template<typename T>
@@ -47,7 +52,9 @@ struct EmptyInitializer {};
 
 #define REGISTER_CLASS(Class)																									\
 private:																														\
+	inline static Class* NullClass = nullptr;																					\
 	__declspec(allocate("meta$u")) inline static DClassMetaData<Class> Meta_##Class = DClassMetaData<Class>();					\
+	DClassMetaData<Class>& StaticMutableMetaData() { return Meta_##Class; }														\
 public:																															\
 	const static DClassMetaData<Class>& StaticMetaData() { return Meta_##Class; }												\
 	const DClassMetaData<Class>& GetMetaData() { return Meta_##Class; }															\
@@ -58,7 +65,6 @@ public:																															\
 	REGISTER_CLASS(Class)																										\
 	inline const char* GetTypeName() { return typeid(Class).name(); }															\
 	Class(EmptyInitializer e){}																									\
-	inline static Class* NullClass = nullptr;																					\
 
 
 // ===================================================================================
@@ -68,6 +74,7 @@ public:																															\
 class DPropertyMetaInitializer
 {
 public:
+
 	DPropertyMetaInitializer(class DPropertyMetaDataBase* (*NewFuncPtr)())
 		: FuncPtr(NewFuncPtr) {}
 
@@ -109,12 +116,22 @@ private:
 	size_t Offset;
 	const char* Name = nullptr;
 };
-					
-#define PROPERTY(Type, Name)																																								\
-	Type Name;																																												\
-__declspec(allocate("meta$u")) inline static DPropertyMetaData<Type>* Meta_##Type##_##Name;																									\
-static DPropertyMetaDataBase* MetaInitializerFunc_##Type##_##Name() { Meta_##Type##_##Name = new DPropertyMetaData<Type>(#Name, (size_t)&NullClass->Name); return Meta_##Type##_##Name; }	\
-__declspec(allocate("meta$u")) inline static DPropertyMetaInitializer MetaInitializer_##Type##_##Name = DPropertyMetaInitializer(MetaInitializerFunc_##Type##_##Name);						\
-																																															\
 
 
+#define PROPERTY_INTERNAL(Type, Name, DefaultValue)																																											\
+	public:																																																					\
+		typedef Type Name##_Property;																																														\
+		Type Name DefaultValue;																																																\
+	private:																																																				\
+		__declspec(allocate("meta$u")) inline static DPropertyMetaData<Name##_Property>* Meta_##Name##_Property##;																											\
+		static DPropertyMetaDataBase* MetaInitializerFunc_##Name##_Property##() 																																			\
+		{ 																																																					\
+			Meta_##Name##_Property## = new DPropertyMetaData<Name##_Property>(#Name, (size_t)&NullClass->Name);																												\
+			dynamic_cast<DClassMetaDataBase*>(&NullClass->StaticMutableMetaData())->RegisterMetaProperty(Meta_##Name##_Property##); 																						\
+			return Meta_##Name##_Property##;																																												\
+		}																																																					\
+		__declspec(allocate("meta$u")) inline static DPropertyMetaInitializer MetaInitializer_##Name##_Property## = DPropertyMetaInitializer(MetaInitializerFunc_##Name##_Property##);										\
+	public:																																																					\
+
+#define PROPERTYDEF(Type, Name, DefaultValue) PROPERTY_INTERNAL(Type, Name, =##DefaultValue)
+#define PROPERTY(Type, Name) PROPERTY_INTERNAL(Type, Name, ;)

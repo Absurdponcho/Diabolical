@@ -34,11 +34,26 @@ void DMeta::ParseMetaData()
 		{
 			DPropertyMetaDataBase* Property = PossiblePropertyInitializer->FuncPtr();
 			PropertyMetaData.PushBack(Property);
-			LogString.Append(DString::Format("\n        %i-> %s %s", Property->GetPropertyOffset(), Property->GetTypeName(), Property->GetPropertyName()));
+			LogString.Append(DString::Format("\n        %i -> %s %s", Property->GetPropertyOffset(), Property->GetTypeName(), Property->GetPropertyName()));
 		}
 		CurrentAddr++;
 	}
 	LogString.Append("\n");
 	LOG(LogString);
 	
+}
+
+DClassMetaDataBase::DClassMetaDataBase()
+{
+	RegisteredProperties = new DVector<DPropertyMetaDataBase *>();
+}
+
+void DClassMetaDataBase::RegisterMetaProperty(DPropertyMetaDataBase* NewProperty)
+{
+	Check(NewProperty);
+	Check(NewProperty->Identifier == PropertyMetaId);
+	Check(RegisteredProperties);
+
+	DVector<DPropertyMetaDataBase *>* Properties = (DVector<DPropertyMetaDataBase *>*)RegisteredProperties;
+	Properties->PushBack(NewProperty);
 }
