@@ -1,6 +1,7 @@
 #pragma once
 #include "Check.h"
 #include <vector>
+#include "Types/Meta.h"
 
 template <typename T>
 class DVector : private std::vector<T>

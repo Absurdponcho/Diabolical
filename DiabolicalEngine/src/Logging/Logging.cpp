@@ -12,7 +12,7 @@
 #include <windows.h>
 #endif
 
-DMutexHandle Mutex;
+DMutexHandle Mutex = DMutexHandle();
 uint8_t LogColor = 15;
 std::ofstream LogFile;
 DString LogRecap = "";

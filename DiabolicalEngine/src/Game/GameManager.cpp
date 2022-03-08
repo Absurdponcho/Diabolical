@@ -39,18 +39,45 @@ void DGameManager::RenderingTest()
 	TestCamera.SetParent(DScene::SceneRoot);
 	TestCamera.Set(DCameraComponent());
 	TestCamera.Set(Transform3D({ Vector3(5,5,5), Vector3(1,1,1), Vector3(45,-45,0) }));
+	TestCamera.GetComponentMutable<Transform3D>()->Name = "Camera";
 
 	DCameraComponent::SetActiveCamera(TestCamera);
 
-
-	DEntity TestParent = Cube.Clone();
+	DEntity TestParent = Cube.Clone("TestParent");
 	TestParent.GetComponentMutable<Transform3D>()->SetPosition({ -2.0f, 0, 0 });
+	TestParent.GetComponentMutable<Transform3D>()->Name = "TestParent";
+	TestParent.SetParent(DScene::SceneRoot);
 
-
-	DEntity TestChild = Cube.Clone();
+	DEntity TestChild = Cube.Clone("TestChild");
 	TestChild.GetComponentMutable<Transform3D>()->SetPosition({ 3.0f, 0, 0 });
 	TestChild.GetComponentMutable<Transform3D>()->SetEulerRotation({0, 45, 0});
+	TestChild.GetComponentMutable<Transform3D>()->Name = "TestChild";
+	TestChild.SetParent(TestParent);
 
+	DEntity Child1 = Cube.Clone();
+	Transform3D* Child1Transform = Child1.GetComponentMutable<Transform3D>();
+	Child1Transform->Name = "Child1";
+	Child1.SetParent(TestChild);
+	Check(Child1.GetParent() == TestChild);
+	Check(TestChild.HasChild(Child1));
+
+	DEntity Child2 = Cube.Clone();
+	Transform3D* Child2Transform = Child2.GetComponentMutable<Transform3D>();
+	Child2Transform->Name = "Child2";
+	Child2.SetParent(Child1);
+	Check(Child2.GetParent() == Child1);
+	Check(Child1.HasChild(Child2));
+
+	Child2.GetFlecsEntity().disable();
+
+	Check (Child1.GetComponentMutable<Transform3D>() != Child2.GetComponentMutable<Transform3D>());
+
+	DEntity Child3 = Cube.Clone();
+	Transform3D* Child3Transform = Child3.GetComponentMutable<Transform3D>();
+	Child3Transform->Name = "Child3";
+	Child3.SetParent(Child2);
+	Check(Child3.GetParent() == Child2);
+	Check(Child2.HasChild(Child3));
 
 }
 
@@ -61,16 +88,17 @@ void DGameManager::Exit()
 
 DSharedPtr<DAudioSource> AudioSource = std::make_shared<DAudioSource>();
 
-void Test(DSharedPtr<DWAVFile> NewWav)
-{
-	Check(NewWav.Get());
-	AudioSource->SetAudioFile(NewWav);
-	AudioSource->Play();
-}
-
 void DGameManager::MainGameLoop()
 {
-	DWAVFile::LoadAsync("Assets/Sussy Baka.wav", &Test); // Hey dude, you're being quite sussy
+	TestReflectedClass TestClass = TestReflectedClass();
+	
+
+
+	DWAVFile::LoadAsync("Assets/Sussy Baka.wav", [](DSharedPtr<DWAVFile> NewWav){
+		Check(NewWav.Get());
+		AudioSource->SetAudioFile(NewWav);
+		AudioSource->Play();
+	}); // Hey dude, you're being quite sussy
 
 	RenderingTest();
 

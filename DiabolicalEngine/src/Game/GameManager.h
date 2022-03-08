@@ -1,6 +1,26 @@
 #pragma once
 #include "ECS/ECS.h"
 #include "Types/DMemory.h"
+#include "Types/Meta.h"
+#include "Maths/Maths.h"
+
+class TestReflectedClass
+{
+	GENERATE_CLASS_META(TestReflectedClass);
+public:
+	TestReflectedClass() {}
+
+	PROPERTY(int, TestInt)
+	PROPERTY(int, TestInt2)
+	PROPERTY(int, TestInt3)
+
+	int NormalInt = 3;
+
+	float Float = 69.3f;
+
+	PROPERTY(Vector3, TestVector3)
+
+};
 
 class DGameManager
 {

@@ -3,6 +3,7 @@
 #include "Check.h"
 #include "Types/DString.h"
 #include "Types/DVector.h"
+#include "Types/Meta.h"
 
 class DEntity;
 struct DEntityData;
@@ -22,11 +23,15 @@ private:
 class DEntity
 {
 public:
+	inline static size_t GetSize(){ return sizeof(DEntity); }
+
 	// Creates a new prefab entity. This is the exact same as an entity, except it is excluded from systems and queries.
-	static DEntity CreatePrefab(DString Name = "");
+	static DEntity CreatePrefab(const DString& OriginalName = "");
 
 	// Creates a new entity. Add data by adding components, add functionality by adding systems.
-	static DEntity CreateEntity(DString Name = "");
+	static DEntity CreateEntity(const DString& Name = "");
+
+	static DString GenerateUniqueName(const DString& Name);
 
 	DEntity() {};
 
@@ -66,6 +71,8 @@ public:
 	bool HasChild(const DEntity& Child);
 	
 	DEntity& GetParent();
+
+	bool HasParent();
 
 	// Inherits an existing entity. 
 	// Inheriting the entity means this entity will have all of the same components.

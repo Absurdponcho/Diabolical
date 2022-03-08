@@ -18,26 +18,52 @@ flecs::world& DUtilityECS::GetECSWorld()
 	return ECSWorld;
 }
 
-DEntity DEntity::CreatePrefab(DString Name)
+DEntity DEntity::CreatePrefab(const DString& OriginalName)
 {
+	DString NewName = GenerateUniqueName(OriginalName);
+
 	DEntity NewPrefab;
-	NewPrefab.FlecsEntity = DUtilityECS::GetECSWorld().prefab(*Name);
+	NewPrefab.FlecsEntity = DUtilityECS::GetECSWorld().prefab(*NewName);
 	DEntityData Data;
-	Data.Name = Name;
+	Data.Name = NewName;
 	NewPrefab.Set(Data);
 	return NewPrefab;
 }
 
-DEntity DEntity::CreateEntity(DString Name)
+DEntity DEntity::CreateEntity(const DString& OriginalName)
 {
+	DString NewName = GenerateUniqueName(OriginalName);
+
 	DEntity NewEntity;
-	NewEntity.FlecsEntity = DUtilityECS::GetECSWorld().entity(*Name);
+	NewEntity.FlecsEntity = DUtilityECS::GetECSWorld().entity(*NewName);
 	DEntityData Data;
-	Data.Name = Name;
+	Data.Name = NewName;
 	NewEntity.Set(Data);
 	return NewEntity;
 }
 
+DString DEntity::GenerateUniqueName(const DString& Name)
+{
+	flecs::world& world = DUtilityECS::GetECSWorld();
+	flecs::entity e = world.lookup(*Name);
+	if (e.id() == 0) return Name; // name is already unique
+
+	int Suffix = 0;
+	DString NewName;
+
+	while (true)
+	{
+		NewName = DString::Format("%s_%i", *Name, Suffix);
+		flecs::entity existing = world.lookup(*NewName);
+		if (existing.id() == 0)
+		{
+			return NewName;
+		}
+		Suffix++;
+	}
+
+	return NewName;
+}
 
 void DEntity::SetParent(DEntity& NewParent)
 {
@@ -90,6 +116,8 @@ bool DEntity::HasChild(const DEntity& Child)
 
 DEntity& DEntity::GetParent()
 {
+	Check (GetEntityData().Parent.IsAlive());
+	Check (GetEntityData().Parent.HasChild(*this));
 	return GetEntityData().Parent;
 }
 
@@ -106,6 +134,7 @@ void DEntity::Inherit(DEntity Parent)
 {
 	LOG_ERR("DEntity::Inherit is temporarily disabled. Use DEntity::Clone().");
 	Check(false);
+
 	Check(Parent.IsAlive());
 	Check(IsAlive());
 	if (!IsAlive() || Parent.IsAlive()) return;
@@ -140,4 +169,12 @@ DEntity DEntity::Clone(DString NewName)
 	// remove possible prefab meme
 	NewEntity.FlecsEntity.remove(flecs::Prefab);
 	return NewEntity;
+}
+
+bool DEntity::HasParent()
+{
+	Check(IsAlive());
+	if (!IsAlive()) return false;
+
+	return GetEntityData().Parent.IsAlive();
 }
