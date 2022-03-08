@@ -48,7 +48,7 @@ public:
 	virtual const char* GetClassName() override { return typeid(T).name(); };
 };
 
-struct EmptyInitializer {};
+
 
 #define REGISTER_CLASS(Class)																									\
 private:																														\
@@ -64,7 +64,7 @@ public:																															\
 	public:																														\
 	REGISTER_CLASS(Class)																										\
 	inline const char* GetTypeName() { return typeid(Class).name(); }															\
-	Class(EmptyInitializer e){}																									\
+
 
 
 // ===================================================================================
@@ -127,7 +127,7 @@ private:
 		static DPropertyMetaDataBase* MetaInitializerFunc_##Name##_Property##() 																																			\
 		{ 																																																					\
 			Meta_##Name##_Property## = new DPropertyMetaData<Name##_Property>(#Name, (size_t)&NullClass->Name);																												\
-			dynamic_cast<DClassMetaDataBase*>(&NullClass->StaticMutableMetaData())->RegisterMetaProperty(Meta_##Name##_Property##); 																						\
+			static_cast<DClassMetaDataBase*>(&NullClass->StaticMutableMetaData())->RegisterMetaProperty(Meta_##Name##_Property##); 																							\
 			return Meta_##Name##_Property##;																																												\
 		}																																																					\
 		__declspec(allocate("meta$u")) inline static DPropertyMetaInitializer MetaInitializer_##Name##_Property## = DPropertyMetaInitializer(MetaInitializerFunc_##Name##_Property##);										\
