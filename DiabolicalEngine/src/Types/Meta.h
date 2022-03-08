@@ -110,11 +110,11 @@ private:
 	const char* Name = nullptr;
 };
 					
-#define PROPERTY(Type, Name)																													\
-	Type Name;																																	\
-__declspec(allocate("meta$u")) inline static DPropertyMetaData<Type>* Meta_##Type##_##Name;														\
+#define PROPERTY(Type, Name)																																								\
+	Type Name;																																												\
+__declspec(allocate("meta$u")) inline static DPropertyMetaData<Type>* Meta_##Type##_##Name;																									\
 static DPropertyMetaDataBase* MetaInitializerFunc_##Type##_##Name() { Meta_##Type##_##Name = new DPropertyMetaData<Type>(#Name, (size_t)&NullClass->Name); return Meta_##Type##_##Name; }	\
-__declspec(allocate("meta$u")) inline static DPropertyMetaInitializer MetaInitializer_##Type##_##Name = DPropertyMetaInitializer(MetaInitializerFunc_##Type##_##Name);												\
-																																				\
+__declspec(allocate("meta$u")) inline static DPropertyMetaInitializer MetaInitializer_##Type##_##Name = DPropertyMetaInitializer(MetaInitializerFunc_##Type##_##Name);						\
+																																															\
 
 
