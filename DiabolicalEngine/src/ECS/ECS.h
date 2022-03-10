@@ -3,7 +3,7 @@
 #include "Check.h"
 #include "Types/DString.h"
 #include "Types/DVector.h"
-#include "Types/Meta.h"
+#include "Meta/Meta.h"
 
 class DEntity;
 struct DEntityData;

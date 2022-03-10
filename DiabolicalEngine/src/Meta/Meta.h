@@ -16,10 +16,17 @@ class DMeta
 public:
 	static void ParseMetaData();
 
-
+private:
+	static void ParseInheritanceTree();
 };
 
+class DMetaBase
+{
+public:
+	virtual ~DMetaBase() {}
+protected:
 
+};
 
 // ===================================================================================
 // =============================== Class Meta ========================================
@@ -34,27 +41,47 @@ public:
 	virtual const char* GetClassName() { return nullptr; };
 	virtual size_t GetClassSize() { return 0; };
 	void RegisterMetaProperty(class DPropertyMetaDataBase* NewProperty);
+	virtual const DMetaBase* GetNullClass() { return nullptr; }
+	virtual const DMetaBase* GetDefaultClass() { return nullptr; }
 
+	virtual bool IsDerivedFrom(const DMetaBase* Object) { return false; }
 private:
 	void* RegisteredProperties = nullptr; // DVector<DPropertyMetaDataBase*>*
+	void* Inherits = nullptr; // DVector<DClassMetaDataBase*>*
 };
 
 template<typename T>
 class DClassMetaData : public DClassMetaDataBase
 {
 public:
-	DClassMetaData() {}
+	template<typename T2>
+	DClassMetaData(T2* NewNullClass) 
+		: NullClass(NewNullClass) 
+	{
+		DefaultClass = new T();
+	}
+
 	virtual size_t GetClassSize() override { return sizeof(T); }
 	virtual const char* GetClassName() override { return typeid(T).name(); };
-};
+	virtual const DMetaBase* GetNullClass() override { return NullClass; }
+	virtual const DMetaBase* GetDefaultClass() override { return DefaultClass; }
+	virtual bool IsDerivedFrom(const DMetaBase* Object) override { 
+		return dynamic_cast<const T*>(Object) != nullptr; 
+	}
 
+private:
+	DMetaBase* NullClass = nullptr;
+	DMetaBase* DefaultClass = nullptr;
+};
 
 
 #define REGISTER_CLASS(Class)																									\
 private:																														\
+	static_assert(std::is_convertible<Class *, DMetaBase*>::value, #Class " must inherit DMetaBase.");							\
 	inline static Class* NullClass = nullptr;																					\
-	__declspec(allocate("meta$u")) inline static DClassMetaData<Class> Meta_##Class = DClassMetaData<Class>();					\
+	__declspec(allocate("meta$u")) inline static DClassMetaData<Class> Meta_##Class = DClassMetaData<Class>(NullClass);			\
 	DClassMetaData<Class>& StaticMutableMetaData() { return Meta_##Class; }														\
+	 																															\
 public:																															\
 	const static DClassMetaData<Class>& StaticMetaData() { return Meta_##Class; }												\
 	const DClassMetaData<Class>& GetMetaData() { return Meta_##Class; }															\

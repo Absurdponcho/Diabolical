@@ -90,7 +90,7 @@ DSharedPtr<DAudioSource> AudioSource = std::make_shared<DAudioSource>();
 
 void DGameManager::MainGameLoop()
 {
-	TestReflectedClass TestClass = TestReflectedClass();
+	//TestReflectedClass TestClass = TestReflectedClass();
 
 	DWAVFile::LoadAsync("Assets/Sussy Baka.wav", [](DSharedPtr<DWAVFile> NewWav){
 		Check(NewWav.Get());

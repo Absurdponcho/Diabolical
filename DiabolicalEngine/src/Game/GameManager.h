@@ -1,14 +1,14 @@
 #pragma once
 #include "ECS/ECS.h"
 #include "Types/DMemory.h"
-#include "Types/Meta.h"
+#include "Meta/Meta.h"
 #include "Maths/Maths.h"
 
-class TestReflectedClass
+class Test1 : public DMetaBase
 {
-	GENERATE_CLASS_META(TestReflectedClass)
+	GENERATE_CLASS_META(Test1)
 public:
-	TestReflectedClass() {}
+	Test1() {}
 
 	PROPERTYDEF(int, TestInt, 69)
 
@@ -20,22 +20,31 @@ public:
 };
 
 
-class TestReflectedClass2
+class Test2 : public Test1
 {
-	GENERATE_CLASS_META(TestReflectedClass2);
+	GENERATE_CLASS_META(Test2);
 public:
-	TestReflectedClass2() {}
+	Test2() {}
 
-	PROPERTY(int, TestInt)
-	PROPERTY(int, TestInt2)
-	PROPERTY(int, TestInt3)
-
-	int NormalInt = 3;
-	float Float = 69.3f;
-
-	PROPERTY(Vector3, TestVector3)
-
+	PROPERTY(Vector3, asdas)
 };
+
+class Test3 : public Test2
+{
+	GENERATE_CLASS_META(Test3);
+public:
+	Test3() {}
+};
+
+class Test4 : public Test3
+{
+	GENERATE_CLASS_META(Test4);
+public:
+	Test4() {}
+
+	PROPERTY(Matrix4x4, asdas123asd)
+};
+
 
 class DGameManager
 {

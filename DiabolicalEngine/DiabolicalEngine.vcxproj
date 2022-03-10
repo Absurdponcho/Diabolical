@@ -51,7 +51,7 @@
     <ClCompile Include="src\ImGui\imgui_tables.cpp" />
     <ClCompile Include="src\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="src\GUI\IWindow.cpp" />
-    <ClCompile Include="src\Types\Meta.cpp" />
+    <ClCompile Include="src\Meta\Meta.cpp" />
     <ClCompile Include="src\Utility\Random.cpp" />
     <ClCompile Include="src\DiabolicalTypes.cpp" />
     <ClCompile Include="src\DiabolicalEngine.cpp" />
@@ -212,7 +212,7 @@
     <ClInclude Include="src\Types\Action.h" />
     <ClInclude Include="src\Types\DMemory.h" />
     <ClInclude Include="src\Types\DVector.h" />
-    <ClInclude Include="src\Types\Meta.h" />
+    <ClInclude Include="src\Meta\Meta.h" />
     <ClInclude Include="src\Utility\Random.h" />
     <ClInclude Include="src\DiabolicalTypes.h" />
     <ClInclude Include="src\DiabolicalEngine.h" />

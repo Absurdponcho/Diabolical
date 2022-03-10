@@ -16,7 +16,7 @@
 #include "gl/glew.h"
 #include <gl/GL.h>
 #include "Graphics/Rendering/Material.h"
-#include "Types/Meta.h"
+#include "Meta/Meta.h"
 
 #ifdef PLATFORM_WINDOWS
 #include <Windows.h>

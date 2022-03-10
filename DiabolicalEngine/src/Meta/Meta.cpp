@@ -2,8 +2,8 @@
 #include "Logging/Logging.h"
 #include "Types/DString.h"
 #include "Check.h"
-#include "DVector.h"
-
+#include "Types/DVector.h"
+#include "Meta.h"
 
 __declspec(allocate("meta$a")) int64_t MetaSectionStart = 0;
 __declspec(allocate("meta$z")) int64_t MetaSectionEnd = 0;
@@ -41,11 +41,34 @@ void DMeta::ParseMetaData()
 	LogString.Append("\n");
 	LOG(LogString);
 	
+	ParseInheritanceTree();
+}
+
+void DMeta::ParseInheritanceTree()
+{
+	DString LogString = "\nInheritance:\n";
+
+	for (DClassMetaDataBase* Meta : ClassMetaData)
+	{
+		for (DClassMetaDataBase* Meta2 : ClassMetaData)
+		{
+			if (Meta == Meta2) continue;
+
+			if (Meta->IsDerivedFrom(Meta2->GetDefaultClass()))
+			{
+				LogString.Append(DString::Format("     %s -> %s\n", Meta->GetClassName(), Meta2->GetClassName()));
+			}
+		}
+	}
+
+	LogString.Append("\n");
+	LOG(LogString);
 }
 
 DClassMetaDataBase::DClassMetaDataBase()
 {
 	RegisteredProperties = new DVector<DPropertyMetaDataBase *>();
+	Inherits = new DVector<DClassMetaDataBase*>();
 }
 
 void DClassMetaDataBase::RegisterMetaProperty(DPropertyMetaDataBase* NewProperty)
