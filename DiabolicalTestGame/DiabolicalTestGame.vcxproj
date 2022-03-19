@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>ClangCL</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -80,11 +80,22 @@
     <LinkIncremental>true</LinkIncremental>
     <PublicIncludeDirectories>DiabolicalEngine/src;$(PublicIncludeDirectories)</PublicIncludeDirectories>
     <IncludePath>DiabolicalEngine/src;$(IncludePath)</IncludePath>
+    <ExternalIncludePath>..\ThirdParty\inc;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>..\ThirdParty\Platforms\Windows;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(ProjectName)\Build\$(Configuration)$(Platform)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <PublicIncludeDirectories>DiabolicalEngine/src;$(PublicIncludeDirectories)</PublicIncludeDirectories>
     <IncludePath>DiabolicalEngine/src;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgAutoLink>false</VcpkgAutoLink>
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgInstalledDir>
+    </VcpkgInstalledDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -121,16 +132,22 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../DiabolicalEngine/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2.lib;glew32.lib;glew32s.lib;OpenAL32.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>PackFiles.bat</Command>
     </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>xcopy /y /d /f  "$(SolutionDir)ThirdParty\Platforms\Windows\*.dll" "$(SolutionDir)$(ProjectName)\Build\$(Configuration)$(Platform)\"
+xcopy /y /d /f /I /E  "$(SolutionDir)$(ProjectName)\Assets" "$(SolutionDir)$(ProjectName)\Build\$(Configuration)$(Platform)\Assets"</Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

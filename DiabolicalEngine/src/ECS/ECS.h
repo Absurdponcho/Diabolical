@@ -8,20 +8,20 @@
 class DEntity;
 struct DEntityData;
 
-class DUtilityECS
+class DUtilityECS 
 {
 public:
-	static void InitializeECSSystems();
+	static void InitializeECSSystems(); 
 	static flecs::world& GetECSWorld();
 
 private:
-	static flecs::world ECSWorld;
+	static flecs::world ECSWorld; 
 
 };
 
 
 class DEntity
-{
+{ 
 public:
 	inline static size_t GetSize(){ return sizeof(DEntity); }
 
@@ -39,7 +39,7 @@ public:
 	DEntity(const DEntity& ExistingEntity)
 	{
 		*this = ExistingEntity;
-		Check (FlecsEntity == ExistingEntity.FlecsEntity);
+		Check (FlecsEntity.id() == ExistingEntity.FlecsEntity.id());
 	}
 
 	DEntity(flecs::entity ExistingEntity)
@@ -134,7 +134,7 @@ public:
 
 	inline friend bool operator== (const DEntity& LHS, const DEntity& RHS)
 	{
-		return LHS.FlecsEntity == RHS.FlecsEntity;
+		return LHS.FlecsEntity.id() == RHS.FlecsEntity.id();
 	}
 
 
@@ -158,4 +158,4 @@ struct DEntityData
 
 // Any extra data that DEntity stores should be kept inside of DEntityData as a component.
 // DEntity should be able to be copied and still point to the same entity, and have the same data.
-static_assert(sizeof(DEntity) == sizeof(flecs::entity));
+static_assert(sizeof(DEntity) == sizeof(flecs::entity), "Error");

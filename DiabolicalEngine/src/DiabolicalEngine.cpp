@@ -34,7 +34,7 @@ void DEngine::Init(int argc, char* argv[])
 #endif
 	atexit(AtExit);
 
-    DMeta::ParseMetaData();
+    //DMeta::ParseMetaData();
 	DCommandLine::Init(argc, argv);
 	DSocket::InitSockets();
 	DNetworkManager::Initialize();

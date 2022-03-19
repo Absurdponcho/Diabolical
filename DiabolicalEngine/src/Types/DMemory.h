@@ -9,9 +9,14 @@ template <typename T>
 class DSharedPtr : private std::shared_ptr<T>
 {
 public:
-	using std::shared_ptr<T>::shared_ptr;
 	using std::shared_ptr<T>::operator[];
 	using std::shared_ptr<T>::operator->;
+
+	DSharedPtr() {}
+
+	DSharedPtr(T* In) : std::shared_ptr<T>(In) {}
+
+	DSharedPtr(std::shared_ptr<T> Other) : std::shared_ptr<T>(Other) {}
 
 	// constructor to allow casting of the inner type
 	template <typename T2>
@@ -41,7 +46,7 @@ template <typename T>
 class DWeakPtr : private std::weak_ptr<T>
 {
 public:
-	using std::weak_ptr<T>::weak_ptr;
+	DWeakPtr() {};
 
 	DWeakPtr(const DSharedPtr<T>& Shared) : std::weak_ptr<T>::weak_ptr(Shared.AsSTLType()) {}
 
@@ -70,8 +75,13 @@ template <typename T>
 class DUniquePtr : private std::unique_ptr<T>
 {
 public:
-	using std::unique_ptr<T>::unique_ptr;
 	using std::unique_ptr<T>::operator->;
+
+	DUniquePtr(std::unique_ptr<T> In) : std::unique_ptr<T>(In.release()) {}
+
+	DUniquePtr(T* In) : std::unique_ptr<T>(In) {}
+
+	DUniquePtr() {}
 
 	T* Get() const 
 	{

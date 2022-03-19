@@ -12,42 +12,62 @@ typedef glm::ivec4 IntVector4;
 class Matrix4x4 : public glm::mat4x4
 {
 public:
-	using glm::mat4x4::mat4x4;
+	
+	Matrix4x4() {}
+	Matrix4x4(glm::mat4x4 In) : glm::mat4x4(In) {}
+
 	static const Matrix4x4 Identity;
 };
 
 class Matrix3x3 : public glm::mat3x3
 {
 public:
-	using glm::mat3x3::mat3x3;
+	Matrix3x3() {}
+	Matrix3x3(glm::mat3x3 In) : glm::mat3x3(In) {}
+
 	static const Matrix3x3 Identity;
 };
 
 class Vector4 : public glm::vec4
 {
 public:
-	using glm::vec4::vec4;
+	Vector4() {}
+	Vector4(glm::vec4 In) : glm::vec4(In) {}
+
 	static const Vector4 ZeroVector;
 };
 
 class Vector3 : public glm::vec3
 {
 public:
-	using glm::vec3::vec3;
+	Vector3() {}
+	Vector3(glm::vec3 In) : glm::vec3(In) {}
+
+	template <typename X, typename Y, typename Z>
+	Vector3(X x, Y y, Z z) : glm::vec3(x,y,z) {}
+
 	static const Vector3 ZeroVector;
 };
 
 class Vector2 : public glm::vec2
 {
 public:
-	using glm::vec2::vec2;
+	Vector2() {}
+	Vector2(glm::vec2 In) : glm::vec2(In) {}
+	Vector2(glm::ivec2 In) : glm::vec2(In) {}
+
+	template <typename X, typename Y>
+	Vector2(X x, Y y) : glm::vec2(x, y) {}
+
 	static const Vector2 ZeroVector;
 };
 
 class Quaternion : public glm::quat
 {
 public:
-	using glm::quat::quat;
+	Quaternion() {}
+	Quaternion(glm::quat In) : glm::quat(In) {}
+
 	static const Quaternion Identity;
 };
 

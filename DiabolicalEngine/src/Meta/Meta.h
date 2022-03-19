@@ -1,5 +1,6 @@
 #pragma once
 
+#ifdef MSVC
 
 #pragma section("meta$a",read,write)
 #pragma section("meta$u",read,write)
@@ -162,3 +163,19 @@ private:
 
 #define PROPERTYDEF(Type, Name, DefaultValue) PROPERTY_INTERNAL(Type, Name, =##DefaultValue)
 #define PROPERTY(Type, Name) PROPERTY_INTERNAL(Type, Name, ;)
+
+#else
+
+class DMetaBase
+{
+public:
+	virtual ~DMetaBase() {}
+protected:
+
+};
+
+#define PROPERTYDEF(Type, Name, DefaultValue) Type Name = DefaultValue;
+#define PROPERTY(Type, Name) Type Name;
+#define GENERATE_CLASS_META(Class)
+
+#endif

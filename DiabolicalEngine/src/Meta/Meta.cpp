@@ -5,6 +5,8 @@
 #include "Types/DVector.h"
 #include "Meta.h"
 
+#ifdef MSVC
+
 __declspec(allocate("meta$a")) int64_t MetaSectionStart = 0;
 __declspec(allocate("meta$z")) int64_t MetaSectionEnd = 0;
 
@@ -80,3 +82,5 @@ void DClassMetaDataBase::RegisterMetaProperty(DPropertyMetaDataBase* NewProperty
 	DVector<DPropertyMetaDataBase *>* Properties = (DVector<DPropertyMetaDataBase *>*)RegisteredProperties;
 	Properties->PushBack(NewProperty);
 }
+
+#endif
