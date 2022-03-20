@@ -1,17 +1,17 @@
 #include "AudioSource.h"
-#include <AL/AL.h>
-#include <AL/ALC.h>
+#include <AL/al.h>
+#include <AL/alc.h>
 
 /*AudioSource = new DAudioSource();
 {
 	DSharedPtr<DWAVFile> WavFile = DWAVFile::Load("Assets/Sussy Baka.wav");
 	AudioSource->SetAudioFile(WavFile);
 	AudioSource->Play();
-}*/
-
+}*/ 
+ 
 DAudioSource::~DAudioSource()
 {
-	LOG("Audio source destroyed");
+	LOG("Audio source destroyed"); 
 	
 }
 
@@ -24,7 +24,7 @@ void DAudioSource::Play()
 {
 	Check(AudioFile->GetData());
 	if (!AudioFile->GetData())
-		return;
+		return; 
 
 	ALCenum error;
 

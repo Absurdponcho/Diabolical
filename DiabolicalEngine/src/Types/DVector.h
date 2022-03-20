@@ -21,6 +21,16 @@ public:
 		return std::vector<T>::size() * sizeof(T);
 	}
 
+	inline bool Contains(const T& Value)
+	{
+		for (T& Val : *this)
+		{
+			if (Val == Value) return true;
+		}
+
+		return false;
+	}
+
 	inline void Add(const T&& Value)
 	{
 		PushBack(Value);
@@ -127,6 +137,22 @@ public:
 	inline const bool IsValidIndex(size_t Index) const 
 	{
 		return Index < Size();
+	}
+
+	inline int Remove(const T& Value)
+	{
+		int I = 0;
+		for (T& Val : *this)
+		{
+			if (Val == Value) 
+			{
+				RemoveAt(I);
+				return I;
+			}
+			I++;
+		}
+
+		return -1;
 	}
 
 	inline void RemoveAt(size_t Index)

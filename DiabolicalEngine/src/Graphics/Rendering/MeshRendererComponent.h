@@ -13,16 +13,27 @@ public:
 	DMeshRendererComponent(const DMeshRendererComponent& Other)
 		: Mesh(Other.Mesh)
 	{
-		MaterialInstance = std::make_unique<DMaterialInstance>(*Other.MaterialInstance.Get());
+		Check (Other.MaterialInstance.Get());
+		if (Other.MaterialInstance.Get())
+		{
+			MaterialInstance = std::make_unique<DMaterialInstance>(*Other.MaterialInstance.Get());
+		}
 	}
 
 	DMeshRendererComponent(DSharedPtr<DMesh> NewMesh, DSharedPtr<DMaterial> NewMaterial)
-		: Mesh(NewMesh), MaterialInstance(std::make_unique<DMaterialInstance>(NewMaterial)) {}
+		: Mesh(NewMesh), MaterialInstance(std::make_unique<DMaterialInstance>(NewMaterial)) 
+	{
+		Check(MaterialInstance.Get());
+	}
 
 	DMeshRendererComponent& operator= (DMeshRendererComponent&& Other)
 	{
 		Mesh = Other.Mesh;
-		MaterialInstance = std::make_unique<DMaterialInstance>(*Other.MaterialInstance.Get());
+		Check(Other.MaterialInstance.Get());
+		if (Other.MaterialInstance.Get())
+		{
+			MaterialInstance = std::make_unique<DMaterialInstance>(*Other.MaterialInstance.Get());
+		}
 		return *this;
 	}
 
@@ -37,11 +48,12 @@ public:
 	DUniquePtr<DMaterialInstance> MaterialInstance;
 
 	static void InitECSSystems();
-	static void RenderTransform3D(const flecs::entity& ent, DMeshRendererComponent& Renderer, Transform3D& Transform);
-	static flecs::entity MakeMeshRendererEntity();
+	static void RenderTransform3D(DMeshRendererComponent& Renderer, Transform3D& Transform);
+	static DEntity MakeMeshRendererEntity();
 
 protected:
+	static flecs::query<DMeshRendererComponent, Transform3D> RendererQuery;
 
-	static flecs::entity TestRenderEntity;
+	static DEntity TestRenderEntity;
 };
 

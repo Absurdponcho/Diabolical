@@ -1,14 +1,15 @@
 #include "Camera.h"
 #include "Graphics/WindowManager.h"
 #include "Game/GameManager.h"
+#include "ECS/ECS.h"
 
-flecs::entity_view DCameraComponent::ActiveCameraComponent;
+DEntity DCameraComponent::ActiveCameraComponent;
 
 const Matrix4x4& DCameraComponent::GetPerspectiveVPMatrix()
 {
-	Check(ParentEntity.is_alive());
+	Check(ParentEntity.IsAlive());
 
-	Transform3D* ThisTransform = (Transform3D*)ParentEntity.get<Transform3D>();
+	Transform3D* ThisTransform = (Transform3D*)ParentEntity.GetComponent<Transform3D>();
 	Check(ThisTransform);
 
 	if (ThisTransform->GetPosition() != LastCleanPosition || ThisTransform->GetRotation() != LastCleanRotation)
@@ -27,7 +28,7 @@ const Matrix4x4& DCameraComponent::GetPerspectiveVPMatrix()
 
 void DCameraComponent::DirtyAll()
 {
-	Transform3D* ThisTransform = (Transform3D*)ParentEntity.get<Transform3D>();
+	Transform3D* ThisTransform = (Transform3D*)ParentEntity.GetComponent<Transform3D>();
 	Check(ThisTransform);
 
 	bPerspectiveProjectionMatrixDirty = true;
@@ -40,26 +41,30 @@ void DCameraComponent::DirtyAll()
 
 DCameraComponent* DCameraComponent::GetActiveCamera()
 {
-	if (!ActiveCameraComponent.is_alive()) return nullptr;
-	return (DCameraComponent*)ActiveCameraComponent.get<DCameraComponent>();
+	if (!ActiveCameraComponent.IsAlive()) return nullptr;
+	return (DCameraComponent*)ActiveCameraComponent.GetComponent<DCameraComponent>();
 }
 
-void DCameraComponent::SetActiveCamera(const flecs::entity& CameraEntity)
+void DCameraComponent::SetActiveCamera(DEntity& CameraEntity)
 {
-	Check(CameraEntity.is_alive());
-	if (!CameraEntity.is_alive()) return;
+	Check(CameraEntity.IsAlive());
+	if (!CameraEntity.IsAlive()) return;
 
-	const DCameraComponent* CameraComponent = CameraEntity.get<DCameraComponent>();
+	DCameraComponent* CameraComponent = CameraEntity.GetComponentMutable<DCameraComponent>();
 	Check(CameraComponent);
-	if (CameraComponent)
-	{
-		ActiveCameraComponent = CameraEntity;
-	}
+	if (!CameraComponent) return;
+	CameraComponent->ParentEntity = CameraEntity;
+
+	const Transform3D* Transform = CameraEntity.GetComponent<Transform3D>();
+	Check(Transform);
+	if (!Transform) return;
+
+	ActiveCameraComponent = CameraEntity;
 }
 
 void DCameraComponent::RemoveActiveCamera()
 {
-	ActiveCameraComponent = flecs::entity_view();
+	ActiveCameraComponent = DEntity();
 }
 
 float DCameraComponent::GetAspectRatio()
@@ -72,7 +77,8 @@ const Matrix4x4& DCameraComponent::GetViewMatrix()
 {
 	if (bViewMatrixDirty)
 	{
-		Transform3D* ThisTransform = (Transform3D*)ParentEntity.get<Transform3D>();
+		Check(ParentEntity.IsAlive());
+		Transform3D* ThisTransform = (Transform3D*)ParentEntity.GetComponent<Transform3D>();
 		Check(ThisTransform);
 
 		Vector3 EulerRotation = ThisTransform->GetEulerRotation();
@@ -101,7 +107,7 @@ const Matrix4x4& DCameraComponent::GetPerspectiveProjectionMatrix()
 {
 	if (bPerspectiveProjectionMatrixDirty)
 	{
-		Transform3D* ThisTransform = (Transform3D*)ParentEntity.get<Transform3D>();
+		Transform3D* ThisTransform = (Transform3D*)ParentEntity.GetComponent<Transform3D>();
 		Check(ThisTransform);
 
 		float AspectRatio = GetAspectRatio();
@@ -115,11 +121,12 @@ const Matrix4x4& DCameraComponent::GetPerspectiveProjectionMatrix()
 
 void DCameraComponent::InitECSSystems()
 {
-	DGameManager::Get().GetECSWorld().system<DCameraComponent>("Camera Initialize")
+	/*DUtilityECS::GetECSWorld().system<DCameraComponent>("Camera Initialize")
 		.kind(flecs::OnSet)
 		.kind(flecs::OnAdd)
-		.each([](const flecs::entity& ent, DCameraComponent& Camera)
+		.each([](const DEntity& ent, DCameraComponent& Camera)
 	{
+		Check(ent.IsAlive());
 		Camera.SetParentEntity(ent);
-	});
+	});*/
 }

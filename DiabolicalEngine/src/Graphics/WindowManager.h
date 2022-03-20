@@ -2,7 +2,6 @@
 
 #include <string>
 #include <SDL2/SDL.h>
-#include <box2d/b2_math.h>
 #include <glm/glm.hpp>
 
 class DWindowManager

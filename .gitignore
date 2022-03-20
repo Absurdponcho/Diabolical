@@ -401,3 +401,4 @@ imgui.ini
 Log
 *.filters
 *.user
+Build/

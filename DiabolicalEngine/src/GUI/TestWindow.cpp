@@ -1,12 +1,11 @@
 #include "TestWindow.h"
-#include "SOIL/SOIL.h"
 #include "gl/glew.h"
 #include "Check.h"
 
 
 TestWindow::TestWindow()
 {
-	Tex = SOIL_load_OGL_texture("UITestTexture.png", 4, 0, 0);
+	//Tex = SOIL_load_OGL_texture("UITestTexture.png", 4, 0, 0);
 	Check(Tex != 0);
 	glBindTexture(GL_TEXTURE_2D, TestWindow::Tex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

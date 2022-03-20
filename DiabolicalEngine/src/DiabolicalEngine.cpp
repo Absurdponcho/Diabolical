@@ -16,6 +16,7 @@
 #include "gl/glew.h"
 #include <gl/GL.h>
 #include "Graphics/Rendering/Material.h"
+#include "Meta/Meta.h"
 
 #ifdef PLATFORM_WINDOWS
 #include <Windows.h>
@@ -33,6 +34,7 @@ void DEngine::Init(int argc, char* argv[])
 #endif
 	atexit(AtExit);
 
+    //DMeta::ParseMetaData();
 	DCommandLine::Init(argc, argv);
 	DSocket::InitSockets();
 	DNetworkManager::Initialize();

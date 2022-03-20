@@ -28,7 +28,7 @@ void DNetworkManager::TryListen(const DString& ListenString)
 	bool bSplit = ListenString.Split(":", IP, PortStr);
 	if (!bSplit)
 	{
-		LOG_ERR(DString::Format("Invalid listen string %s", ListenString));
+		LOG_ERR(DString::Format("Invalid listen string %s", *ListenString));
 		return;
 	}
 	Check(bSplit);
@@ -37,7 +37,7 @@ void DNetworkManager::TryListen(const DString& ListenString)
 	bool bGetPort = PortStr.TryParseInt(Port);
 	if (!bGetPort)
 	{
-		LOG_ERR(DString::Format("Invalid listen port %s", PortStr));
+		LOG_ERR(DString::Format("Invalid listen port %s", *PortStr));
 		return;
 	}
 	Check(bGetPort);
@@ -63,7 +63,7 @@ void DNetworkManager::TryJoin(const DString& JoinString)
 	bool bSplit = JoinString.Split(":", IP, PortStr);
 	if (!bSplit)
 	{
-		LOG_ERR(DString::Format("Invalid join string %s", JoinString));
+		LOG_ERR(DString::Format("Invalid join string %s", *JoinString));
 		return;
 	}
 	Check(bSplit);	
@@ -72,7 +72,7 @@ void DNetworkManager::TryJoin(const DString& JoinString)
 	bool bGetPort = PortStr.TryParseInt(Port);
 	if (!bGetPort)
 	{
-		LOG_ERR(DString::Format("Invalid join port %s", PortStr));
+		LOG_ERR(DString::Format("Invalid join port %s", *PortStr));
 		return;
 	}
 	Check(bGetPort);	

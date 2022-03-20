@@ -15,21 +15,23 @@ public:
 
 	static DCameraComponent* GetActiveCamera();
 
-	static void SetActiveCamera(const flecs::entity& CameraEntity);
+	static void SetActiveCamera(DEntity& CameraEntity);
 
 	static void RemoveActiveCamera();
 
-	void SetParentEntity(flecs::entity NewParent)
+	void SetParentEntity(DEntity NewParent)
 	{
+		Check (NewParent.IsAlive());
 		ParentEntity = NewParent;
+		Check(ParentEntity.IsAlive());
 	}
 
 	static void InitECSSystems();
+	DEntity ParentEntity;
 
 protected:
-	static flecs::entity_view ActiveCameraComponent;
+	static DEntity ActiveCameraComponent;
 
-	flecs::entity ParentEntity;
 
 	Vector3 LastCleanPosition = Vector3::ZeroVector;
 	Quaternion LastCleanRotation = Quaternion::Identity;

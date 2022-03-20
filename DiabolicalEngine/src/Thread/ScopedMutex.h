@@ -1,4 +1,5 @@
 #pragma once
+#include "Check.h"
 #include <mutex>
 
 class DMutexHandle : private std::mutex
@@ -21,11 +22,13 @@ public:
 	DScopedMutex(DMutexHandle& MutexHandle)
 		: MutHandle(&MutexHandle)
 	{
+		Check (MutHandle);
 		MutHandle->Lock();
 	}
 
 	~DScopedMutex()
 	{
+		Check(MutHandle);
 		MutHandle->Unlock();
 	}
 

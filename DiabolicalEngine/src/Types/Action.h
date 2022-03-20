@@ -1,4 +1,5 @@
 #pragma once
+#include "Logging/Logging.h"
 #include <functional>
 
 namespace SeqHelper
@@ -31,20 +32,19 @@ protected:
 public:
 	DCallback() {};
 
-	template <typename F, typename... Args>
+	template <typename F>
 	DCallback(F&& func, Args&&... args)
 		: f(std::forward<F>(func)),
 		args(std::forward<Args>(args)...),
 		bBound(true)
 	{}
 
-	template <typename... Args, int... Is>
+	template <int... Is>
 	void func(std::tuple<Args...>& tup, SeqHelper::index<Is...>)
 	{
 		f(std::get<Is>(tup)...);
 	}
 
-	template <typename... Args>
 	void func(std::tuple<Args...>& tup)
 	{
 		func(tup, SeqHelper::gen_seq<sizeof...(Args)>{});
@@ -61,7 +61,6 @@ public:
 		return func(args);
 	}
 
-	template <typename... Args>
 	retval Invoke(Args&&... params)
 	{
 		if (!bBound)
@@ -85,25 +84,31 @@ class DAction : public DActionBase
 {
 protected:
 	std::function<void(Args...)> f;
-	std::tuple<Args...> args;
+	std::tuple<Args...> args = {};
 
 public:
 	DAction() {};
 
-	template <typename F, typename... Args>
+	template <typename F>
 	DAction(F&& func, Args&&... args)
 		: f(std::forward<F>(func)),
 		args(std::forward<Args>(args)...),
 		bBound(true)
 	{}
 
-	template <typename... Args, int... Is>
+	template <typename F>
+	DAction(F func)
+		: bBound(true)
+	{
+		f = std::function<void(Args...)>(func);
+	}
+
+	template <int... Is>
 	void func(std::tuple<Args...>& tup, SeqHelper::index<Is...>) 
 	{
 		f(std::get<Is>(tup)...);
 	}
 
-	template <typename... Args>
 	void func(std::tuple<Args...>& tup)
 	{
 		func(tup, SeqHelper::gen_seq<sizeof...(Args)>{});
@@ -120,7 +125,6 @@ public:
 		func(args);
 	}
 
-	template <typename... Args>
 	void Invoke(Args&&... params)
 	{
 		if (!bBound)
@@ -129,6 +133,17 @@ public:
 			return;
 		}
 		std::tuple<Args...> NewArgs(std::forward<Args>(params)...);
+		func(NewArgs);
+	}
+
+	void Invoke(const Args&... params)
+	{
+		if (!bBound)
+		{
+			LOG_WARN("Invoking unbound DAction");
+			return;
+		}
+		std::tuple<Args...> NewArgs(params...);
 		func(NewArgs);
 	}
 
