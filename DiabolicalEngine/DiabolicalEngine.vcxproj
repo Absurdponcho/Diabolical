@@ -365,7 +365,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalOptions>-Wno-unused-variable -Wno-unused-but-set-variable %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-function %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

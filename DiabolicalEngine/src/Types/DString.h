@@ -158,6 +158,18 @@ public:
 		return true;
 	}
 
+	inline DVector<DString> SplitAll(DString Delimiter)
+	{
+		DVector<DString> OutStrings;
+		DString Left;
+		DString Right = *this;
+		while (Right.Split(Delimiter, Left, Right))
+		{
+			OutStrings.Add(Left);
+		}
+		return OutStrings;
+	}
+
 	inline const size_t Length() const
 	{
 		return length();
@@ -303,7 +315,7 @@ public:
 	}
 
 };
-
+ 
 namespace std {
 
 	template <>
@@ -314,6 +326,17 @@ namespace std {
 			// use std::string hash
 			std::hash<std::string> ha; 
 			return ha.operator()(k.ToSTLString());			
+		}
+	};
+
+	template <>
+	struct less<DString>
+	{
+		constexpr bool operator()(const DString& lhs, const DString& rhs) const
+		{
+			// use std::string hash
+			std::less<std::string> ls;
+			return ls.operator()(lhs.ToSTLString(), rhs.ToSTLString());
 		}
 	};
 

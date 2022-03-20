@@ -31,7 +31,12 @@ public:
 		return false;
 	}
 
-	inline void Add(const T&& Value)
+	inline void Add(T&& Value)
+	{
+		PushBack(Value);
+	}
+
+	inline void Add(const T& Value)
 	{
 		PushBack(Value);
 	}
