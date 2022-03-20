@@ -117,7 +117,7 @@ public:
 
 	Matrix4x4 GetWorldSpaceModelMatrix()
 	{
-		
+		return Matrix4x4();
 	}
 
 	Matrix4x4 GetModelMatrix()

@@ -2,10 +2,10 @@
 #include <chrono>
 #include <SDL2/SDL.h>
 #include "Graphics/WindowManager.h"
-#include <gl/glew.h>
+#include <GL/glew.h>
 #include <gl/GL.h>
 #include "Audio/AudioSource.h"
-#include "Audio/WAVFile.h"
+#include "Audio/WavFile.h"
 #include "ImGui/imgui.h"
 #include "ImGui/backends/imgui_impl_opengl3.h"
 #include "ImGui/backends/imgui_impl_sdl.h"

@@ -30,6 +30,7 @@
     <ClCompile Include="src\GUI\GUI.cpp" />
     <ClCompile Include="src\Input\Input.cpp" />
     <ClCompile Include="src\Maths\Maths.cpp" />
+    <ClCompile Include="src\Meta\Meta.cpp" />
     <ClCompile Include="src\Networking\Client.cpp" />
     <ClCompile Include="src\Networking\Server.cpp" />
     <ClCompile Include="src\Networking\NetworkManager.cpp" />
@@ -51,7 +52,7 @@
     <ClCompile Include="src\ImGui\imgui_tables.cpp" />
     <ClCompile Include="src\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="src\GUI\IWindow.cpp" />
-    <ClCompile Include="src\Meta\Meta.cpp" />
+    <ClCompile Include="src\Meta\OldMSVCMeta\MSVCMeta.cpp" />
     <ClCompile Include="src\Utility\Random.cpp" />
     <ClCompile Include="src\DiabolicalTypes.cpp" />
     <ClCompile Include="src\DiabolicalEngine.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="src\GUI\GUI.h" />
     <ClInclude Include="src\Input\Input.h" />
     <ClInclude Include="src\Maths\Maths.h" />
+    <ClInclude Include="src\Meta\Meta.h" />
     <ClInclude Include="src\Networking\Client.h" />
     <ClInclude Include="src\Networking\NetTypes.h" />
     <ClInclude Include="src\Networking\Server.h" />
@@ -212,7 +214,7 @@
     <ClInclude Include="src\Types\Action.h" />
     <ClInclude Include="src\Types\DMemory.h" />
     <ClInclude Include="src\Types\DVector.h" />
-    <ClInclude Include="src\Meta\Meta.h" />
+    <ClInclude Include="src\Meta\OldMSVCMeta\MSVCMeta.h" />
     <ClInclude Include="src\Utility\Random.h" />
     <ClInclude Include="src\DiabolicalTypes.h" />
     <ClInclude Include="src\DiabolicalEngine.h" />
@@ -363,6 +365,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>-Wno-unused-variable -Wno-unused-but-set-variable %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

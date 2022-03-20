@@ -45,7 +45,7 @@ public:
 	}
 
 	DRawAsset(DString NewFilepath, void* NewData, uint64_t NewAssetSize)
-		: Filepath(NewFilepath), Data(NewData), AssetSize(NewAssetSize)
+		: Data(NewData), Filepath(NewFilepath), AssetSize(NewAssetSize)
 	{
 		LOG(DString::Format("Raw Asset Loaded. %s", *NewFilepath));
 	}

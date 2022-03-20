@@ -4,48 +4,6 @@
 #include "Meta/Meta.h"
 #include "Maths/Maths.h"
 
-class Test1 : public DMetaBase
-{
-	GENERATE_CLASS_META(Test1)
-public:
-	Test1() {}
-
-	PROPERTYDEF(int, TestInt, 69)
-
-	int NormalInt = 3;
-	float Float = 69.3f;
-
-	PROPERTY(Vector3, TestVector3)
-	PROPERTY(Vector3*, TestVectorPtr)
-};
-
-
-class Test2 : public Test1
-{
-	GENERATE_CLASS_META(Test2);
-public:
-	Test2() {}
-
-	PROPERTY(Vector3, asdas)
-};
-
-class Test3 : public Test2
-{
-	GENERATE_CLASS_META(Test3);
-public:
-	Test3() {}
-};
-
-class Test4 : public Test3
-{
-	GENERATE_CLASS_META(Test4);
-public:
-	Test4() {}
-
-	PROPERTY(Matrix4x4, asdas123asd)
-};
-
-
 class DGameManager
 {
 public:

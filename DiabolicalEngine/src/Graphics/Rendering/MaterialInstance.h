@@ -12,8 +12,8 @@ public:
 	: UniformLocation(NewUniformLocation), Name(NewName) {}
 
 
-	DString Name;
 	GLint UniformLocation = 0;
+	DString Name;
 	virtual void Apply() {}
 };
 
