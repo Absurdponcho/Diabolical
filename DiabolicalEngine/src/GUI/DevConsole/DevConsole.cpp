@@ -57,14 +57,25 @@ void DDevConsole::Draw()
 
 void DDevConsole::RegisterCommand(DString Command, DAction<DVector<DString>> function)
 {
+	if (Commands.find(Command) == Commands.end())
+	{
+//		Commands.insert(Commands.end(), std::pair(Command, function));
+		Logging::LogPlain(DString("DevConsole - Added Command").Append(Command), 15);
+	}
 }
 
-void DDevConsole::UnregisterCommand(DString Command)
+void DDevConsole::ParseCommand(DString Input)
 {
-}
-
-void DDevConsole::ParseCommand(DString CommandString)
-{
+	if (Input.Length())
+	{
+		DString command, params;
+		Input.Split(" ", command, params);
+		DVector<DString> params_v = params.SplitAll(" ,");
+		auto cmd = Commands.find(command);
+		if (cmd != Commands.end()) {
+			cmd->second.Invoke(params_v);
+		}
+	}
 }
 
 void DDevConsole::ParseCommandQuotations(DVector<DString>& Params)
@@ -111,8 +122,4 @@ void DDevConsole::ParseCommandQuotations(DVector<DString>& Params)
 	}
 
 	Params = RetVal;
-}
-
-void DDevConsole::ExecuteCommand(DString Command, DVector<DString>& Params)
-{
 }
