@@ -332,9 +332,9 @@ namespace std {
 	template <>
 	struct less<DString>
 	{
-		constexpr bool operator()(const DString& lhs, const DString& rhs) const
+		bool operator()(const DString& lhs, const DString& rhs) const
 		{
-			// use std::string hash
+			// use std::string less
 			std::less<std::string> ls;
 			return ls.operator()(lhs.ToSTLString(), rhs.ToSTLString());
 		}
