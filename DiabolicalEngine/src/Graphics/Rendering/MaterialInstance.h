@@ -33,7 +33,9 @@ public:
 
 	void ApplyInternal()
 	{
-		static_assert(false, "You must use a DMaterialUniformValue that has a specific template specialization");
+		LOG_ERR(DString::Format("You must use a DMaterialUniformValue that has a specific template specialization. %s is not valid!", typeid(T).name()));
+		Check(false);
+		//static_assert(false, "You must use a DMaterialUniformValue that has a specific template specialization.");
 	}
 };
 

@@ -13,19 +13,39 @@
 #include "AssetManager/AssetManager.h"
 #include "GUI/GUI.h"
 #include "GUI/DevConsole/DevConsole.h"
-#include "gl/glew.h"
+#include "GL/glew.h"
 #include <gl/GL.h>
 #include "Graphics/Rendering/Material.h"
 #include "Meta/Meta.h"
+#include "FileSystem/Filesystem.h"
 
 #ifdef PLATFORM_WINDOWS
 #include <Windows.h>
 #include <Dbghelp.h>
 #endif
 
-
 DGameManager* DEngine::GameManager = nullptr;
 DSharedPtr<DDevConsole> DEngine::DevConsole;
+
+void Clang()
+{
+	LOG(DFileSystem::CurrentDirectory());
+
+	CXIndex index = clang_createIndex(0, 0);
+	CXTranslationUnit unit = clang_parseTranslationUnit(
+		index,
+		"src/header.hpp", nullptr, 0,
+		nullptr, 0,
+		CXTranslationUnit_None);
+	if (unit == nullptr)
+	{
+		LOG_ERR("bad");
+	}
+	else
+	{
+		LOG_WARN("good");
+	}
+}
 
 void DEngine::Init(int argc, char* argv[])
 {
@@ -33,6 +53,8 @@ void DEngine::Init(int argc, char* argv[])
     SetUnhandledExceptionFilter(MinidumpExceptionFilter);
 #endif
 	atexit(AtExit);
+
+	Clang();
 
     //DMeta::ParseMetaData();
 	DCommandLine::Init(argc, argv);

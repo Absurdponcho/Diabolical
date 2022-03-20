@@ -11,14 +11,20 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		DebugMSVC|x64 = DebugMSVC|x64
+		DebugMSVC|x86 = DebugMSVC|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.Debug|x64.ActiveCfg = Debug|x64
-		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.Debug|x64.Build.0 = Debug|x64
-		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.Debug|x86.ActiveCfg = Debug|Win32
-		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.Debug|x86.Build.0 = Debug|Win32
+		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.Debug|x64.ActiveCfg = DebugClang|x64
+		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.Debug|x64.Build.0 = DebugClang|x64
+		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.Debug|x86.ActiveCfg = DebugClang|Win32
+		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.Debug|x86.Build.0 = DebugClang|Win32
+		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.DebugMSVC|x64.ActiveCfg = DebugMSVC|x64
+		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.DebugMSVC|x64.Build.0 = DebugMSVC|x64
+		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.DebugMSVC|x86.ActiveCfg = DebugMSVC|Win32
+		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.DebugMSVC|x86.Build.0 = DebugMSVC|Win32
 		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.Release|x64.ActiveCfg = Release|x64
 		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.Release|x64.Build.0 = Release|x64
 		{D9D5AFA1-1613-4996-B84A-9DE636E97320}.Release|x86.ActiveCfg = Release|Win32
@@ -27,6 +33,10 @@ Global
 		{6DD504E8-5619-4D48-B3B3-56BC291BB65F}.Debug|x64.Build.0 = Debug|x64
 		{6DD504E8-5619-4D48-B3B3-56BC291BB65F}.Debug|x86.ActiveCfg = Debug|Win32
 		{6DD504E8-5619-4D48-B3B3-56BC291BB65F}.Debug|x86.Build.0 = Debug|Win32
+		{6DD504E8-5619-4D48-B3B3-56BC291BB65F}.DebugMSVC|x64.ActiveCfg = Debug|x64
+		{6DD504E8-5619-4D48-B3B3-56BC291BB65F}.DebugMSVC|x64.Build.0 = Debug|x64
+		{6DD504E8-5619-4D48-B3B3-56BC291BB65F}.DebugMSVC|x86.ActiveCfg = Debug|Win32
+		{6DD504E8-5619-4D48-B3B3-56BC291BB65F}.DebugMSVC|x86.Build.0 = Debug|Win32
 		{6DD504E8-5619-4D48-B3B3-56BC291BB65F}.Release|x64.ActiveCfg = Release|x64
 		{6DD504E8-5619-4D48-B3B3-56BC291BB65F}.Release|x64.Build.0 = Release|x64
 		{6DD504E8-5619-4D48-B3B3-56BC291BB65F}.Release|x86.ActiveCfg = Release|Win32

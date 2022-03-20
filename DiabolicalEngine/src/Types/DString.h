@@ -31,7 +31,7 @@ public:
 		Append(DString(std::to_string(Val)));
 	}
 
-	DString(const std::filesystem::path& Path)
+	DString(const std::filesystem::path& Path) 
 	{
 		Append(Path.string());
 	}
