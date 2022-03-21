@@ -27,34 +27,12 @@
 DGameManager* DEngine::GameManager = nullptr;
 DSharedPtr<DDevConsole> DEngine::DevConsole;
 
-void Clang()
-{
-	LOG(DFileSystem::CurrentDirectory());
-
-	CXIndex index = clang_createIndex(0, 0);
-	CXTranslationUnit unit = clang_parseTranslationUnit(
-		index,
-		"src/header.hpp", nullptr, 0,
-		nullptr, 0,
-		CXTranslationUnit_None);
-	if (unit == nullptr)
-	{
-		LOG_ERR("bad");
-	}
-	else
-	{
-		LOG_WARN("good");
-	}
-}
-
 void DEngine::Init(int argc, char* argv[])
 {
 #ifdef PLATFORM_WINDOWS
     SetUnhandledExceptionFilter(MinidumpExceptionFilter);
 #endif
 	atexit(AtExit);
-
-	Clang();
 
     //DMeta::ParseMetaData();
 	DCommandLine::Init(argc, argv);

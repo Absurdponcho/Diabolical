@@ -1,8 +1,4 @@
 #pragma once
-#include "ECS/ECS.h"
-#include "Types/DMemory.h"
-#include "Meta/Meta.h"
-#include "Maths/Maths.h"
 
 struct MetaTest
 { 

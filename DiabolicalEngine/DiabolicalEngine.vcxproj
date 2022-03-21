@@ -75,16 +75,6 @@
     <ClCompile Include="src\Networking\TCPConnection.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\clang-c\BuildSystem.h" />
-    <ClInclude Include="src\clang-c\CXCompilationDatabase.h" />
-    <ClInclude Include="src\clang-c\CXErrorCode.h" />
-    <ClInclude Include="src\clang-c\CXString.h" />
-    <ClInclude Include="src\clang-c\Documentation.h" />
-    <ClInclude Include="src\clang-c\ExternC.h" />
-    <ClInclude Include="src\clang-c\FatalErrorHandler.h" />
-    <ClInclude Include="src\clang-c\Index.h" />
-    <ClInclude Include="src\clang-c\Platform.h" />
-    <ClInclude Include="src\clang-c\Rewrite.h" />
     <ClInclude Include="src\ECS\ECS.h" />
     <ClInclude Include="src\ECS\Flecs\addons\app.h" />
     <ClInclude Include="src\ECS\Flecs\addons\coredoc.h" />
