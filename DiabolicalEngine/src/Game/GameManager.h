@@ -4,6 +4,7 @@
 #include "Meta/Meta.h"
 #include "Maths/Maths.h"
 
+
 struct MetaTest
 { 
 	GENERATE_META()
@@ -12,6 +13,7 @@ public:
 	bool bTest = false;
 	int intTest = 69;
 	float floatTest = 69.69f;
+	A a;
 };
 
 class DGameManager

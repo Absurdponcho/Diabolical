@@ -1,0 +1,3 @@
+https://zhangdoa.com/posts/reflection-in-c++...could-we-nail-it-now
+https://shaharmike.com/cpp/libclang/
+https://github.com/zhangdoa/InnocenceEngine/blob/master/Source/Client/Tool/InnoReflector.cpp

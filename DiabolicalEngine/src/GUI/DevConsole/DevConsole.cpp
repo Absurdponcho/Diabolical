@@ -41,7 +41,7 @@ void DDevConsole::Draw()
 		ImGui::EndChildFrame();
 
 		ImGui::SetNextItemWidth(420);
-		if (ImGui::InputText("DevInput", (std::string*)&Input, ImGuiInputTextFlags_EnterReturnsTrue))
+		if (ImGui::InputText("DevInput", (char*)((*(std::string*)&Input).c_str()), ImGuiInputTextFlags_EnterReturnsTrue))
 		{
 			Logging::LogPlain(DString("CMD > ").Append(Input).Append("\n"), 15);
 			Input = "";
