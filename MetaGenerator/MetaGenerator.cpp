@@ -5,34 +5,24 @@
 #include <filesystem>
 #include <unordered_set>
 #include <chrono>
+#include <thread>
 
 CXChildVisitResult visitor(CXCursor cursor, CXCursor parent, CXClientData clientData)
 {
 	auto cursorKindName = clang_getCString(clang_getCursorKindSpelling(cursor.kind));
 	auto cursorEntityName = clang_getCString(clang_getCursorSpelling(cursor));
-	//std::cout << "            " << cursorKindName << " : " << cursorEntityName << "\n";
+	std::ostream* LogInfo = (std::ostream*)clientData;
+	//*LogInfo << "            " << cursorKindName << " : " << cursorEntityName << "\n";
 	
 	return CXChildVisitResult::CXChildVisit_Continue;
 };
 
 std::vector<std::filesystem::path> stdlibpch;
 
-void CacheSTDLib()
+std::string ext(".h");
+
+std::unordered_set<std::string> GetAllHeaders(std::filesystem::path& srcpath)
 {
-
-}
-
-void RunProject(const std::filesystem::path& root)
-{
-	std::cout << "Project:" << root.string() << "\n";
-
-	std::filesystem::path metapath = root / "meta_gen/";
-	std::filesystem::path srcpath = root / "src/"; 
-
-	std::vector<std::filesystem::path> files;
-
-	std::string ext(".h");
-
 	std::unordered_set<std::string> allheaders;
 
 	for (auto& p : std::filesystem::recursive_directory_iterator(srcpath))
@@ -44,6 +34,13 @@ void RunProject(const std::filesystem::path& root)
 
 		allheaders.insert(relpath.string());
 	}
+
+	return allheaders;
+}
+
+std::vector<std::filesystem::path> GetRelevantFiles(std::filesystem::path& srcpath, std::filesystem::path& metapath)
+{
+	std::vector<std::filesystem::path> files;
 
 	for (auto& p : std::filesystem::recursive_directory_iterator(srcpath))
 	{
@@ -59,51 +56,10 @@ void RunProject(const std::filesystem::path& root)
 
 		fin.open(path);
 
-		//std::string out;
-		//out.reserve(std::filesystem::file_size(path));
 		bool bHasAnyMeta = false;
 
-		while (getline(fin, line)) { 
-			//if (line.find("#include") != std::string::npos)
-			//{
-			//	// possibly include our own headers? idk if this is needed
-			//	std::string includefilename;
-			//	bool bInQuotes = false;
-			//	for (char c : line)
-			//	{
-			//		if (!bInQuotes)
-			//		{ 
-			//			if (c == '"')
-			//			{
-			//				bInQuotes = true;
-			//			}
-			//		}
-			//		else
-			//		{
-			//			if (c == '"') break;
-
-			//			if (c == '/') c = '\\'; 
-
-			//			includefilename += c;
-			//		}
-			//	}
-			//	
-			//  includefilename = std::filesystem::relative(std::filesystem::path(path.parent_path() / includefilename), srcpath).string(); // make all includes relative to srcpath
-			//	
-			//	if (includefilename.length() != 0 && allheaders.find(includefilename) != allheaders.end())
-			//	{
-			//		out += "#include \"" + includefilename + ".gen\"\n";
-			//	}
-			//	else
-			//	{
-			//		out += line + "\n";
-			//	}
-			//}
-			//else
-			//{
-			//	out += line + "\n"; 
-			//}
-
+		while (getline(fin, line)) 
+		{
 			if (!bHasAnyMeta && line.find("GENERATE_META") != std::string::npos)
 			{
 				if (line.find("#define GENERATE_META") == std::string::npos)
@@ -114,16 +70,7 @@ void RunProject(const std::filesystem::path& root)
 			}
 		}
 
-		
-		//std::ofstream temp;
 		std::filesystem::create_directories(temppath.parent_path());
-		//temp.open(temppath);
-		//if (!temp) { // file couldn't be opened 
-		//	std::cerr << "Error: temp file could not be opened (" << temppath.string() << ")" << std::endl;
-		//	break;
-		//}
-		//temp << out;
-		//temp.close();
 		if (bHasAnyMeta)
 		{
 			files.push_back(std::filesystem::absolute(path));
@@ -131,96 +78,188 @@ void RunProject(const std::filesystem::path& root)
 		fin.close();
 	}
 
+	return files;
+}
+
+void GetDiagnostics(CXTranslationUnit translationUnit, std::ostream& LogInfo)
+{
+
+	int diagnosticnum = clang_getNumDiagnostics(translationUnit);
+	LogInfo << "        diagnostic count: " << diagnosticnum << std::endl;
+	for (int i = 0; i < diagnosticnum; i++)
+	{
+		auto diag = clang_getDiagnostic(translationUnit, i);
+		auto diagstr = clang_formatDiagnostic(diag, CXDiagnostic_DisplayCategoryName | CXDiagnostic_DisplayCategoryId | CXDiagnostic_DisplayOption | CXDiagnostic_DisplaySourceRanges | CXDiagnostic_DisplayColumn | CXDiagnostic_DisplaySourceLocation);
+		const char* cstr = clang_getCString(diagstr);
+
+		LogInfo << "            diagnostic: " << cstr << '\n';
+
+		clang_disposeString(diagstr);
+		clang_disposeDiagnostic(diag);
+	}
+}
+
+void ParseHeader(std::filesystem::path& HeaderPath, std::filesystem::path& srcpath, std::filesystem::path& metapath, std::ostream& LogInfo)
+{
+	LogInfo << "    GENERATING: " + HeaderPath.string() << '\n';
+	CXIndex Index = nullptr;
+
+	std::string includedir = ("-I" + srcpath.string());
+
+	const std::filesystem::path& relpath = std::filesystem::relative(HeaderPath, srcpath);
+	std::filesystem::path temppath = metapath / relpath;
+
+	std::string pchfile = temppath.string() + ".pch";
+
+	auto start = std::chrono::system_clock::now();
+
+	CXTranslationUnit translationUnit = nullptr;
+
+	if (std::filesystem::exists(pchfile))
+	{
+		Index = clang_createIndex(0, 1); 
+		LogInfo << "        Using PCH: " << pchfile << '\n';
+		CXErrorCode Error = clang_createTranslationUnit2(Index, pchfile.c_str(), &translationUnit);
+		if (Error != 0) // if this fails then the source file is likely newer. so this pch is now invalid
+		{
+			LogInfo << "        Using PCH Failed. CXErrorCode: " << (int)Error << std::endl;
+			GetDiagnostics(translationUnit, LogInfo);
+			clang_disposeTranslationUnit(translationUnit);
+			translationUnit = nullptr;
+			clang_disposeIndex(Index);
+			Index = nullptr;
+		}
+	}
+	
+	if (translationUnit == nullptr) // if using the pch failed we can read the source and generate a pch
+	{
+		std::vector<const char*> args{ "--language=c++", includedir.c_str(), "-std=c++17" };
+		Index = clang_createIndex(0, 1);
+		args.push_back("-Xclang");
+		args.push_back("-emit-pch");
+		args.push_back("-o");
+		args.push_back(pchfile.c_str());
+		LogInfo << "        Generating PCH: " << pchfile << '\n';
+		CXErrorCode Error = clang_parseTranslationUnit2(Index, HeaderPath.string().c_str(), args.data(), (int)args.size(), nullptr, 0, CXTranslationUnit_Incomplete | CXTranslationUnit_ForSerialization | CXTranslationUnit_SkipFunctionBodies | CXTranslationUnit_KeepGoing | CXTranslationUnit_PrecompiledPreamble, &translationUnit);
+		if (Error != 0)
+		{
+			LogInfo << "        Generating PCH Failed. CXErrorCode: " << (int)Error << std::endl;
+			GetDiagnostics(translationUnit, LogInfo);
+			clang_disposeTranslationUnit(translationUnit);
+			translationUnit = nullptr;
+			clang_disposeIndex(Index);
+			Index = nullptr;
+		}
+		else
+		{
+			clang_saveTranslationUnit(translationUnit, pchfile.c_str(), 0);
+		}
+	}
+
+	auto cursor = clang_getTranslationUnitCursor(translationUnit);
+	clang_visitChildren(cursor, visitor, &LogInfo);
+
+	if (translationUnit)
+	{
+		clang_disposeTranslationUnit(translationUnit);
+	}
+
+	if (Index)
+	{
+		clang_disposeIndex(Index);
+	}
+
+	auto end = std::chrono::system_clock::now();
+
+	auto difference = end - start;
+	auto millis = duration_cast<std::chrono::milliseconds>(difference).count();
+
+	LogInfo << "        Complete in " << millis << "ms\n";
+}
+
+struct ThreadData
+{
+	std::vector<std::filesystem::path> files;
+	std::filesystem::path srcpath;
+	std::filesystem::path metapath;
+	std::string result;
+};
+
+void RunThread(ThreadData& Data)
+{
+	std::stringstream result;
+	for (auto& path : Data.files)
+	{
+		ParseHeader(path, Data.srcpath, Data.metapath, result);
+	}
+	Data.result = result.str();
+}
+
+void RunProject(const std::filesystem::path& root)
+{
+	std::cout << "Project:" << root.string() << "\n";
+
+	std::filesystem::path metapath = root / "meta_gen/";
+	std::filesystem::path srcpath = root / "src/"; 
+
+
+	std::unordered_set<std::string> allheaders = GetAllHeaders(srcpath);
+	std::vector<std::filesystem::path> files = GetRelevantFiles(srcpath, metapath);
+
 	if (files.size() == 0)
 	{
 		std::cout << "    Invalid Arguments, no files specified\n";
 		return;
 	}
 
-	std::string includedir = ("-I" + srcpath.string());
-	std::cout << "    includedir: " + includedir << '\n';
-	auto index = clang_createIndex(0, 0);
+	int ThreadCount = std::thread::hardware_concurrency();
+	int FilesPerThread = (int)std::ceil((float)files.size() / (float)ThreadCount);
 
-	for (auto& path : files)
+	std::cout << "    Maximum threads: " << ThreadCount << std::endl;
+	std::cout << "    Total Files: " << files.size() << std::endl;
+
+	std::vector<std::thread> SpawnedThreads;
+	std::vector<ThreadData> Data;
+
+	for (int i = 0; i < ThreadCount; i++)
 	{
-		std::cout << "    GENERATING: " + path.string() << '\n'; 
-		
-		const std::filesystem::path& relpath = std::filesystem::relative(path, srcpath);
-		std::filesystem::path temppath = metapath / relpath;
-
-		std::string pchfile = temppath.string() + ".pch";
-
-		std::vector<const char*> args{ "--language=c++", includedir.c_str(), "-std=c++17" };		
-
-
-		auto start = std::chrono::system_clock::now();
-
-		CXTranslationUnit translationUnit = nullptr;
-		
-		bool bShouldSave = false;
-
-		if (std::filesystem::exists(pchfile))
+		std::vector<std::filesystem::path> ThreadFiles;
+		for (int x = (int)files.size() - 1; x >= 0; x--)
 		{
-			args.push_back("-Xclang");
-			args.push_back("-include-pch");
-			args.push_back(pchfile.c_str());
-			std::cout << "        Using PCH: " << pchfile << '\n';
-			translationUnit = clang_createTranslationUnit(index, pchfile.c_str());
-
+			if (ThreadFiles.size() >= FilesPerThread)
+			{
+				continue;
+			}
+			ThreadFiles.push_back(files[x]);
+			files.erase(files.begin() + x);
 		}
-		else
-		{
-			args.push_back("-Xclang");
-			args.push_back("-emit-pch");
-			args.push_back("-o");
-			args.push_back(pchfile.c_str());
-			std::cout << "        Generating PCH: " << pchfile << '\n';
-			translationUnit = clang_parseTranslationUnit(index, path.string().c_str(), args.data(), (int)args.size(), nullptr, 0, CXTranslationUnit_Incomplete | CXTranslationUnit_ForSerialization | CXTranslationUnit_SkipFunctionBodies | CXTranslationUnit_KeepGoing | CXTranslationUnit_PrecompiledPreamble);
-			bShouldSave = true;
-		}
-
-		if (translationUnit == nullptr)
-		{
-			std::cout << "    FAILED\n"; 
-		}
-		
-		int diagnosticnum = clang_getNumDiagnostics(translationUnit);
-		for (int i = 0; i < diagnosticnum; i++)
-		{
-			auto diag = clang_getDiagnostic(translationUnit, i);
-			auto diagstr = clang_formatDiagnostic(diag, CXDiagnostic_DisplayCategoryName | CXDiagnostic_DisplayCategoryId | CXDiagnostic_DisplayOption | CXDiagnostic_DisplaySourceRanges | CXDiagnostic_DisplayColumn | CXDiagnostic_DisplaySourceLocation);
-			const char* cstr = clang_getCString(diagstr);
-
-			std::cout << "            diagnostic: " << cstr << '\n';
-
-			clang_disposeString(diagstr);
-			clang_disposeDiagnostic(diag);
-		}
-
-		if (bShouldSave)
-		{
-			clang_saveTranslationUnit(translationUnit, pchfile.c_str(), 0);
-		}
-
-		auto cursor = clang_getTranslationUnitCursor(translationUnit);
-		clang_visitChildren(cursor, visitor, nullptr);
-		clang_disposeTranslationUnit(translationUnit);
-		
-		auto end = std::chrono::system_clock::now();
-		 
-		auto difference = end - start;
-		auto millis = duration_cast<std::chrono::milliseconds>(difference).count();
-
-		std::cout << "        Complete in " << millis << "ms\n";
+		Data.push_back({ThreadFiles, srcpath, metapath, std::string()});
 	}
-	clang_disposeIndex(index);
+
+	for (int i = 0; i < ThreadCount; i++)
+	{
+		if (Data.at(i).files.size() > 0)
+		{
+			SpawnedThreads.push_back(std::thread(RunThread, std::ref(Data.at(i))));
+		}
+	}
+
+	std::cout << "    Utilizing " << SpawnedThreads.size() << " threads." << std::endl;
+
+	for (std::thread& Thread : SpawnedThreads)
+	{
+		Thread.join();
+	}
+
+	for (ThreadData& Result : Data)
+	{
+		std::cout << Result.result;
+	}
 }
 
 int main(int argc, const char* argv[])
 {
 	std::cout << "Starting Code Generation\n";
-
-	CacheSTDLib();
 
 	std::vector<std::filesystem::path> projects;
 
