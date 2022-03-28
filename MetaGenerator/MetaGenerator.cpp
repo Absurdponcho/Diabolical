@@ -156,11 +156,10 @@ void ParseHeader(std::filesystem::path& HeaderPath, std::filesystem::path& srcpa
 		}
 	}
 
-	auto cursor = clang_getTranslationUnitCursor(translationUnit);
-	clang_visitChildren(cursor, visitor, &LogInfo);
-
 	if (translationUnit)
 	{
+		auto cursor = clang_getTranslationUnitCursor(translationUnit);
+		clang_visitChildren(cursor, visitor, &LogInfo);
 		clang_disposeTranslationUnit(translationUnit);
 	}
 
