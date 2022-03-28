@@ -54,11 +54,11 @@ std::vector<std::filesystem::path> GetRelevantFiles(std::filesystem::path& srcpa
 		std::string line;
 		std::ifstream fin;
 
-		fin.open(path);
+		//fin.open(path);
 
-		bool bHasAnyMeta = false;
+		bool bHasAnyMeta = true;
 
-		while (getline(fin, line)) 
+		/*while (getline(fin, line))
 		{
 			if (!bHasAnyMeta && line.find("GENERATE_META") != std::string::npos)
 			{
@@ -68,14 +68,14 @@ std::vector<std::filesystem::path> GetRelevantFiles(std::filesystem::path& srcpa
 					break;
 				}
 			}
-		}
+		}*/
 
 		std::filesystem::create_directories(temppath.parent_path());
 		if (bHasAnyMeta)
 		{
 			files.push_back(std::filesystem::absolute(path));
 		}
-		fin.close();
+		//fin.close();
 	}
 
 	return files;
@@ -99,7 +99,7 @@ void GetDiagnostics(CXTranslationUnit translationUnit, std::ostream& LogInfo)
 	}
 }
 
-void ParseHeader(std::filesystem::path& HeaderPath, std::filesystem::path& srcpath, std::filesystem::path& metapath, std::ostream& LogInfo)
+void ParseHeader(std::filesystem::path& HeaderPath, std::filesystem::path& srcpath, std::filesystem::path& metapath, std::ostream& LogInfo, long long& millisTotal)
 {
 	LogInfo << "    GENERATING: " + HeaderPath.string() << '\n';
 	CXIndex Index = nullptr;
@@ -173,6 +173,8 @@ void ParseHeader(std::filesystem::path& HeaderPath, std::filesystem::path& srcpa
 	auto difference = end - start;
 	auto millis = duration_cast<std::chrono::milliseconds>(difference).count();
 
+	millisTotal += millis;
+
 	LogInfo << "        Complete in " << millis << "ms\n";
 }
 
@@ -182,6 +184,7 @@ struct ThreadData
 	std::filesystem::path srcpath;
 	std::filesystem::path metapath;
 	std::string result;
+	long long millisTotal;
 };
 
 void RunThread(ThreadData& Data)
@@ -189,7 +192,7 @@ void RunThread(ThreadData& Data)
 	std::stringstream result;
 	for (auto& path : Data.files)
 	{
-		ParseHeader(path, Data.srcpath, Data.metapath, result);
+		ParseHeader(path, Data.srcpath, Data.metapath, result, Data.millisTotal);
 	}
 	Data.result = result.str();
 }
@@ -211,7 +214,7 @@ void RunProject(const std::filesystem::path& root)
 		return;
 	}
 
-	int ThreadCount = std::thread::hardware_concurrency();
+	int ThreadCount = std::thread::hardware_concurrency() / 2;
 	int FilesPerThread = (int)std::ceil((float)files.size() / (float)ThreadCount);
 
 	std::cout << "    Maximum threads: " << ThreadCount << std::endl;
@@ -220,22 +223,24 @@ void RunProject(const std::filesystem::path& root)
 	std::vector<std::thread> SpawnedThreads;
 	std::vector<ThreadData> Data;
 
-	for (int i = 0; i < ThreadCount; i++)
+	for (int i = 0; i < ThreadCount; i++) // generate thread data
 	{
-		std::vector<std::filesystem::path> ThreadFiles;
-		for (int x = (int)files.size() - 1; x >= 0; x--)
-		{
-			if (ThreadFiles.size() >= FilesPerThread)
-			{
-				continue;
-			}
-			ThreadFiles.push_back(files[x]);
-			files.erase(files.begin() + x);
-		}
-		Data.push_back({ThreadFiles, srcpath, metapath, std::string()});
+		Data.push_back({ std::vector<std::filesystem::path>(), srcpath, metapath, std::string()});
+		Data.at(i).files.reserve(FilesPerThread);
 	}
 
-	for (int i = 0; i < ThreadCount; i++)
+	int DataIndex = 0;
+	for (auto file : files) // add files to thread data
+	{
+		Data.at(DataIndex).files.push_back(file);
+		DataIndex++;
+		if (DataIndex >= Data.size())
+		{
+			DataIndex = 0;
+		}
+	}
+
+	for (int i = 0; i < ThreadCount; i++) // spawn the threads, pass thread data and function
 	{
 		if (Data.at(i).files.size() > 0)
 		{
@@ -245,15 +250,19 @@ void RunProject(const std::filesystem::path& root)
 
 	std::cout << "    Utilizing " << SpawnedThreads.size() << " threads." << std::endl;
 
-	for (std::thread& Thread : SpawnedThreads)
+	for (std::thread& Thread : SpawnedThreads) // wait for threads to finish
 	{
 		Thread.join();
 	}
 
-	for (ThreadData& Result : Data)
+	long long totalMillis = 0;
+	for (ThreadData& Result : Data) // display result from all threads
 	{
+		totalMillis += Result.millisTotal;
 		std::cout << Result.result;
 	}
+
+	std::cout << "    Total time spent all threads combined: " << totalMillis << "ms." << std::endl;
 }
 
 int main(int argc, const char* argv[])
