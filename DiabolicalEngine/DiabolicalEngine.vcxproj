@@ -190,7 +190,7 @@
     <ClInclude Include="src\Graphics\Rendering\MeshRendererComponent.h" />
     <ClInclude Include="src\Graphics\Rendering\Scene.h" />
     <ClInclude Include="src\GUI\GUI.h" />
-    <ClInclude Include="src\Header.hpp" />
+    <ClInclude Include="src\Header.h" />
     <ClInclude Include="src\Input\Input.h" />
     <ClInclude Include="src\Maths\Maths.h" />
     <ClInclude Include="src\Meta\Meta.h" />

@@ -18,6 +18,7 @@
 #include "Graphics/Rendering/Material.h"
 #include "Meta/Meta.h"
 #include "FileSystem/Filesystem.h"
+#include "Header.h"
 
 #ifdef PLATFORM_WINDOWS
 #include <Windows.h>

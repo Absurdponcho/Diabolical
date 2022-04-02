@@ -1,17 +1,8 @@
 #pragma once
 
-#define GENERATE_META()
-
-
-struct A
-{
-
-	int intA = 12;
-
-};
-
+// We can annotate classes we want to generate meta data for. the MetaGenerator will ignore any classes without this annotation
 #ifdef __clang__
-#define CLASS(a) __attribute__((annotate(a)))
+	#define METACLASS class __attribute__((annotate("meta"))) 
 #else
-#define CLASS(a)
+	#define METACLASS class
 #endif

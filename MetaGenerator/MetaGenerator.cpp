@@ -7,14 +7,115 @@
 #include <chrono>
 #include <thread>
 
-CXChildVisitResult visitor(CXCursor cursor, CXCursor parent, CXClientData clientData)
+struct VisitorData
 {
+	std::ostream* LogInfo;
+	bool bJustVisitedClassDecl = false;
+	bool bWithinClassDecl = false;
+	std::string ParentName = std::string();
+	bool bWithinInvalidClass = false;
+};
+
+CXChildVisitResult Visitor2(CXCursor cursor, CXCursor parent, CXClientData clientData)
+{
+	VisitorData* visitorData = (VisitorData*)clientData;
+	std::ostream* LogInfo = visitorData->LogInfo;
+
 	auto cursorKindName = clang_getCString(clang_getCursorKindSpelling(cursor.kind));
 	auto cursorEntityName = clang_getCString(clang_getCursorSpelling(cursor));
-	std::ostream* LogInfo = (std::ostream*)clientData;
-	//*LogInfo << "            " << cursorKindName << " : " << cursorEntityName << "\n";
-	
+
+	auto parentEntityName = clang_getCString(clang_getCursorSpelling(parent));
+
+	if (visitorData->bWithinClassDecl) // we are inside of a valid class declaration, so let's keep going deeper
+	{
+		if (cursor.kind == CXCursor_ClassDecl) // this is a new class declaration
+		{
+			if (std::string(visitorData->ParentName)._Equal(parentEntityName)) // This is a class declaration within our current class. For simplicity, generate meta for this class.
+			{
+				return CXChildVisitResult::CXChildVisit_Recurse;
+			}
+			else // We have left the current class. reset things and move on to the next "if" block
+			{
+				visitorData->bJustVisitedClassDecl = false;
+				visitorData->bWithinClassDecl = false;
+				visitorData->ParentName = std::string();
+			}
+		}
+		else // include everything inside of this class
+		{
+			return CXChildVisitResult::CXChildVisit_Recurse;
+		}
+	}
+
+
+	if (!visitorData->bWithinClassDecl) // we aren't inside of a valid class declaration so we can look for it and check it's first child for the "meta" annotation
+	{
+		if (cursor.kind == CXCursor_ClassDecl)
+		{
+			visitorData->bJustVisitedClassDecl = true;
+			visitorData->ParentName = std::string(cursorEntityName);
+			return CXChildVisitResult::CXChildVisit_Recurse;
+		}
+		else if (cursor.kind == CXCursor_AnnotateAttr && visitorData->bJustVisitedClassDecl)
+		{
+			visitorData->bJustVisitedClassDecl = false;
+			visitorData->ParentName = std::string();
+			if (!std::string(cursorEntityName)._Equal("meta"))
+			{
+				return CXChildVisitResult::CXChildVisit_Continue;
+			}
+			else
+			{
+				visitorData->bJustVisitedClassDecl = true;
+				visitorData->ParentName = std::string(cursorEntityName);
+				visitorData->bWithinClassDecl = true;
+				*LogInfo << "            Found Meta Class \"" << parentEntityName << "\"\n";
+				return CXChildVisitResult::CXChildVisit_Recurse;
+
+			}
+		}
+		else
+		{
+			if (!visitorData->bWithinInvalidClass)
+			{
+				visitorData->bWithinInvalidClass = true;
+				*LogInfo << "            Found Non-Meta Class \"" << parentEntityName << "\"\n";
+			}
+			visitorData->ParentName = std::string();
+			visitorData->bJustVisitedClassDecl = false;
+		}
+
+		return CXChildVisitResult::CXChildVisit_Continue;
+	}
+
 	return CXChildVisitResult::CXChildVisit_Continue;
+}
+
+CXChildVisitResult visitor(CXCursor cursor, CXCursor parent, CXClientData clientData)
+{
+	VisitorData* visitorData = (VisitorData*)clientData;
+	std::ostream* LogInfo = visitorData->LogInfo;
+
+	if (cursor.kind == CXCursor_ClassDecl)
+	{
+		*LogInfo << "\n";
+	}
+
+
+	auto cursorKindName = clang_getCString(clang_getCursorKindSpelling(cursor.kind));
+	auto cursorEntityName = clang_getCString(clang_getCursorSpelling(cursor));
+
+	auto parentEntityName = clang_getCString(clang_getCursorSpelling(parent));
+
+	CXChildVisitResult Result = Visitor2(cursor, parent, clientData);
+
+	if (visitorData->bWithinClassDecl)
+	{
+		visitorData->bWithinInvalidClass = false;
+		*LogInfo << "                " << cursorKindName << " : " << cursorEntityName << "\n";
+	}
+
+	return Result;
 };
 
 std::vector<std::filesystem::path> stdlibpch;
@@ -54,28 +155,28 @@ std::vector<std::filesystem::path> GetRelevantFiles(std::filesystem::path& srcpa
 		std::string line;
 		std::ifstream fin;
 
-		//fin.open(path);
+		fin.open(path);
 
-		bool bHasAnyMeta = true;
+		bool bHasAnyMeta = false;
 
-		/*while (getline(fin, line))
+		while (getline(fin, line))
 		{
-			if (!bHasAnyMeta && line.find("GENERATE_META") != std::string::npos)
+			if (!bHasAnyMeta && line.find("METACLASS") != std::string::npos)
 			{
-				if (line.find("#define GENERATE_META") == std::string::npos)
+				if (line.find("#define METACLASS") == std::string::npos)
 				{
 					bHasAnyMeta = true;
 					break;
 				}
 			}
-		}*/
+		}
 
 		std::filesystem::create_directories(temppath.parent_path());
 		if (bHasAnyMeta)
 		{
 			files.push_back(std::filesystem::absolute(path));
 		}
-		//fin.close();
+		fin.close();
 	}
 
 	return files;
@@ -122,7 +223,7 @@ void ParseHeader(std::filesystem::path& HeaderPath, std::filesystem::path& srcpa
 		CXErrorCode Error = clang_createTranslationUnit2(Index, pchfile.c_str(), &translationUnit);
 		if (Error != 0) // if this fails then the source file is likely newer. so this pch is now invalid
 		{
-			LogInfo << "        Using PCH Failed. CXErrorCode: " << (int)Error << std::endl;
+			LogInfo << "        Using PCH Failed. This can indicate the source code has been modified.\n        CXErrorCode: " << (int)Error << std::endl;
 			GetDiagnostics(translationUnit, LogInfo);
 			clang_disposeTranslationUnit(translationUnit);
 			translationUnit = nullptr;
@@ -158,8 +259,10 @@ void ParseHeader(std::filesystem::path& HeaderPath, std::filesystem::path& srcpa
 
 	if (translationUnit)
 	{
+		VisitorData visitorData = { &LogInfo };
+
 		auto cursor = clang_getTranslationUnitCursor(translationUnit);
-		clang_visitChildren(cursor, visitor, &LogInfo);
+		clang_visitChildren(cursor, visitor, &visitorData);
 		clang_disposeTranslationUnit(translationUnit);
 	}
 
