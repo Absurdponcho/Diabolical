@@ -163,11 +163,8 @@ std::vector<std::filesystem::path> GetRelevantFiles(std::filesystem::path& srcpa
 		{
 			if (!bHasAnyMeta && line.find("METACLASS") != std::string::npos)
 			{
-				if (line.find("#define METACLASS") == std::string::npos)
-				{
-					bHasAnyMeta = true;
-					break;
-				}
+				bHasAnyMeta = true;
+				break;
 			}
 		}
 
