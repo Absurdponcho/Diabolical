@@ -409,7 +409,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>meta_gen/codegen;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>-Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-function -Wno-unused-private-field %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>

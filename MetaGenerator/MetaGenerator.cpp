@@ -1,95 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "clang-c/Index.h"
 #include <filesystem>
 #include <unordered_set>
 #include <chrono>
 #include <thread>
+#include "MetaGenerator.h"
 
-struct VisitorData
-{
-	std::ostream* LogInfo;
-	bool bJustVisitedClassDecl = false;
-	bool bWithinClassDecl = false;
-	std::string ParentName = std::string();
-	bool bWithinInvalidClass = false;
-};
-
-CXChildVisitResult Visitor2(CXCursor cursor, CXCursor parent, CXClientData clientData)
-{
-	VisitorData* visitorData = (VisitorData*)clientData;
-	std::ostream* LogInfo = visitorData->LogInfo;
-
-	auto cursorKindName = clang_getCString(clang_getCursorKindSpelling(cursor.kind));
-	auto cursorEntityName = clang_getCString(clang_getCursorSpelling(cursor));
-
-	auto parentEntityName = clang_getCString(clang_getCursorSpelling(parent));
-
-	if (visitorData->bWithinClassDecl) // we are inside of a valid class declaration, so let's keep going deeper
-	{
-		if (cursor.kind == CXCursor_ClassDecl) // this is a new class declaration
-		{
-			if (std::string(visitorData->ParentName)._Equal(parentEntityName)) // This is a class declaration within our current class. For simplicity, generate meta for this class.
-			{
-				return CXChildVisitResult::CXChildVisit_Recurse;
-			}
-			else // We have left the current class. reset things and move on to the next "if" block
-			{
-				visitorData->bJustVisitedClassDecl = false;
-				visitorData->bWithinClassDecl = false;
-				visitorData->ParentName = std::string();
-			}
-		}
-		else // include everything inside of this class
-		{
-			return CXChildVisitResult::CXChildVisit_Recurse;
-		}
-	}
-
-
-	if (!visitorData->bWithinClassDecl) // we aren't inside of a valid class declaration so we can look for it and check it's first child for the "meta" annotation
-	{
-		if (cursor.kind == CXCursor_ClassDecl)
-		{
-			visitorData->bJustVisitedClassDecl = true;
-			visitorData->ParentName = std::string(cursorEntityName);
-			return CXChildVisitResult::CXChildVisit_Recurse;
-		}
-		else if (cursor.kind == CXCursor_AnnotateAttr && visitorData->bJustVisitedClassDecl)
-		{
-			visitorData->bJustVisitedClassDecl = false;
-			visitorData->ParentName = std::string();
-			if (!std::string(cursorEntityName)._Equal("meta"))
-			{
-				return CXChildVisitResult::CXChildVisit_Continue;
-			}
-			else
-			{
-				visitorData->bJustVisitedClassDecl = true;
-				visitorData->ParentName = std::string(cursorEntityName);
-				visitorData->bWithinClassDecl = true;
-				*LogInfo << "            Found Meta Class \"" << parentEntityName << "\"\n";
-				return CXChildVisitResult::CXChildVisit_Recurse;
-
-			}
-		}
-		else
-		{
-			if (!visitorData->bWithinInvalidClass)
-			{
-				visitorData->bWithinInvalidClass = true;
-				*LogInfo << "            Found Non-Meta Class \"" << parentEntityName << "\"\n";
-			}
-			visitorData->ParentName = std::string();
-			visitorData->bJustVisitedClassDecl = false;
-		}
-
-		return CXChildVisitResult::CXChildVisit_Continue;
-	}
-
-	return CXChildVisitResult::CXChildVisit_Continue;
-}
 
 CXChildVisitResult visitor(CXCursor cursor, CXCursor parent, CXClientData clientData)
 {
@@ -98,24 +15,38 @@ CXChildVisitResult visitor(CXCursor cursor, CXCursor parent, CXClientData client
 
 	if (cursor.kind == CXCursor_ClassDecl)
 	{
-		*LogInfo << "\n";
+		//*LogInfo << "\n";
 	}
-
 
 	auto cursorKindName = clang_getCString(clang_getCursorKindSpelling(cursor.kind));
 	auto cursorEntityName = clang_getCString(clang_getCursorSpelling(cursor));
 
 	auto parentEntityName = clang_getCString(clang_getCursorSpelling(parent));
 
-	CXChildVisitResult Result = Visitor2(cursor, parent, clientData);
+	ClangMetadata clangMetaData;
+	clangMetaData.displayName = clang_getCString(clang_getCursorDisplayName(cursor));
+	clangMetaData.entityName = clang_getCString(clang_getCursorSpelling(cursor));
+	clangMetaData.cursorKind = clang_getCursorKind(cursor);
+	clangMetaData.accessSpecifier = clang_getCXXAccessSpecifier(cursor);
+	clangMetaData.typeKind = clang_getCursorType(cursor).kind;
+	clangMetaData.typeName = clang_getCString(clang_getTypeKindSpelling(clangMetaData.typeKind));
+	clangMetaData.isPtr = clangMetaData.typeKind == CXType_Pointer || clangMetaData.typeKind == CXType_ObjCObjectPointer || clangMetaData.typeKind == CXType_MemberPointer || clangMetaData.typeKind == CXType_BlockPointer;
+	clangMetaData.isPOD = clang_isPODType(clang_getCursorType(cursor));
+	clangMetaData.returnTypeKind = clang_getCursorResultType(cursor).kind;
+	clangMetaData.returnTypeName = clang_getCString(clang_getTypeKindSpelling(clangMetaData.returnTypeKind));
+	clangMetaData.arraySize = clang_getArraySize(clang_getCursorType(cursor));
+	clangMetaData.parentDisplayName = clang_getCString(clang_getCursorDisplayName(parent));
+	clangMetaData.parentEntityName = clang_getCString(clang_getCursorSpelling(parent));
+	clangMetaData.parentTypeKind = clang_getCursorType(parent).kind;
+	clangMetaData.TypeSize = clang_Type_getSizeOf(clang_getCursorType(cursor));
+	clangMetaData.BitOffset = clang_Cursor_getOffsetOfField(cursor);
+	clangMetaData.ByteOffset = clang_Cursor_getOffsetOfField(cursor) / 8;
 
-	if (visitorData->bWithinClassDecl)
-	{
-		visitorData->bWithinInvalidClass = false;
-		*LogInfo << "                " << cursorKindName << " : " << cursorEntityName << "\n";
-	}
+	visitorData->GeneratedClangMetaData.push_back(clangMetaData);
 
-	return Result;
+	*LogInfo << "                " << cursorKindName << " : " << cursorEntityName << "\n";	
+
+	return CXChildVisitResult::CXChildVisit_Recurse;
 };
 
 std::vector<std::filesystem::path> stdlibpch;
@@ -139,7 +70,7 @@ std::unordered_set<std::string> GetAllHeaders(std::filesystem::path& srcpath)
 	return allheaders;
 }
 
-std::vector<std::filesystem::path> GetRelevantFiles(std::filesystem::path& srcpath, std::filesystem::path& metapath)
+std::vector<std::filesystem::path> GetRelevantFiles(std::filesystem::path& srcpath, std::filesystem::path& pchpath)
 {
 	std::vector<std::filesystem::path> files;
 
@@ -149,7 +80,7 @@ std::vector<std::filesystem::path> GetRelevantFiles(std::filesystem::path& srcpa
 		if (path.extension() != ext) continue;
 
 		const std::filesystem::path& relpath = std::filesystem::relative(path, srcpath);
-		std::filesystem::path temppath = metapath / relpath;
+		std::filesystem::path temppath = pchpath / relpath;
 		temppath += ".gen";
 
 		std::string line;
@@ -190,14 +121,159 @@ void GetDiagnostics(CXTranslationUnit translationUnit, std::ostream& LogInfo)
 		auto diagstr = clang_formatDiagnostic(diag, CXDiagnostic_DisplayCategoryName | CXDiagnostic_DisplayCategoryId | CXDiagnostic_DisplayOption | CXDiagnostic_DisplaySourceRanges | CXDiagnostic_DisplayColumn | CXDiagnostic_DisplaySourceLocation);
 		const char* cstr = clang_getCString(diagstr);
 
-		LogInfo << "            diagnostic: " << cstr << '\n';
+		//LogInfo << "            diagnostic: " << cstr << '\n';
 
 		clang_disposeString(diagstr);
 		clang_disposeDiagnostic(diag);
 	}
 }
 
-void ParseHeader(std::filesystem::path& HeaderPath, std::filesystem::path& srcpath, std::filesystem::path& metapath, std::ostream& LogInfo, long long& millisTotal)
+std::string GenerateSpaces(int Amount)
+{
+	std::string out;
+	for (int i = 0; i < Amount; i++)
+	{
+		out.append(" ");
+	}
+	return out;
+}
+
+void SortClangMetadataHierarchy(std::vector<ClangMetadata>& Metadata)
+{
+	std::vector<ClangMetadata*> Depth;
+	for (ClangMetadata& Meta : Metadata) // sort metadata children into their parents
+	{
+		while (Depth.size() > 0)
+		{
+			ClangMetadata* CurrentClass = Depth.at(Depth.size() - 1);
+			if (!CurrentClass) break;
+
+			if (Meta.IsChildOf(*CurrentClass))
+			{
+				CurrentClass->Children.push_back(&Meta);
+				Meta.Parent = CurrentClass;
+				break;
+			}
+			else
+			{
+				Depth.pop_back();
+			}
+		}
+
+		Depth.push_back(&Meta); 
+	}
+}
+
+void GenerateMetaHeader(const std::vector<ClangMetadata>& Metadata, const std::string& DestinationFileName, std::filesystem::path& srcpath)
+{
+	std::filesystem::create_directories(std::filesystem::path(DestinationFileName).parent_path());
+	std::ifstream InStream;
+	std::string ExistingHeaderContent;
+	if (std::filesystem::exists(DestinationFileName))
+	{
+		InStream.open(DestinationFileName);
+		std::stringstream buffer;
+		buffer << InStream.rdbuf();
+		ExistingHeaderContent = buffer.str();
+	}
+
+	std::stringstream NewHeaderContent;
+	NewHeaderContent << "#pragma once\n";
+	NewHeaderContent << "// Generated metadata for " << srcpath.string() << ".\n";
+	NewHeaderContent << "// You probably shouldn't edit this.\n";
+	NewHeaderContent << "// However, feel free to read it to understand what is happening.\n";
+	NewHeaderContent << "\n";
+	NewHeaderContent << "#define CONCAT(a, b) CONCAT_INNER(a, b)\n";
+	NewHeaderContent << "#define CONCAT_INNER(a, b) a ## b\n";
+
+	NewHeaderContent << "#ifdef IMPORT_META\n";
+	NewHeaderContent << "	#undef IMPORT_META\n";
+	NewHeaderContent << "	#ifndef LIBCLANG_META\n";
+	NewHeaderContent << "		#define IMPORT_META(x) CONCAT(x, _META());\n";
+	NewHeaderContent << "	#else\n";
+	NewHeaderContent << "		#define IMPORT_META(x)\n";
+	NewHeaderContent << "	#endif\n";
+	NewHeaderContent << "#endif\n";
+
+	NewHeaderContent << "#ifndef LIBCLANG_META\n";
+	for (const ClangMetadata& Meta : Metadata)
+	{
+		if (!Meta.IsMetaType()) continue;
+		if (Meta.cursorKind == CXCursor_ClassDecl)
+		{
+			NewHeaderContent << "\n";
+			
+			// Create the define
+			NewHeaderContent << "	#define " << Meta.displayName << "_META()\\\n"; 
+
+			// Some helpful static functions
+			NewHeaderContent << "		public:\\\n";
+			NewHeaderContent << "		__forceinline static const char* GetClassName() { return \"" << Meta.displayName << "\"; }\\\n";
+			NewHeaderContent << "		__forceinline static const size_t GetClassSize() { return " << Meta.TypeSize << "; }\\\n";
+			NewHeaderContent << "		\\\n";
+
+			// Function to get property from its name
+			NewHeaderContent << "		template <typename T>\\\n";
+			NewHeaderContent << "		__forceinline constexpr T* GetPropertyPtr(const char* const PropertyName) const\\\n";
+			NewHeaderContent << "		{\\\n";
+			for (const ClangMetadata* ChildMeta : Meta.Children)
+			{
+				if (!ChildMeta->IsMetaType()) continue;
+				NewHeaderContent << "			if (strcmp(PropertyName, \"" << ChildMeta->displayName << "\") == 0)\\\n";
+				NewHeaderContent << "			{\\\n";
+				NewHeaderContent << "				if (typeid(" << ChildMeta->displayName << ") == typeid(T))\\\n";
+				NewHeaderContent << "					{ return (T*)&" << ChildMeta->displayName << "; }\\\n";
+				NewHeaderContent << "				else\\\n";
+				NewHeaderContent << "					{ return nullptr; }\\\n";
+				NewHeaderContent << "			}\\\n";
+
+			}
+			NewHeaderContent << "			return nullptr;\\\n";
+			NewHeaderContent << "		}\\\n";
+
+			// Function to get property from offset
+			NewHeaderContent << "		template <typename T>\\\n";
+			NewHeaderContent << "		__forceinline constexpr T* GetPropertyPtrFromOffset(const size_t ByteOffset) const\\\n";
+			NewHeaderContent << "		{\\\n";
+			for (const ClangMetadata* ChildMeta : Meta.Children)
+			{
+				if (!ChildMeta->IsMetaType()) continue;
+				NewHeaderContent << "			if (" << ChildMeta->ByteOffset << " == ByteOffset)\\\n";
+				NewHeaderContent << "			{\\\n";
+				NewHeaderContent << "				if (typeid(" << ChildMeta->displayName << ") == typeid(T))\\\n";
+				NewHeaderContent << "					{ return (T*)&" << ChildMeta->displayName << "; }\\\n";
+				NewHeaderContent << "				else\\\n";
+				NewHeaderContent << "					{ return nullptr; }\\\n";
+				NewHeaderContent << "			}\\\n";
+			}
+			NewHeaderContent << "			return nullptr;\\\n";
+			NewHeaderContent << "		}\\\n";
+		}
+		else
+		{
+			// lets add useful functions for properties and methods
+		}
+
+		if (Meta.accessSpecifier == CX_CXXPrivate) NewHeaderContent << "		private:\\\n";
+		if (Meta.accessSpecifier == CX_CXXProtected) NewHeaderContent << "		protected:\\\n";
+	}
+	NewHeaderContent << "\n";
+	NewHeaderContent << "#endif\n";
+
+	std::string NewHeaderString = NewHeaderContent.str();
+
+	if (!NewHeaderString._Equal(ExistingHeaderContent)) 
+	{
+		// only save the file if it is different to the original or else 
+		// libclang will think its new anyway and ignore the pch
+		std::ofstream Stream;
+		Stream.open(DestinationFileName);
+		Stream << NewHeaderString;
+		Stream.close();
+	}
+}
+
+void ParseHeader(std::filesystem::path& HeaderPath, std::filesystem::path& srcpath, std::filesystem::path& pchpath, std::filesystem::path& metapath, std::ostream& LogInfo, long long& millisTotal)
 {
 	LogInfo << "    GENERATING: " + HeaderPath.string() << '\n';
 	CXIndex Index = nullptr;
@@ -205,7 +281,10 @@ void ParseHeader(std::filesystem::path& HeaderPath, std::filesystem::path& srcpa
 	std::string includedir = ("-I" + srcpath.string());
 
 	const std::filesystem::path& relpath = std::filesystem::relative(HeaderPath, srcpath);
-	std::filesystem::path temppath = metapath / relpath;
+	std::filesystem::path temppath = pchpath / relpath;
+	std::filesystem::path metatemppath = metapath / relpath;
+
+	std::string metaincludedir = ("-I" + metapath.string());
 
 	std::string pchfile = temppath.string() + ".pch";
 
@@ -231,10 +310,10 @@ void ParseHeader(std::filesystem::path& HeaderPath, std::filesystem::path& srcpa
 	
 	if (translationUnit == nullptr) // if using the pch failed we can read the source and generate a pch
 	{
-		std::vector<const char*> args{ "--language=c++", includedir.c_str(), "-std=c++17" };
-		Index = clang_createIndex(0, 1);
+		std::vector<const char*> args{ "--language=c++", includedir.c_str(), metaincludedir.c_str(), "-std=c++17", "-D", "LIBCLANG_META"};
+		Index = clang_createIndex(0, 0);
 		args.push_back("-Xclang");
-		args.push_back("-emit-pch");
+		args.push_back("-emit-pch"); 
 		args.push_back("-o");
 		args.push_back(pchfile.c_str());
 		LogInfo << "        Generating PCH: " << pchfile << '\n';
@@ -254,10 +333,11 @@ void ParseHeader(std::filesystem::path& HeaderPath, std::filesystem::path& srcpa
 		}
 	}
 
+	std::stringstream VisitorLogInfo = std::stringstream();
+	VisitorData visitorData = { &VisitorLogInfo };
+
 	if (translationUnit)
 	{
-		VisitorData visitorData = { &LogInfo };
-
 		auto cursor = clang_getTranslationUnitCursor(translationUnit);
 		clang_visitChildren(cursor, visitor, &visitorData);
 		clang_disposeTranslationUnit(translationUnit);
@@ -275,24 +355,26 @@ void ParseHeader(std::filesystem::path& HeaderPath, std::filesystem::path& srcpa
 
 	millisTotal += millis;
 
+	if (true)
+	{
+		LogInfo << VisitorLogInfo.str();
+	}
+
+	SortClangMetadataHierarchy(visitorData.GeneratedClangMetaData);
+
+	std::string metatemppathstr = (metapath / metatemppath.filename()).string();
+
+	GenerateMetaHeader(visitorData.GeneratedClangMetaData, metatemppathstr.substr(0, metatemppathstr.find_last_of('.')) + ".meta.h", srcpath);
+
 	LogInfo << "        Complete in " << millis << "ms\n";
 }
-
-struct ThreadData
-{
-	std::vector<std::filesystem::path> files;
-	std::filesystem::path srcpath;
-	std::filesystem::path metapath;
-	std::string result;
-	long long millisTotal;
-};
 
 void RunThread(ThreadData& Data)
 {
 	std::stringstream result;
 	for (auto& path : Data.files)
 	{
-		ParseHeader(path, Data.srcpath, Data.metapath, result, Data.millisTotal);
+		ParseHeader(path, Data.srcpath, Data.pchpath, Data.metapath, result, Data.millisTotal);
 	}
 	Data.result = result.str();
 }
@@ -301,12 +383,13 @@ void RunProject(const std::filesystem::path& root)
 {
 	std::cout << "Project:" << root.string() << "\n";
 
-	std::filesystem::path metapath = root / "meta_gen/";
-	std::filesystem::path srcpath = root / "src/"; 
+	std::filesystem::path pchpath = root / "meta_gen\\pch\\";
+	std::filesystem::path metapath = root / "meta_gen\\codegen\\";
+	std::filesystem::path srcpath = root / "src\\"; 
 
 
 	std::unordered_set<std::string> allheaders = GetAllHeaders(srcpath);
-	std::vector<std::filesystem::path> files = GetRelevantFiles(srcpath, metapath);
+	std::vector<std::filesystem::path> files = GetRelevantFiles(srcpath, pchpath);
 
 	if (files.size() == 0)
 	{
@@ -325,7 +408,7 @@ void RunProject(const std::filesystem::path& root)
 
 	for (int i = 0; i < ThreadCount; i++) // generate thread data
 	{
-		Data.push_back({ std::vector<std::filesystem::path>(), srcpath, metapath, std::string()});
+		Data.push_back({ std::vector<std::filesystem::path>(), srcpath, pchpath, metapath, std::string()});
 		Data.at(i).files.reserve(FilesPerThread);
 	}
 

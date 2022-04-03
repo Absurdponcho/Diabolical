@@ -34,14 +34,14 @@ void DEngine::Init(int argc, char* argv[])
     SetUnhandledExceptionFilter(MinidumpExceptionFilter);
 #endif
 	atexit(AtExit);
-
+	 
     //DMeta::ParseMetaData();
-	DCommandLine::Init(argc, argv);
+	DCommandLine::Init(argc, argv);  
 	DSocket::InitSockets();
 	DNetworkManager::Initialize();
     DAssetManager::Initialize();
-
-    glewInit();
+	  
+    glewInit(); 
 
 	GameManager = new DGameManager();
 	DWindowManager::Initialize("Diabolical", 128, 128, 800, 600, SDL_WINDOW_HIDDEN);
@@ -52,6 +52,24 @@ void DEngine::Init(int argc, char* argv[])
 	DMaterial::InitializeDefaultMaterial();
 	DUtilityECS::InitializeECSSystems();
 
+	MetaTest Test;
+	if (int* boolPtr = Test.GetPropertyPtr<int>("bTest"))
+	{
+		LOG("Got bTest");
+	}
+	else
+	{
+		LOG("no bTest");
+	}
+
+	if (bool* boolPtr = Test.GetPropertyPtrFromOffset<bool>(32))
+	{
+		LOG("Got bTest 2");
+	}
+	else
+	{
+		LOG("no bTest 2");
+	}
 }
 
 void DEngine::Run()

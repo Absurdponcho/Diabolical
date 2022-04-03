@@ -161,6 +161,7 @@
     <ClCompile Include="MetaGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MetaGenerator.h" />
     <ClInclude Include="std.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
