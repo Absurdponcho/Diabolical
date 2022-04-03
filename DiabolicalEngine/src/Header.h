@@ -17,7 +17,7 @@ public:
 	 
 	 
 };  
-  
+   
 class MetaTest2 {}; 
 
 METACLASS() MetaTest3 : public MetaTest, public MetaTest2
